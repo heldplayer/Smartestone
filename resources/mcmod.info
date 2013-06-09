@@ -1,0 +1,17 @@
+[
+{
+  "modid" : "Smartestone",
+  "name" : "Smartestone",
+  "version" : "0.01.02.01",
+  "credits" : "",
+  "authors": [
+    "heldplayer"
+  ],
+  "description": "Adds several smart redstone blocks",
+  "updateUrl" : "",
+  "url" : "",
+  "parent" : "",
+  "screenshots": [
+  ]
+}
+]
