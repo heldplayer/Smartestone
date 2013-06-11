@@ -1,19 +1,25 @@
 
 package me.heldplayer.mods.Smartestone.tileentity;
 
+import java.util.Iterator;
+
 import me.heldplayer.mods.Smartestone.CommonProxy;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.packet.Packet;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.world.storage.MapData;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class TileEntityItemStand extends TileEntityRotatable implements IInventory {
 
-    private ItemStack[] inventory = new ItemStack[11];
+    private ItemStack[] inventory = new ItemStack[1];
     public float hover = 0.0F;
     public float prevHover = 0.0F;
 
@@ -28,6 +34,7 @@ public class TileEntityItemStand extends TileEntityRotatable implements IInvento
         return AxisAlignedBB.getAABBPool().getAABB(this.xCoord, this.yCoord, this.zCoord, this.xCoord + 1, this.yCoord + 1, this.zCoord + 1);
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
     public void updateEntity() {
         if (this.worldObj.isRemote) {
@@ -37,6 +44,27 @@ public class TileEntityItemStand extends TileEntityRotatable implements IInvento
             if (this.hover >= 6.28F) {
                 this.hover -= 6.28F;
                 this.prevHover -= 6.28F;
+            }
+        }
+        else {
+            ItemStack stack = this.inventory[0];
+            if (stack != null && stack.getItem() == Item.map) {
+                MapData data = Item.map.getMapData(stack, worldObj);
+                Iterator iterator = worldObj.playerEntities.iterator();
+
+                while (iterator.hasNext()) {
+                    Object obj = iterator.next();
+                    EntityPlayerMP player = (EntityPlayerMP) obj;
+                    data.func_82568_a(player);
+
+                    if (player.playerNetServerHandler.packetSize() < 5) {
+                        Packet packet = Item.map.createMapDataPacket(stack, worldObj, player);
+
+                        if (packet != null) {
+                            player.playerNetServerHandler.sendPacketToPlayer(packet);
+                        }
+                    }
+                }
             }
         }
     }
