@@ -50,7 +50,7 @@ public class TileEntityItemStandRenderer extends TileEntitySpecialRenderer {
             this.entityitem.setEntityItemStack(stack.copy());
             this.entityitem.getEntityItem().stackSize = 1;
 
-            if (stack.getItem() == Item.map) {
+            if (stack.getItem() == Item.map || stack.getItem() == Item.emptyMap) {
                 switch (direction.ordinal()) {
                 case 1:
                     GL11.glRotatef(180.0F, 1.0F, 0.0F, 0.0F);
@@ -84,7 +84,6 @@ public class TileEntityItemStandRenderer extends TileEntitySpecialRenderer {
                 GL11.glScalef(0.004F, 0.004F, 0.004F);
 
                 RenderManager manager = RenderManager.instance;
-
                 manager.renderEngine.bindTexture("/misc/mapbg.png");
                 Tessellator tessellator = Tessellator.instance;
                 GL11.glRotatef(90.0F, 0.0F, 0.0F, 1.0F);
@@ -97,24 +96,21 @@ public class TileEntityItemStandRenderer extends TileEntitySpecialRenderer {
                 tessellator.addVertexWithUV(128.0D + size, 0.0D - size, 0.0D, 1.0D, 0.0D);
                 tessellator.addVertexWithUV(0.0D - size, 0.0D - size, 0.0D, 0.0D, 0.0D);
                 tessellator.draw();
-                MapData mapdata = Item.map.getMapData(entityitem.getEntityItem(), this.entityitem.worldObj);
-                GL11.glTranslatef(0.0F, 0.0F, -1.0F);
+                MapData mapdata = null;
+                if (stack.getItem() == Item.map) {
+                    mapdata = Item.map.getMapData(entityitem.getEntityItem(), this.entityitem.worldObj);
+                }
+                GL11.glTranslatef(0.0F, 1.0F, 0.0F);
 
                 if (mapdata != null) {
                     manager.itemRenderer.mapItemRenderer.renderMap((EntityPlayer) null, manager.renderEngine, mapdata);
                 }
             }
             else {
-                GL11.glTranslatef(0.0F, -0.1F, 0.0F);
-
-                GL11.glPushMatrix();
-                //GL11.glTranslated(0.0D, 0.4D, 0.0D);
-                //GL11.glRotatef(-45.0F, 0.0F, 1.0F, 0.0F);
-
                 RenderManager.instance.renderEntityWithPosYaw(this.entityitem, 0.0D, 0.0D, 0.0D, 0.0F, 0.0F);
-                GL11.glPopMatrix();
             }
         }
+        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
         GL11.glPopMatrix();
     }
 
