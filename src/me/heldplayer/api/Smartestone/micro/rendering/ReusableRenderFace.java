@@ -14,6 +14,8 @@ public class ReusableRenderFace {
     public double endV;
 
     public Icon icon;
+    public int renderPass;
+    public boolean renders;
 
     public ReusableRenderFace() {
         this.side = 0;
@@ -22,6 +24,20 @@ public class ReusableRenderFace {
         this.endU = 1.0D;
         this.startV = 0.0D;
         this.endV = 1.0D;
+
+        renders = true;
+    }
+
+    public void copy(ReusableRenderFace other) {
+        this.side = other.side;
+        this.offset = other.offset;
+        this.startU = other.startU;
+        this.endU = other.endU;
+        this.startV = other.startV;
+        this.endV = other.endV;
+        this.icon = other.icon;
+        this.renderPass = other.renderPass;
+        this.renders = other.renders;
     }
 
     public void setValues(int side, double offset, double startU, double endU, double startV, double endV) {
@@ -31,10 +47,15 @@ public class ReusableRenderFace {
         this.endU = endU;
         this.startV = startV;
         this.endV = endV;
+
+        renders = true;
     }
 
     public void setValues(AxisAlignedBB aabb, int side) {
         this.side = side;
+
+        renders = true;
+
         switch (this.side) {
         case 0:
             this.offset = aabb.minY;

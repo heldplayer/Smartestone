@@ -117,7 +117,7 @@ public class CommonProxy implements IGuiHandler {
         MicroBlockAPI.registerSubBlock(new SimpleCornerMicroBlock("Anti-Panel Corner", 0.75D));
         MicroBlockAPI.registerSubBlock(new SimpleCornerMicroBlock("Anti-Cover Corner", 0.875D));
 
-        int[] blocks = new int[] { 1, 3, 4, 12, 13, 19, 22, 41, 42, 45, 48, 49, 57, 79, 80, 82, 87, 88, 89, 98, 112, 121, 133, 152 };
+        int[] blocks = new int[] { 1, 3, 4, 8, 12, 13, 19, 22, 41, 42, 45, 48, 49, 57, 79, 80, 82, 87, 88, 89, 98, 112, 121, 133, 152 };
 
         for (int block : blocks) {
             MicroBlockAPI.registerMaterial(new SimpleMicroBlockMaterial(new ItemStack(block, 1, 0)));
