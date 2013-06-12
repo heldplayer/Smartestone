@@ -5,6 +5,7 @@ import me.heldplayer.api.Smartestone.micro.IMicroBlockMaterial;
 import me.heldplayer.api.Smartestone.micro.IMicroBlockSubBlock;
 import me.heldplayer.api.Smartestone.micro.MicroBlockAPI;
 import me.heldplayer.api.Smartestone.micro.MicroBlockInfo;
+import me.heldplayer.api.Smartestone.micro.rendering.RenderFacePool;
 import me.heldplayer.mods.Smartestone.CommonProxy;
 import me.heldplayer.mods.Smartestone.block.BlockMicro;
 import me.heldplayer.mods.Smartestone.block.BlockMulti;
@@ -31,6 +32,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
+import net.minecraftforge.client.event.RenderGameOverlayEvent.Text;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.event.ForgeSubscribe;
 import cpw.mods.fml.client.registry.ClientRegistry;
@@ -65,7 +67,12 @@ public class ClientProxy extends CommonProxy {
         MinecraftForgeClient.registerItemRenderer(Objects.itemMicroBlock.itemID, new ItemRendererMicroBlock());
     }
 
-    @ForgeSubscribe()
+    @ForgeSubscribe
+    public void onText(Text event) {
+        event.right.add(RenderFacePool.getDebugString());
+    }
+
+    @ForgeSubscribe(receiveCanceled = true)
     public void onDrawBlockHighlight(DrawBlockHighlightEvent event) {
         ItemStack stack = event.currentItem;
 

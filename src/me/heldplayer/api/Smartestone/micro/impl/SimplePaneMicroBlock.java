@@ -1,6 +1,15 @@
 
-package me.heldplayer.api.Smartestone.micro;
+package me.heldplayer.api.Smartestone.micro.impl;
 
+import me.heldplayer.api.Smartestone.micro.IMicroBlockMaterial;
+import me.heldplayer.api.Smartestone.micro.IMicroBlockSubBlock;
+import me.heldplayer.api.Smartestone.micro.MicroBlockAPI;
+import me.heldplayer.api.Smartestone.micro.MicroBlockInfo;
+import me.heldplayer.api.Smartestone.micro.rendering.MicroBlockRenderHelper;
+import me.heldplayer.api.Smartestone.micro.rendering.RenderFacePool;
+import me.heldplayer.api.Smartestone.micro.rendering.ReusableRenderFace;
+import me.heldplayer.mods.Smartestone.util.Direction;
+import me.heldplayer.mods.Smartestone.util.Side;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,18 +19,17 @@ import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class SimpleStripMicroBlock implements IMicroBlockSubBlock {
+public class SimplePaneMicroBlock implements IMicroBlockSubBlock {
 
     public final String typeName;
     public final double[] renderBounds;
     public final double width;
 
-    public SimpleStripMicroBlock(String typeName, double width) {
+    public SimplePaneMicroBlock(String typeName, double width) {
         this.typeName = typeName;
-        this.renderBounds = new double[] { 0.5D - width / 2.0D, 0.0D, 0.5D - width / 2.0D, 0.5D + width / 2.0D, 1.0D, 0.5D + width / 2.0D };
+        this.renderBounds = new double[] { 0.0D, 0.0D, 0.5D - width / 2.0D, 1.0D, 1.0D, 0.5D + width / 2.0D };
         this.width = width;
     }
 
@@ -46,48 +54,25 @@ public class SimpleStripMicroBlock implements IMicroBlockSubBlock {
     // 3 South
     // 4 West
     // 5 East
-    // ...
-    // 7 ?
-    // 8 Normal
-    // 9 Quarter
-    // 10 Half
-    // 11 Counter Quarter
 
     @Override
     public AxisAlignedBB getBoundsInBlock(MicroBlockInfo info) {
-        switch (info.getData()) {
+        switch (info.getData() & 0x7) {
         case 0:
-            return AxisAlignedBB.getAABBPool().getAABB(0.0D, 1.0D - width, 0.0D, width, 1.0D, 1.0D); // 0-0+11
+            return AxisAlignedBB.getAABBPool().getAABB(0.0D, 1.0D - width, 0.0D, 1.0D, 1.0D, 1.0D);
         case 1:
-            return AxisAlignedBB.getAABBPool().getAABB(0.0D, 0.0D, 0.0D, width, width, 1.0D); // 000++1
+            return AxisAlignedBB.getAABBPool().getAABB(0.0D, 0.0D, 0.0D, 1.0D, width, 1.0D);
         case 2:
-            return AxisAlignedBB.getAABBPool().getAABB(0.0D, 0.0D, 1.0D - width, width, 1.0D, 1.0D); // 00-+11
+            return AxisAlignedBB.getAABBPool().getAABB(0.0D, 0.0D, 1.0D - width, 1.0D, 1.0D, 1.0D);
         case 3:
-            return AxisAlignedBB.getAABBPool().getAABB(1.0D - width, 0.0D, 0.0D, 1.0D, 1.0D, width); // -0011+
+            return AxisAlignedBB.getAABBPool().getAABB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, width);
         case 4:
-            return AxisAlignedBB.getAABBPool().getAABB(0.0D, 1.0D - width, 1.0D - width, 1.0D, 1.0D, 1.0D); // 0--111
+            return AxisAlignedBB.getAABBPool().getAABB(1.0D - width, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
         case 5:
-            return AxisAlignedBB.getAABBPool().getAABB(0.0D, 0.0D, 0.0D, 1.0D, width, width); // 0001++
-        case 6:
-            return AxisAlignedBB.getAABBPool().getAABB(0.0D, 1.0D - width, 0.0D, 1.0D, 1.0D, width); // 0-011+
-        case 7:
-            return AxisAlignedBB.getAABBPool().getAABB(1.0D - width, 1.0D - width, 0.0D, 1.0D, 1.0D, 1.0D); // --0111
-        case 8:
-            return AxisAlignedBB.getAABBPool().getAABB(1.0D - width, 0.0D, 0.0D, 1.0D, width, 1.0D); // -001+1
-        case 9:
-            return AxisAlignedBB.getAABBPool().getAABB(1.0D - width, 0.0D, 1.0D - width, 1.0D, 1.0D, 1.0D); // -0-111
-        case 10:
-            return AxisAlignedBB.getAABBPool().getAABB(0.0D, 0.0D, 0.0D, width, 1.0D, width); // 000+1+
-        case 11:
-            return AxisAlignedBB.getAABBPool().getAABB(0.0D, 0.0D, 1.0D - width, 1.0D, width, 1.0D); // 00-1+1
+            return AxisAlignedBB.getAABBPool().getAABB(0.0D, 0.0D, 0.0D, width, 1.0D, 1.0D);
         }
 
         return AxisAlignedBB.getAABBPool().getAABB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
-    }
-
-    @Override
-    public AxisAlignedBB getRenderBounds(MicroBlockInfo info) {
-        return this.getBoundsInBlock(info);
     }
 
     @Override
@@ -96,12 +81,41 @@ public class SimpleStripMicroBlock implements IMicroBlockSubBlock {
     }
 
     @Override
+    public ReusableRenderFace[] getRenderFaces(MicroBlockInfo info) {
+        AxisAlignedBB aabb = this.getBoundsInBlock(info);
+
+        ReusableRenderFace[] faces = new ReusableRenderFace[6];
+
+        for (int i = 0; i < faces.length; i++) {
+            faces[i] = RenderFacePool.getAFace();
+            faces[i].setValues(aabb, i);
+        }
+
+        return faces;
+    }
+
+    @Override
     public boolean isSideSolid(MicroBlockInfo info, int side) {
+        switch (info.getData() & 0x7) {
+        case 0:
+            return side == 1;
+        case 1:
+            return side == 0;
+        case 2:
+            return side == 3;
+        case 3:
+            return side == 2;
+        case 4:
+            return side == 5;
+        case 5:
+            return side == 4;
+        }
+
         return false;
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
     public void drawHitbox(DrawBlockHighlightEvent event, MicroBlockInfo info) {
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -127,32 +141,44 @@ public class SimpleStripMicroBlock implements IMicroBlockSubBlock {
         AxisAlignedBB aabb = AxisAlignedBB.getAABBPool().getAABB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D).offset(event.target.blockX, event.target.blockY, event.target.blockZ).expand((double) outset, (double) outset, (double) outset).getOffsetBoundingBox(-x, -y, -z);
 
         double minX = aabb.minX;
+        double minX2 = minX + 0.1875F;
         double minY = aabb.minY;
+        double minY2 = minY + 0.1875F;
         double minZ = aabb.minZ;
+        double minZ2 = minZ + 0.1875F;
         double maxX = aabb.maxX;
+        double maxX2 = maxX - 0.1875F;
         double maxY = aabb.maxY;
+        double maxY2 = maxY - 0.1875F;
         double maxZ = aabb.maxZ;
+        double maxZ2 = maxZ - 0.1875F;
         boolean swapped = false;
 
         switch (pos.sideHit) {
         case 0:
             maxY = minY = bAabb.minY;
+            maxY2 = minY2 = bAabb.minY;
         break;
         case 1:
             minY = maxY = bAabb.maxY;
+            minY2 = maxY2 = bAabb.maxY;
         break;
         case 2:
             maxZ = minZ = bAabb.minZ;
+            maxZ2 = minZ2 = bAabb.minZ;
         break;
         case 3:
             minZ = maxZ = bAabb.maxZ;
+            minZ2 = maxZ2 = bAabb.maxZ;
         break;
         case 4:
             maxX = minX = bAabb.minX;
+            maxX2 = minX2 = bAabb.minX;
             swapped = true;
         break;
         case 5:
             minX = maxX = bAabb.maxX;
+            minX2 = maxX2 = bAabb.maxX;
             swapped = true;
         break;
         }
@@ -160,16 +186,41 @@ public class SimpleStripMicroBlock implements IMicroBlockSubBlock {
         tessellator.startDrawing(1);
 
         tessellator.addVertex(minX, minY, minZ);
+        tessellator.addVertex(minX2, minY2, minZ2);
+
+        tessellator.addVertex(maxX2, maxY2, maxZ2);
         tessellator.addVertex(maxX, maxY, maxZ);
 
         if (swapped) {
             tessellator.addVertex(minX, minY, maxZ);
+            tessellator.addVertex(minX2, minY2, maxZ2);
+
+            tessellator.addVertex(maxX2, maxY2, minZ2);
             tessellator.addVertex(maxX, maxY, minZ);
         }
         else {
             tessellator.addVertex(minX, maxY, maxZ);
+            tessellator.addVertex(minX2, maxY2, maxZ2);
+
+            tessellator.addVertex(maxX2, minY2, minZ2);
             tessellator.addVertex(maxX, minY, minZ);
         }
+
+        tessellator.draw();
+
+        tessellator.startDrawing(3);
+        tessellator.addVertex(minX2, minY2, minZ2);
+        if (swapped) {
+            tessellator.addVertex(maxX2, maxY2, minZ2);
+            tessellator.addVertex(maxX2, maxY2, maxZ2);
+            tessellator.addVertex(minX2, minY2, maxZ2);
+        }
+        else {
+            tessellator.addVertex(maxX2, minY2, minZ2);
+            tessellator.addVertex(maxX2, maxY2, maxZ2);
+            tessellator.addVertex(minX2, maxY2, maxZ2);
+        }
+        tessellator.addVertex(minX2, minY2, minZ2);
 
         tessellator.draw();
 
@@ -202,119 +253,27 @@ public class SimpleStripMicroBlock implements IMicroBlockSubBlock {
         float u = MicroBlockAPI.getU(side, hitX, hitY, hitZ);
         float v = MicroBlockAPI.getV(side, hitX, hitY, hitZ);
 
-        int vector = 0;
-
-        if (u < v) {
-            if (u < 1.0F - v) {
-                vector = 2;
-            }
-            else {
-                vector = 1;
-            }
+        if (u > 0.1875F && u < 0.8125F && v > 0.1875F && v < 0.8125F) {
+            return side | (side << 3);
         }
         else {
-            if (1.0F - u < v) {
-                vector = 0;
+            if (u < v) {
+                if (u < 1.0F - v) {
+                    return Direction.getDirection(side).getRelativeSide(Side.LEFT).ordinal();
+                }
+                else {
+                    return Direction.getDirection(side).getRelativeSide(Side.BOTTOM).ordinal();
+                }
             }
             else {
-                vector = 3;
+                if (1.0F - u < v) {
+                    return Direction.getDirection(side).getRelativeSide(Side.RIGHT).ordinal();
+                }
+                else {
+                    return Direction.getDirection(side).getRelativeSide(Side.TOP).ordinal();
+                }
             }
         }
-
-        int data = -1;
-
-        switch (vector) {
-        case 0:
-            switch (side) {
-            case 0:
-                data = 0;
-            break;
-            case 1:
-                data = 1;
-            break;
-            case 2:
-                data = 2;
-            break;
-            case 3:
-                data = 3;
-            break;
-            case 4:
-                data = 3;
-            break;
-            case 5:
-                data = 2;
-            break;
-            }
-        break;
-        case 1:
-            switch (side) {
-            case 0:
-                data = 4;
-            break;
-            case 1:
-                data = 5;
-            break;
-            case 2:
-                data = 4;
-            break;
-            case 3:
-                data = 6;
-            break;
-            case 4:
-                data = 7;
-            break;
-            case 5:
-                data = 0;
-            break;
-            }
-        break;
-        case 2:
-            switch (side) {
-            case 0:
-                data = 7;
-            break;
-            case 1:
-                data = 8;
-            break;
-            case 2:
-                data = 9;
-            break;
-            case 3:
-                data = 10;
-            break;
-            case 4:
-                data = 9;
-            break;
-            case 5:
-                data = 10;
-            break;
-            }
-        break;
-        case 3:
-            switch (side) {
-            case 0:
-                data = 6;
-            break;
-            case 1:
-                data = 11;
-            break;
-            case 2:
-                data = 11;
-            break;
-            case 3:
-                data = 5;
-            break;
-            case 4:
-                data = 8;
-            break;
-            case 5:
-                data = 1;
-            break;
-            }
-        break;
-        }
-
-        return data;
     }
 
     @Override
@@ -336,7 +295,7 @@ public class SimpleStripMicroBlock implements IMicroBlockSubBlock {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        SimpleStripMicroBlock other = (SimpleStripMicroBlock) obj;
+        SimplePaneMicroBlock other = (SimplePaneMicroBlock) obj;
         if (typeName == null) {
             if (other.typeName != null)
                 return false;

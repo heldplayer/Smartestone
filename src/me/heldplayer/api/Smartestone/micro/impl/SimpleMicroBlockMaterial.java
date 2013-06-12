@@ -1,6 +1,7 @@
 
-package me.heldplayer.api.Smartestone.micro;
+package me.heldplayer.api.Smartestone.micro.impl;
 
+import me.heldplayer.api.Smartestone.micro.IMicroBlockMaterial;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
@@ -11,12 +12,29 @@ public class SimpleMicroBlockMaterial implements IMicroBlockMaterial {
     public final int meta;
     public final ItemStack stack;
     public final String identifier;
+    public final int renderPass;
 
     public SimpleMicroBlockMaterial(ItemStack stack) {
         this.id = stack.itemID;
         this.meta = stack.getItemDamage();
         this.stack = stack;
         this.identifier = "B" + this.id + "@" + this.meta;
+
+        Block block = Block.blocksList[this.id];
+        if (block == null) {
+            this.renderPass = 0;
+        }
+        else {
+            this.renderPass = block.getRenderBlockPass();
+        }
+    }
+
+    public SimpleMicroBlockMaterial(ItemStack stack, int forcedRenderPass) {
+        this.id = stack.itemID;
+        this.meta = stack.getItemDamage();
+        this.stack = stack;
+        this.identifier = "B" + this.id + "@" + this.meta;
+        this.renderPass = forcedRenderPass;
     }
 
     @Override
@@ -37,6 +55,11 @@ public class SimpleMicroBlockMaterial implements IMicroBlockMaterial {
     @Override
     public boolean isBlock() {
         return true;
+    }
+
+    @Override
+    public int getRenderPass() {
+        return this.renderPass;
     }
 
     @Override

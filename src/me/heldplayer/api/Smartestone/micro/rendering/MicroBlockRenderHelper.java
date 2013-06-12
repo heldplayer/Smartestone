@@ -1,6 +1,7 @@
 
-package me.heldplayer.api.Smartestone.micro;
+package me.heldplayer.api.Smartestone.micro.rendering;
 
+import me.heldplayer.api.Smartestone.micro.MicroBlockInfo;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.AxisAlignedBB;

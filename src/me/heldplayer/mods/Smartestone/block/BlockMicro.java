@@ -38,6 +38,7 @@ public class BlockMicro extends Block {
     private static Random rnd = new Random();
     @SideOnly(Side.CLIENT)
     private Icon icon;
+    public int renderPass;
 
     public BlockMicro(int blockId) {
         super(blockId, Material.rock);
@@ -48,6 +49,18 @@ public class BlockMicro extends Block {
     @Override
     public int getRenderType() {
         return renderId;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public int getRenderBlockPass() {
+        return 1;
+    }
+
+    @Override
+    public boolean canRenderInPass(int pass) {
+        renderPass = pass;
+        return true;
     }
 
     @Override
@@ -356,7 +369,7 @@ public class BlockMicro extends Block {
         if (targetted != null) {
             RenderEngine engine = RenderManager.instance.renderEngine;
 
-            AxisAlignedBB aabb = targetted.getType().getRenderBounds(targetted);
+            AxisAlignedBB aabb = targetted.getType().getPlacementBounds(targetted);
             float offset = 0.1F;
             double pX = (double) x + rnd.nextDouble() * (aabb.maxX - aabb.minX - (double) (offset * 2.0F)) + (double) offset + aabb.minX;
             double pY = (double) y + rnd.nextDouble() * (aabb.maxY - aabb.minY - (double) (offset * 2.0F)) + (double) offset + aabb.minY;

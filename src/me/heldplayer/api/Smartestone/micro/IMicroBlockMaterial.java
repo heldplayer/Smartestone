@@ -13,4 +13,6 @@ public interface IMicroBlockMaterial {
 
     public abstract boolean isBlock();
 
+    public abstract int getRenderPass();
+
 }

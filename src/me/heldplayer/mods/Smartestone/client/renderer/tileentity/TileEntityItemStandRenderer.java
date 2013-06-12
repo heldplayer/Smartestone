@@ -100,7 +100,7 @@ public class TileEntityItemStandRenderer extends TileEntitySpecialRenderer {
                 if (stack.getItem() == Item.map) {
                     mapdata = Item.map.getMapData(entityitem.getEntityItem(), this.entityitem.worldObj);
                 }
-                GL11.glTranslatef(0.0F, 1.0F, 0.0F);
+                GL11.glTranslatef(0.0F, 0.0F, -1.0F);
 
                 if (mapdata != null) {
                     manager.itemRenderer.mapItemRenderer.renderMap((EntityPlayer) null, manager.renderEngine, mapdata);

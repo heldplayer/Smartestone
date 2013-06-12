@@ -4,10 +4,10 @@ package me.heldplayer.mods.Smartestone;
 import java.util.Random;
 
 import me.heldplayer.api.Smartestone.micro.MicroBlockAPI;
-import me.heldplayer.api.Smartestone.micro.SimpleCornerMicroBlock;
-import me.heldplayer.api.Smartestone.micro.SimpleMicroBlockMaterial;
-import me.heldplayer.api.Smartestone.micro.SimplePaneMicroBlock;
-import me.heldplayer.api.Smartestone.micro.SimpleStripMicroBlock;
+import me.heldplayer.api.Smartestone.micro.impl.SimpleCornerMicroBlock;
+import me.heldplayer.api.Smartestone.micro.impl.SimpleMicroBlockMaterial;
+import me.heldplayer.api.Smartestone.micro.impl.SimplePaneMicroBlock;
+import me.heldplayer.api.Smartestone.micro.impl.SimpleStripMicroBlock;
 import me.heldplayer.mods.Smartestone.block.BlockMicro;
 import me.heldplayer.mods.Smartestone.block.BlockMulti1;
 import me.heldplayer.mods.Smartestone.block.BlockMulti2;

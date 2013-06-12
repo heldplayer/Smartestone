@@ -1,6 +1,13 @@
 
-package me.heldplayer.api.Smartestone.micro;
+package me.heldplayer.api.Smartestone.micro.impl;
 
+import me.heldplayer.api.Smartestone.micro.IMicroBlockMaterial;
+import me.heldplayer.api.Smartestone.micro.IMicroBlockSubBlock;
+import me.heldplayer.api.Smartestone.micro.MicroBlockAPI;
+import me.heldplayer.api.Smartestone.micro.MicroBlockInfo;
+import me.heldplayer.api.Smartestone.micro.rendering.MicroBlockRenderHelper;
+import me.heldplayer.api.Smartestone.micro.rendering.RenderFacePool;
+import me.heldplayer.api.Smartestone.micro.rendering.ReusableRenderFace;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,15 +17,18 @@ import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 
 import org.lwjgl.opengl.GL11;
 
-public class SimpleCornerMicroBlock implements IMicroBlockSubBlock {
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
+public class SimpleStripMicroBlock implements IMicroBlockSubBlock {
 
     public final String typeName;
     public final double[] renderBounds;
     public final double width;
 
-    public SimpleCornerMicroBlock(String typeName, double width) {
+    public SimpleStripMicroBlock(String typeName, double width) {
         this.typeName = typeName;
-        this.renderBounds = new double[] { 0.5D - width / 2.0D, 0.5D - width / 2.0D, 0.5D - width / 2.0D, 0.5D + width / 2.0D, 0.5D + width / 2.0D, 0.5D + width / 2.0D };
+        this.renderBounds = new double[] { 0.5D - width / 2.0D, 0.0D, 0.5D - width / 2.0D, 0.5D + width / 2.0D, 1.0D, 0.5D + width / 2.0D };
         this.width = width;
     }
 
@@ -37,33 +47,49 @@ public class SimpleCornerMicroBlock implements IMicroBlockSubBlock {
         return this.renderBounds;
     }
 
+    // 0 Bottom
+    // 1 Top
+    // 2 North
+    // 3 South
+    // 4 West
+    // 5 East
+    // ...
+    // 7 ?
+    // 8 Normal
+    // 9 Quarter
+    // 10 Half
+    // 11 Counter Quarter
+
     @Override
     public AxisAlignedBB getBoundsInBlock(MicroBlockInfo info) {
         switch (info.getData()) {
         case 0:
-            return AxisAlignedBB.getAABBPool().getAABB(1.0D - width, 1.0D - width, 1.0D - width, 1.0D, 1.0D, 1.0D); // ---111
+            return AxisAlignedBB.getAABBPool().getAABB(0.0D, 1.0D - width, 0.0D, width, 1.0D, 1.0D); // 0-0+11
         case 1:
-            return AxisAlignedBB.getAABBPool().getAABB(1.0D - width, 0.0D, 0.0D, 1.0D, width, width); // -001++
+            return AxisAlignedBB.getAABBPool().getAABB(0.0D, 0.0D, 0.0D, width, width, 1.0D); // 000++1
         case 2:
-            return AxisAlignedBB.getAABBPool().getAABB(0.0D, 1.0D - width, 0.0D, width, 1.0D, width); // 0-0+1+
+            return AxisAlignedBB.getAABBPool().getAABB(0.0D, 0.0D, 1.0D - width, width, 1.0D, 1.0D); // 00-+11
         case 3:
-            return AxisAlignedBB.getAABBPool().getAABB(0.0D, 1.0D - width, 1.0D - width, width, 1.0D, 1.0D); // 0--+11
+            return AxisAlignedBB.getAABBPool().getAABB(1.0D - width, 0.0D, 0.0D, 1.0D, 1.0D, width); // -0011+
         case 4:
-            return AxisAlignedBB.getAABBPool().getAABB(0.0D, 0.0D, 0.0D, width, width, width); // 000+++
+            return AxisAlignedBB.getAABBPool().getAABB(0.0D, 1.0D - width, 1.0D - width, 1.0D, 1.0D, 1.0D); // 0--111
         case 5:
-            return AxisAlignedBB.getAABBPool().getAABB(1.0D - width, 1.0D - width, 0.0D, 1.0D, 1.0D, width); // --011+
+            return AxisAlignedBB.getAABBPool().getAABB(0.0D, 0.0D, 0.0D, 1.0D, width, width); // 0001++
         case 6:
-            return AxisAlignedBB.getAABBPool().getAABB(1.0D - width, 0.0D, 1.0D - width, 1.0D, width, 1.0D); // -0-1+1
+            return AxisAlignedBB.getAABBPool().getAABB(0.0D, 1.0D - width, 0.0D, 1.0D, 1.0D, width); // 0-011+
         case 7:
-            return AxisAlignedBB.getAABBPool().getAABB(0.0D, 0.0D, 1.0D - width, width, width, 1.0D); // 00-++1
+            return AxisAlignedBB.getAABBPool().getAABB(1.0D - width, 1.0D - width, 0.0D, 1.0D, 1.0D, 1.0D); // --0111
+        case 8:
+            return AxisAlignedBB.getAABBPool().getAABB(1.0D - width, 0.0D, 0.0D, 1.0D, width, 1.0D); // -001+1
+        case 9:
+            return AxisAlignedBB.getAABBPool().getAABB(1.0D - width, 0.0D, 1.0D - width, 1.0D, 1.0D, 1.0D); // -0-111
+        case 10:
+            return AxisAlignedBB.getAABBPool().getAABB(0.0D, 0.0D, 0.0D, width, 1.0D, width); // 000+1+
+        case 11:
+            return AxisAlignedBB.getAABBPool().getAABB(0.0D, 0.0D, 1.0D - width, 1.0D, width, 1.0D); // 00-1+1
         }
 
         return AxisAlignedBB.getAABBPool().getAABB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
-    }
-
-    @Override
-    public AxisAlignedBB getRenderBounds(MicroBlockInfo info) {
-        return this.getBoundsInBlock(info);
     }
 
     @Override
@@ -72,11 +98,26 @@ public class SimpleCornerMicroBlock implements IMicroBlockSubBlock {
     }
 
     @Override
+    public ReusableRenderFace[] getRenderFaces(MicroBlockInfo info) {
+        AxisAlignedBB aabb = this.getBoundsInBlock(info);
+
+        ReusableRenderFace[] faces = new ReusableRenderFace[6];
+
+        for (int i = 0; i < faces.length; i++) {
+            faces[i] = RenderFacePool.getAFace();
+            faces[i].setValues(aabb, i);
+        }
+
+        return faces;
+    }
+
+    @Override
     public boolean isSideSolid(MicroBlockInfo info, int side) {
         return false;
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void drawHitbox(DrawBlockHighlightEvent event, MicroBlockInfo info) {
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -107,68 +148,45 @@ public class SimpleCornerMicroBlock implements IMicroBlockSubBlock {
         double maxX = aabb.maxX;
         double maxY = aabb.maxY;
         double maxZ = aabb.maxZ;
-
-        double midX = (minX + maxX) / 2.0D;
-        double midY = (minY + maxY) / 2.0D;
-        double midZ = (minZ + maxZ) / 2.0D;
-
         boolean swapped = false;
 
-        tessellator.startDrawing(1);
         switch (pos.sideHit) {
         case 0:
             maxY = minY = bAabb.minY;
-            tessellator.addVertex(midX, minY, minZ);
-            tessellator.addVertex(midX, minY, maxZ);
-
-            tessellator.addVertex(minX, minY, midZ);
-            tessellator.addVertex(maxX, minY, midZ);
         break;
         case 1:
             minY = maxY = bAabb.maxY;
-            tessellator.addVertex(midX, maxY, minZ);
-            tessellator.addVertex(midX, maxY, maxZ);
-
-            tessellator.addVertex(minX, maxY, midZ);
-            tessellator.addVertex(maxX, maxY, midZ);
         break;
         case 2:
             maxZ = minZ = bAabb.minZ;
-            tessellator.addVertex(minX, midY, maxZ);
-            tessellator.addVertex(maxX, midY, maxZ);
-
-            tessellator.addVertex(midX, minY, maxZ);
-            tessellator.addVertex(midX, maxY, maxZ);
         break;
         case 3:
             minZ = maxZ = bAabb.maxZ;
-            tessellator.addVertex(minX, midY, minZ);
-            tessellator.addVertex(maxX, midY, minZ);
-
-            tessellator.addVertex(midX, minY, minZ);
-            tessellator.addVertex(midX, maxY, minZ);
         break;
         case 4:
             maxX = minX = bAabb.minX;
-            tessellator.addVertex(maxX, midY, minZ);
-            tessellator.addVertex(maxX, midY, maxZ);
-
-            tessellator.addVertex(maxX, minY, midZ);
-            tessellator.addVertex(maxX, maxY, midZ);
-
             swapped = true;
         break;
         case 5:
             minX = maxX = bAabb.maxX;
-            tessellator.addVertex(minX, midY, minZ);
-            tessellator.addVertex(minX, midY, maxZ);
-
-            tessellator.addVertex(minX, minY, midZ);
-            tessellator.addVertex(minX, maxY, midZ);
-
             swapped = true;
         break;
         }
+
+        tessellator.startDrawing(1);
+
+        tessellator.addVertex(minX, minY, minZ);
+        tessellator.addVertex(maxX, maxY, maxZ);
+
+        if (swapped) {
+            tessellator.addVertex(minX, minY, maxZ);
+            tessellator.addVertex(maxX, maxY, minZ);
+        }
+        else {
+            tessellator.addVertex(minX, maxY, maxZ);
+            tessellator.addVertex(maxX, minY, minZ);
+        }
+
         tessellator.draw();
 
         tessellator.startDrawing(3);
@@ -202,20 +220,20 @@ public class SimpleCornerMicroBlock implements IMicroBlockSubBlock {
 
         int vector = 0;
 
-        if (u > 0.5F) {
-            if (v > 0.5F) {
-                vector = 1;
+        if (u < v) {
+            if (u < 1.0F - v) {
+                vector = 2;
             }
             else {
-                vector = 3;
+                vector = 1;
             }
         }
         else {
-            if (v > 0.5F) {
+            if (1.0F - u < v) {
                 vector = 0;
             }
             else {
-                vector = 2;
+                vector = 3;
             }
         }
 
@@ -231,13 +249,13 @@ public class SimpleCornerMicroBlock implements IMicroBlockSubBlock {
                 data = 1;
             break;
             case 2:
-                data = 0;
-            break;
-            case 3:
                 data = 2;
             break;
+            case 3:
+                data = 3;
+            break;
             case 4:
-                data = 0;
+                data = 3;
             break;
             case 5:
                 data = 2;
@@ -247,66 +265,66 @@ public class SimpleCornerMicroBlock implements IMicroBlockSubBlock {
         case 1:
             switch (side) {
             case 0:
-                data = 3;
-            break;
-            case 1:
                 data = 4;
             break;
+            case 1:
+                data = 5;
+            break;
             case 2:
-                data = 3;
+                data = 4;
             break;
             case 3:
-                data = 5;
+                data = 6;
             break;
             case 4:
-                data = 5;
+                data = 7;
             break;
             case 5:
-                data = 3;
+                data = 0;
             break;
             }
         break;
         case 2:
             switch (side) {
             case 0:
-                data = 5;
+                data = 7;
             break;
             case 1:
-                data = 6;
+                data = 8;
             break;
             case 2:
-                data = 6;
+                data = 9;
             break;
             case 3:
-                data = 4;
+                data = 10;
             break;
             case 4:
-                data = 6;
+                data = 9;
             break;
             case 5:
-                data = 4;
+                data = 10;
             break;
             }
         break;
         case 3:
             switch (side) {
             case 0:
-                data = 2;
+                data = 6;
             break;
             case 1:
-                data = 7;
+                data = 11;
             break;
             case 2:
-                data = 7;
+                data = 11;
             break;
             case 3:
-                data = 1;
+                data = 5;
             break;
             case 4:
-                data = 1;
+                data = 8;
             break;
             case 5:
-                data = 7;
+                data = 1;
             break;
             }
         break;
@@ -334,7 +352,7 @@ public class SimpleCornerMicroBlock implements IMicroBlockSubBlock {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        SimpleCornerMicroBlock other = (SimpleCornerMicroBlock) obj;
+        SimpleStripMicroBlock other = (SimpleStripMicroBlock) obj;
         if (typeName == null) {
             if (other.typeName != null)
                 return false;
