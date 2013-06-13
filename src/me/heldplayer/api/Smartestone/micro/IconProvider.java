@@ -1,5 +1,5 @@
 
-package me.heldplayer.api.Smartestone.micro.impl;
+package me.heldplayer.api.Smartestone.micro;
 
 import net.minecraft.util.Icon;
 import cpw.mods.fml.relauncher.Side;

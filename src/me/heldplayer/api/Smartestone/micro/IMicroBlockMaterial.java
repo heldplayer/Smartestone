@@ -1,9 +1,9 @@
 
 package me.heldplayer.api.Smartestone.micro;
 
+import net.minecraft.util.Icon;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.util.Icon;
 
 public interface IMicroBlockMaterial {
 
@@ -11,6 +11,9 @@ public interface IMicroBlockMaterial {
 
     @SideOnly(Side.CLIENT)
     public abstract Icon getIcon(int side);
+
+    @SideOnly(Side.CLIENT)
+    public abstract Icon getIcon(int side, int state);
 
     public abstract String getDisplayName();
 

@@ -89,7 +89,8 @@ public class BlockMicro extends Block {
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister register) {
         this.icon = register.registerIcon("stone");
-        Objects.redstoneIcon.icon = register.registerIcon("Smartestone:redstone");
+        Objects.redstoneOnIcon.icon = register.registerIcon("Smartestone:redstone_on");
+        Objects.redstoneOffIcon.icon = register.registerIcon("Smartestone:redstone_off");
     }
 
     @Override
@@ -478,6 +479,41 @@ public class BlockMicro extends Block {
         for (MicroBlockInfo info : infos) {
             info.getType().onBlockUpdate(info, world, x, y, z);
         }
+    }
+
+    @Override
+    public int isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int side) {
+        ForgeDirection dir = ForgeDirection.getOrientation(side).getOpposite();
+        if (world.getBlockId(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ) == this.blockID) {
+            TileEntityMicro tile = (TileEntityMicro) world.getBlockTileEntity(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ);
+
+            if (tile != null) {
+                return 0;
+            }
+        }
+
+        TileEntityMicro tile = (TileEntityMicro) world.getBlockTileEntity(x, y, z);
+
+        if (tile == null) {
+            return 0;
+        }
+
+        int power = 0;
+
+        List<MicroBlockInfo> infos = tile.getSubBlocks();
+
+        for (MicroBlockInfo info : infos) {
+            int other = info.getType().getPowerOutput(info, side);
+            if (other > power) {
+                power = other;
+            }
+        }
+
+        if (power > 15) {
+            power = 15;
+        }
+
+        return power;
     }
 
 }

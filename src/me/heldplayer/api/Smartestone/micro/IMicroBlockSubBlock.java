@@ -31,4 +31,6 @@ public interface IMicroBlockSubBlock {
 
     public abstract void onBlockUpdate(MicroBlockInfo info, World world, int x, int y, int z);
 
+    public abstract int getPowerOutput(MicroBlockInfo info, int side);
+
 }

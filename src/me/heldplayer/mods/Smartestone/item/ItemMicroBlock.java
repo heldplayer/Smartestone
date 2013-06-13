@@ -153,6 +153,9 @@ public class ItemMicroBlock extends Item {
 
             tile.getSubBlocks().add(new MicroBlockInfo(info.getMaterial(), info.getType(), data));
 
+            world.notifyBlockOfNeighborChange(x, y, z, MicroBlockAPI.microBlockId);
+            world.notifyBlockChange(x, y, z, MicroBlockAPI.microBlockId);
+
             tile.resendTileData();
 
             world.playSoundEffect((double) ((float) x + 0.5F), (double) ((float) y + 0.5F), (double) ((float) z + 0.5F), block.stepSound.getPlaceSound(), (block.stepSound.getVolume() + 1.0F) / 2.0F, block.stepSound.getPitch() * 0.8F);

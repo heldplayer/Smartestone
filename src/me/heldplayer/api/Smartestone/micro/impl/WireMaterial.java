@@ -2,6 +2,7 @@
 package me.heldplayer.api.Smartestone.micro.impl;
 
 import me.heldplayer.api.Smartestone.micro.IMicroBlockMaterial;
+import me.heldplayer.api.Smartestone.micro.IconProvider;
 import net.minecraft.util.Icon;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -10,12 +11,14 @@ public class WireMaterial implements IMicroBlockMaterial {
 
     public final String identifier;
     public final String displayName;
-    public final IconProvider iconProvider;
+    public final IconProvider offState;
+    public final IconProvider onState;
 
-    public WireMaterial(String identifier, String displayName, IconProvider iconProvider) {
+    public WireMaterial(String identifier, String displayName, IconProvider offState, IconProvider onState) {
         this.identifier = identifier;
         this.displayName = displayName;
-        this.iconProvider = iconProvider;
+        this.offState = offState;
+        this.onState = onState;
     }
 
     @Override
@@ -26,7 +29,13 @@ public class WireMaterial implements IMicroBlockMaterial {
     @Override
     @SideOnly(Side.CLIENT)
     public Icon getIcon(int side) {
-        return this.iconProvider.icon;
+        return this.offState.icon;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public Icon getIcon(int side, int state) {
+        return (state >> 6) > 1 ? onState.icon : offState.icon;
     }
 
     @Override

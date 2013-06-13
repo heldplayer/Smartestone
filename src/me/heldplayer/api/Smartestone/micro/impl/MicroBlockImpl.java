@@ -59,6 +59,8 @@ public abstract class MicroBlockImpl implements IMicroBlockSubBlock {
         for (int i = 0; i < faces.length; i++) {
             faces[i] = RenderFaceHelper.getAFace();
             faces[i].setValues(aabb, i);
+            faces[i].icon = info.getMaterial().getIcon(i);
+            faces[i].renderPass = info.getMaterial().getRenderPass();
         }
 
         return faces;
@@ -76,5 +78,10 @@ public abstract class MicroBlockImpl implements IMicroBlockSubBlock {
 
     @Override
     public void onBlockUpdate(MicroBlockInfo info, World world, int x, int y, int z) {}
+
+    @Override
+    public int getPowerOutput(MicroBlockInfo info, int side) {
+        return 0;
+    }
 
 }

@@ -73,10 +73,7 @@ public class BlockRendererMicroBlock implements ISimpleBlockRenderingHandler {
                 continue;
             }
 
-            for (int i = 0; i < currFaces.length; i++) {
-                ReusableRenderFace face = currFaces[i];
-                face.icon = icons[face.side];
-                face.renderPass = material.getRenderPass();
+            for (ReusableRenderFace face : currFaces) {
                 faces.add(face);
             }
 

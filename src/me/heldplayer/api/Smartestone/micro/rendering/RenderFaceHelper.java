@@ -124,10 +124,6 @@ public class RenderFaceHelper {
                 }
             }
 
-            if (first.side != 1) {
-                //first.renders = false;
-            }
-
             if (first.renders) {
                 result.add(first);
                 feed.remove(i1);

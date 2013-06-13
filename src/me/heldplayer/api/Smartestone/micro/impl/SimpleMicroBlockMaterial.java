@@ -51,6 +51,12 @@ public class SimpleMicroBlockMaterial implements IMicroBlockMaterial {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
+    public Icon getIcon(int side, int state) {
+        return this.getIcon(side);
+    }
+
+    @Override
     public String getDisplayName() {
         return this.stack.getDisplayName();
     }

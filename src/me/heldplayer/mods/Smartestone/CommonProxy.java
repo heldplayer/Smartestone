@@ -3,8 +3,8 @@ package me.heldplayer.mods.Smartestone;
 
 import java.util.Random;
 
+import me.heldplayer.api.Smartestone.micro.IconProvider;
 import me.heldplayer.api.Smartestone.micro.MicroBlockAPI;
-import me.heldplayer.api.Smartestone.micro.impl.IconProvider;
 import me.heldplayer.api.Smartestone.micro.impl.MicroBlockCentralWire;
 import me.heldplayer.api.Smartestone.micro.impl.SimpleCornerMicroBlock;
 import me.heldplayer.api.Smartestone.micro.impl.SimpleMicroBlockMaterial;
@@ -56,7 +56,8 @@ public class CommonProxy implements IGuiHandler {
         rand = new Random();
 
         MicroBlockAPI.microBlockId = ModSmartestone.blockMicroId.getValue();
-        Objects.redstoneIcon = new IconProvider();
+        Objects.redstoneOnIcon = new IconProvider();
+        Objects.redstoneOffIcon = new IconProvider();
     }
 
     public void init(FMLInitializationEvent event) {
@@ -139,7 +140,7 @@ public class CommonProxy implements IGuiHandler {
             MicroBlockAPI.registerMaterial(new SimpleMicroBlockMaterial(new ItemStack(35, 1, meta)));
         }
 
-        MicroBlockAPI.registerMaterial(new WireMaterial("WireRedstone", "Redstone Wire", Objects.redstoneIcon));
+        MicroBlockAPI.registerMaterial(new WireMaterial("WireRedstone", "Redstone Wire", Objects.redstoneOffIcon, Objects.redstoneOnIcon));
     }
 
     @Override
