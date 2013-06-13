@@ -89,6 +89,7 @@ public class BlockMicro extends Block {
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister register) {
         this.icon = register.registerIcon("stone");
+        Objects.redstoneIcon.icon = register.registerIcon("Smartestone:redstone");
     }
 
     @Override
@@ -114,7 +115,11 @@ public class BlockMicro extends Block {
         List<MicroBlockInfo> infos = tile.getSubBlocks();
 
         for (MicroBlockInfo info : infos) {
-            AxisAlignedBB aabb = info.getType().getBoundsInBlock(info).copy();
+            AxisAlignedBB aabb = info.getType().getBoundsInBlock(info);
+
+            if (aabb == null) {
+                continue;
+            }
 
             aabb.offset(x, y, z);
 
@@ -127,7 +132,6 @@ public class BlockMicro extends Block {
     @Override
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
         return null;
-        //return AxisAlignedBB.getAABBPool().getAABB((double) x + 0.01D, (double) y + 0.01D, (double) z + 0.01D, (double) x + 0.99D, (double) y + 0.99D, (double) z + 0.99D);
     }
 
     @Override
@@ -170,6 +174,10 @@ public class BlockMicro extends Block {
 
         for (MicroBlockInfo info : infos) {
             AxisAlignedBB aabb = info.getType().getBoundsInBlock(info);
+
+            if (aabb == null) {
+                continue;
+            }
 
             this.setBlockBounds((float) aabb.minX, (float) aabb.minY, (float) aabb.minZ, (float) aabb.maxX, (float) aabb.maxY, (float) aabb.maxZ);
 
@@ -283,6 +291,10 @@ public class BlockMicro extends Block {
         for (MicroBlockInfo info : infos) {
             AxisAlignedBB aabb = info.getType().getBoundsInBlock(info);
 
+            if (aabb == null) {
+                continue;
+            }
+
             if (hit.xCoord < aabb.minX || hit.xCoord > aabb.maxX) {
                 continue;
             }
@@ -350,6 +362,10 @@ public class BlockMicro extends Block {
 
         for (MicroBlockInfo info : infos) {
             AxisAlignedBB aabb = info.getType().getBoundsInBlock(info);
+
+            if (aabb == null) {
+                continue;
+            }
 
             if (hit.xCoord < aabb.minX || hit.xCoord > aabb.maxX) {
                 continue;
@@ -446,7 +462,22 @@ public class BlockMicro extends Block {
                 }
             }
         }
-
         return true;
     }
+
+    @Override
+    public void onNeighborBlockChange(World world, int x, int y, int z, int neighbour) {
+        TileEntityMicro tile = (TileEntityMicro) world.getBlockTileEntity(x, y, z);
+
+        if (tile == null) {
+            return;
+        }
+
+        List<MicroBlockInfo> infos = tile.getSubBlocks();
+
+        for (MicroBlockInfo info : infos) {
+            info.getType().onBlockUpdate(info, world, x, y, z);
+        }
+    }
+
 }

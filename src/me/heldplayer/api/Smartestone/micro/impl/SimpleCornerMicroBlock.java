@@ -1,13 +1,9 @@
 
 package me.heldplayer.api.Smartestone.micro.impl;
 
-import me.heldplayer.api.Smartestone.micro.IMicroBlockMaterial;
-import me.heldplayer.api.Smartestone.micro.IMicroBlockSubBlock;
 import me.heldplayer.api.Smartestone.micro.MicroBlockAPI;
 import me.heldplayer.api.Smartestone.micro.MicroBlockInfo;
 import me.heldplayer.api.Smartestone.micro.rendering.MicroBlockRenderHelper;
-import me.heldplayer.api.Smartestone.micro.rendering.RenderFacePool;
-import me.heldplayer.api.Smartestone.micro.rendering.ReusableRenderFace;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,31 +13,14 @@ import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 
 import org.lwjgl.opengl.GL11;
 
-public class SimpleCornerMicroBlock implements IMicroBlockSubBlock {
+public class SimpleCornerMicroBlock extends MicroBlockImpl {
 
-    public final String typeName;
-    public final double[] renderBounds;
     public final double width;
 
     public SimpleCornerMicroBlock(String typeName, double width) {
-        this.typeName = typeName;
+        super(typeName);
         this.renderBounds = new double[] { 0.5D - width / 2.0D, 0.5D - width / 2.0D, 0.5D - width / 2.0D, 0.5D + width / 2.0D, 0.5D + width / 2.0D, 0.5D + width / 2.0D };
         this.width = width;
-    }
-
-    @Override
-    public String getTypeName() {
-        return this.typeName;
-    }
-
-    @Override
-    public boolean isMaterialApplicable(IMicroBlockMaterial material) {
-        return material.isBlock();
-    }
-
-    @Override
-    public double[] getRenderBounds() {
-        return this.renderBounds;
     }
 
     @Override
@@ -66,30 +45,6 @@ public class SimpleCornerMicroBlock implements IMicroBlockSubBlock {
         }
 
         return AxisAlignedBB.getAABBPool().getAABB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
-    }
-
-    @Override
-    public AxisAlignedBB getPlacementBounds(MicroBlockInfo info) {
-        return this.getBoundsInBlock(info);
-    }
-
-    @Override
-    public ReusableRenderFace[] getRenderFaces(MicroBlockInfo info) {
-        AxisAlignedBB aabb = this.getBoundsInBlock(info);
-
-        ReusableRenderFace[] faces = new ReusableRenderFace[6];
-
-        for (int i = 0; i < faces.length; i++) {
-            faces[i] = RenderFacePool.getAFace();
-            faces[i].setValues(aabb, i);
-        }
-
-        return faces;
-    }
-
-    @Override
-    public boolean isSideSolid(MicroBlockInfo info, int side) {
-        return false;
     }
 
     @Override

@@ -4,10 +4,13 @@ package me.heldplayer.mods.Smartestone;
 import java.util.Random;
 
 import me.heldplayer.api.Smartestone.micro.MicroBlockAPI;
+import me.heldplayer.api.Smartestone.micro.impl.IconProvider;
+import me.heldplayer.api.Smartestone.micro.impl.MicroBlockCentralWire;
 import me.heldplayer.api.Smartestone.micro.impl.SimpleCornerMicroBlock;
 import me.heldplayer.api.Smartestone.micro.impl.SimpleMicroBlockMaterial;
 import me.heldplayer.api.Smartestone.micro.impl.SimplePaneMicroBlock;
 import me.heldplayer.api.Smartestone.micro.impl.SimpleStripMicroBlock;
+import me.heldplayer.api.Smartestone.micro.impl.WireMaterial;
 import me.heldplayer.mods.Smartestone.block.BlockMicro;
 import me.heldplayer.mods.Smartestone.block.BlockMulti1;
 import me.heldplayer.mods.Smartestone.block.BlockMulti2;
@@ -53,6 +56,7 @@ public class CommonProxy implements IGuiHandler {
         rand = new Random();
 
         MicroBlockAPI.microBlockId = ModSmartestone.blockMicroId.getValue();
+        Objects.redstoneIcon = new IconProvider();
     }
 
     public void init(FMLInitializationEvent event) {
@@ -117,6 +121,8 @@ public class CommonProxy implements IGuiHandler {
         MicroBlockAPI.registerSubBlock(new SimpleCornerMicroBlock("Anti-Panel Corner", 0.75D));
         MicroBlockAPI.registerSubBlock(new SimpleCornerMicroBlock("Anti-Cover Corner", 0.875D));
 
+        MicroBlockAPI.registerSubBlock(new MicroBlockCentralWire("Central Wire"));
+
         int[] blocks = new int[] { 1, 3, 4, 8, 12, 13, 19, 22, 41, 42, 45, 48, 49, 57, 79, 80, 82, 87, 88, 89, 98, 112, 121, 133, 152 };
 
         for (int block : blocks) {
@@ -132,6 +138,8 @@ public class CommonProxy implements IGuiHandler {
         for (int meta = 0; meta < 16; meta++) {
             MicroBlockAPI.registerMaterial(new SimpleMicroBlockMaterial(new ItemStack(35, 1, meta)));
         }
+
+        MicroBlockAPI.registerMaterial(new WireMaterial("WireRedstone", "Redstone Wire", Objects.redstoneIcon));
     }
 
     @Override

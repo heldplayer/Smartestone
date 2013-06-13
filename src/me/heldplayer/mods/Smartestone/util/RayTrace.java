@@ -44,6 +44,10 @@ public class RayTrace {
         for (MicroBlockInfo info : infos) {
             AxisAlignedBB aabb = info.getType().getBoundsInBlock(info);
 
+            if (aabb == null) {
+                continue;
+            }
+
             Vec3 minX = start.getIntermediateWithXValue(end, aabb.minX);
             Vec3 maxX = start.getIntermediateWithXValue(end, aabb.maxX);
             Vec3 minY = start.getIntermediateWithYValue(end, aabb.minY);

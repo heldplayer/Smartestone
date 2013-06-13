@@ -41,7 +41,7 @@ public class ReusableRenderFace {
     }
 
     public void setValues(int side, double offset, double startU, double endU, double startV, double endV) {
-        this.side = 0;
+        this.side = side;
         this.offset = offset;
         this.startU = startU;
         this.endU = endU;
@@ -53,6 +53,11 @@ public class ReusableRenderFace {
 
     public void setValues(AxisAlignedBB aabb, int side) {
         this.side = side;
+
+        if (aabb == null) {
+            renders = false;
+            return;
+        }
 
         renders = true;
 

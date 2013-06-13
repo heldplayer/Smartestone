@@ -3,6 +3,7 @@ package me.heldplayer.mods.Smartestone.util;
 
 import java.util.logging.Logger;
 
+import me.heldplayer.api.Smartestone.micro.impl.IconProvider;
 import me.heldplayer.mods.Smartestone.block.BlockMicro;
 import me.heldplayer.mods.Smartestone.block.BlockMulti1;
 import me.heldplayer.mods.Smartestone.block.BlockMulti2;
@@ -31,5 +32,7 @@ public final class Objects {
     public static ItemRotator itemRotator;
     public static ItemMicroBlock itemMicroBlock;
     public static CreativeTabs creativeTab;
+
+    public static IconProvider redstoneIcon;
 
 }

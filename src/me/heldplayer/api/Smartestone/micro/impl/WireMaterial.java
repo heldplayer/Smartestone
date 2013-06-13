@@ -2,41 +2,20 @@
 package me.heldplayer.api.Smartestone.micro.impl;
 
 import me.heldplayer.api.Smartestone.micro.IMicroBlockMaterial;
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class SimpleMicroBlockMaterial implements IMicroBlockMaterial {
+public class WireMaterial implements IMicroBlockMaterial {
 
-    public final int id;
-    public final int meta;
-    public final ItemStack stack;
     public final String identifier;
-    public final int renderPass;
+    public final String displayName;
+    public final IconProvider iconProvider;
 
-    public SimpleMicroBlockMaterial(ItemStack stack) {
-        this.id = stack.itemID;
-        this.meta = stack.getItemDamage();
-        this.stack = stack;
-        this.identifier = "B" + this.id + "@" + this.meta;
-
-        Block block = Block.blocksList[this.id];
-        if (block == null) {
-            this.renderPass = 0;
-        }
-        else {
-            this.renderPass = block.getRenderBlockPass();
-        }
-    }
-
-    public SimpleMicroBlockMaterial(ItemStack stack, int forcedRenderPass) {
-        this.id = stack.itemID;
-        this.meta = stack.getItemDamage();
-        this.stack = stack;
-        this.identifier = "B" + this.id + "@" + this.meta;
-        this.renderPass = forcedRenderPass;
+    public WireMaterial(String identifier, String displayName, IconProvider iconProvider) {
+        this.identifier = identifier;
+        this.displayName = displayName;
+        this.iconProvider = iconProvider;
     }
 
     @Override
@@ -47,31 +26,29 @@ public class SimpleMicroBlockMaterial implements IMicroBlockMaterial {
     @Override
     @SideOnly(Side.CLIENT)
     public Icon getIcon(int side) {
-        return Block.blocksList[this.id].getIcon(side, this.meta);
+        return this.iconProvider.icon;
     }
 
     @Override
     public String getDisplayName() {
-        return this.stack.getDisplayName();
+        return this.displayName;
     }
 
     @Override
     public boolean isBlock() {
-        return true;
+        return false;
     }
 
     @Override
     public int getRenderPass() {
-        return this.renderPass;
+        return 0;
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + id;
         result = prime * result + ((identifier == null) ? 0 : identifier.hashCode());
-        result = prime * result + meta;
         return result;
     }
 
@@ -84,15 +61,11 @@ public class SimpleMicroBlockMaterial implements IMicroBlockMaterial {
         if (getClass() != obj.getClass())
             return false;
         SimpleMicroBlockMaterial other = (SimpleMicroBlockMaterial) obj;
-        if (id != other.id)
-            return false;
         if (identifier == null) {
             if (other.identifier != null)
                 return false;
         }
         else if (!identifier.equals(other.identifier))
-            return false;
-        if (meta != other.meta)
             return false;
         return true;
     }

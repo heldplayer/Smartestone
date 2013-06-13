@@ -75,44 +75,12 @@ public class BlockRendererMicroBlock implements ISimpleBlockRenderingHandler {
 
             for (int i = 0; i < currFaces.length; i++) {
                 ReusableRenderFace face = currFaces[i];
-                face.icon = icons[i];
+                face.icon = icons[face.side];
                 face.renderPass = material.getRenderPass();
                 faces.add(face);
             }
 
             rendered = true;
-            // renderer.renderMinX = aabb.minX;
-            // renderer.renderMaxX = aabb.maxX;
-            // renderer.renderMinY = aabb.minY;
-            // renderer.renderMaxY = aabb.maxY;
-            // renderer.renderMinZ = aabb.minZ;
-            // renderer.renderMaxZ = aabb.maxZ;
-            //
-            // tes.setBrightness(renderer.renderMinY > 0.0D ? brightness : theBlock.getMixedBrightnessForBlock(world, x, y - 1, z));
-            // tes.setColorOpaque_F(0.5F, 0.5F, 0.5F);
-            // renderer.renderFaceYNeg(null, x, y, z, icons[0]);
-            //
-            // tes.setBrightness(renderer.renderMaxY < 1.0D ? brightness : theBlock.getMixedBrightnessForBlock(world, x, y + 1, z));
-            // tes.setColorOpaque_F(1.0F, 1.0F, 1.0F);
-            // renderer.renderFaceYPos(null, x, y, z, icons[1]);
-            //
-            // tes.setBrightness(renderer.renderMinZ > 0.0D ? brightness : theBlock.getMixedBrightnessForBlock(world, x, y, z - 1));
-            // tes.setColorOpaque_F(0.8F, 0.8F, 0.8F);
-            // renderer.renderFaceZNeg(null, x, y, z, icons[2]);
-            //
-            // tes.setBrightness(renderer.renderMaxZ < 1.0D ? brightness : theBlock.getMixedBrightnessForBlock(world, x, y, z + 1));
-            // tes.setColorOpaque_F(0.8F, 0.8F, 0.8F);
-            // renderer.renderFaceZPos(null, x, y, z, icons[3]);
-            //
-            // tes.setBrightness(renderer.renderMinX > 0.0D ? brightness : theBlock.getMixedBrightnessForBlock(world, x - 1, y, z));
-            // tes.setColorOpaque_F(0.6F, 0.6F, 0.6F);
-            // renderer.renderFaceXNeg(null, x, y, z, icons[4]);
-            //
-            // tes.setBrightness(renderer.renderMaxX < 1.0D ? brightness : theBlock.getMixedBrightnessForBlock(world, x + 1, y, z));
-            // tes.setColorOpaque_F(0.6F, 0.6F, 0.6F);
-            // renderer.renderFaceXPos(null, x, y, z, icons[5]);
-            //
-
         }
 
         RenderFacePool.updateIndex();
