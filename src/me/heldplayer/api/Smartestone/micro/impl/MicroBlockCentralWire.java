@@ -217,15 +217,14 @@ public class MicroBlockCentralWire extends MicroBlockImpl {
         position++;
         int data = info.getData();
         int origData = data;
-        int power = 0;
-        int origPower = origData >> 6;
+
+        int newPower = world.getStrongestIndirectPower(x, y, z);
+        if (newPower == 15) {
+            newPower = newPower << 2;
+        }
+        int originalpower = origData >> 6;
 
         data = 0;
-
-        power = world.getStrongestIndirectPower(x, y, z);
-        if (power == 15) {
-            power = power << 4;
-        }
 
         for (int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++) {
             ForgeDirection dir = ForgeDirection.VALID_DIRECTIONS[i];
@@ -235,8 +234,10 @@ public class MicroBlockCentralWire extends MicroBlockImpl {
             }
         }
 
-        for (int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++) {
-            ForgeDirection dir = ForgeDirection.VALID_DIRECTIONS[i];
+        for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+            if (!canConnectTo(world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, this)) {
+                continue;
+            }
 
             Block block = Block.blocksList[world.getBlockId(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ)];
 
@@ -256,24 +257,24 @@ public class MicroBlockCentralWire extends MicroBlockImpl {
                 for (MicroBlockInfo currInfo : infos) {
                     if (currInfo.getType().equals(this)) {
                         int wirePower = currInfo.getData() >> 6;
-                        if (wirePower > 1 && wirePower - 1 > origPower) {
-                            if (power < wirePower - 1) {
-                                power = wirePower - 1;
-                            }
+
+                        if (wirePower - 1 > newPower) {
+                            newPower = wirePower - 1;
                         }
+
                         break;
                     }
                 }
             }
         }
 
-        if (origPower > power) {
-            power = 0;
+        if (originalpower > newPower) {
+            newPower = 0;
         }
 
-        data |= (power << 6);
+        data |= (newPower << 6);
 
-        if (data != origData && position == 1) {
+        if (data != origData) {
             info.setData(data);
             world.notifyBlocksOfNeighborChange(x, y, z, MicroBlockAPI.microBlockId);
             ((IMicroBlock) world.getBlockTileEntity(x, y, z)).resendTileData();
