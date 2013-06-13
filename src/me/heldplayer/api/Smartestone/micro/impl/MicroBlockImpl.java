@@ -4,7 +4,7 @@ package me.heldplayer.api.Smartestone.micro.impl;
 import me.heldplayer.api.Smartestone.micro.IMicroBlockMaterial;
 import me.heldplayer.api.Smartestone.micro.IMicroBlockSubBlock;
 import me.heldplayer.api.Smartestone.micro.MicroBlockInfo;
-import me.heldplayer.api.Smartestone.micro.rendering.RenderFacePool;
+import me.heldplayer.api.Smartestone.micro.rendering.RenderFaceHelper;
 import me.heldplayer.api.Smartestone.micro.rendering.ReusableRenderFace;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
@@ -57,7 +57,7 @@ public abstract class MicroBlockImpl implements IMicroBlockSubBlock {
         ReusableRenderFace[] faces = new ReusableRenderFace[6];
 
         for (int i = 0; i < faces.length; i++) {
-            faces[i] = RenderFacePool.getAFace();
+            faces[i] = RenderFaceHelper.getAFace();
             faces[i].setValues(aabb, i);
         }
 

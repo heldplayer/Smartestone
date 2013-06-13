@@ -5,7 +5,7 @@ import me.heldplayer.api.Smartestone.micro.IMicroBlockMaterial;
 import me.heldplayer.api.Smartestone.micro.IMicroBlockSubBlock;
 import me.heldplayer.api.Smartestone.micro.MicroBlockAPI;
 import me.heldplayer.api.Smartestone.micro.MicroBlockInfo;
-import me.heldplayer.api.Smartestone.micro.rendering.RenderFacePool;
+import me.heldplayer.api.Smartestone.micro.rendering.RenderFaceHelper;
 import me.heldplayer.mods.Smartestone.CommonProxy;
 import me.heldplayer.mods.Smartestone.block.BlockMicro;
 import me.heldplayer.mods.Smartestone.block.BlockMulti;
@@ -69,7 +69,7 @@ public class ClientProxy extends CommonProxy {
 
     @ForgeSubscribe
     public void onText(Text event) {
-        event.right.add(RenderFacePool.getDebugString());
+        event.right.add(RenderFaceHelper.getDebugString());
     }
 
     @ForgeSubscribe(receiveCanceled = true)

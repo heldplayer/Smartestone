@@ -4,7 +4,7 @@ package me.heldplayer.api.Smartestone.micro.rendering;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RenderFacePool {
+public class RenderFaceHelper {
 
     private static ArrayList<ReusableRenderFace> usedFaces = new ArrayList<ReusableRenderFace>();
     private static ArrayList<ReusableRenderFace> unusedFaces = new ArrayList<ReusableRenderFace>();
@@ -77,10 +77,10 @@ public class RenderFacePool {
                         first.renders = false;
                         continue;
                     }
-                    else if (first.startV >= second.startV && first.startV <= second.endV) {
+                    else if (first.startV >= second.startV && first.startV < second.endV) {
                         first.startV = second.endV;
                     }
-                    else if (first.endV <= second.endV && first.endV >= second.startV) {
+                    else if (first.endV <= second.endV && first.endV > second.startV) {
                         first.endV = second.startV;
                     }
                 }
@@ -88,14 +88,14 @@ public class RenderFacePool {
                     if (first.startV >= second.startV && first.endV <= second.endV) {
                         first.startU = second.endU;
                     }
-                    else if (first.startV >= second.startV && first.startV <= second.endV) {
+                    else if (first.startV >= second.startV && first.startV < second.endV) {
                         first.startU = second.endU;
                         ReusableRenderFace third = getAFace();
                         third.copy(first);
                         third.startV = second.endV;
                         result.add(third);
                     }
-                    else if (first.endV <= second.endV && first.endV >= second.startV) {
+                    else if (first.endV <= second.endV && first.endV > second.startV) {
                         first.startU = second.endU;
                         ReusableRenderFace third = getAFace();
                         third.copy(first);
@@ -107,14 +107,14 @@ public class RenderFacePool {
                     if (first.startV >= second.startV && first.endV <= second.endV) {
                         first.endU = second.startU;
                     }
-                    else if (first.startV >= second.startV && first.startV <= second.endV) {
+                    else if (first.startV >= second.startV && first.startV < second.endV) {
                         first.endU = second.startU;
                         ReusableRenderFace third = getAFace();
                         third.copy(first);
                         third.startV = second.endV;
                         result.add(third);
                     }
-                    else if (first.endV <= second.endV && first.endV >= second.startV) {
+                    else if (first.endV <= second.endV && first.endV > second.startV) {
                         first.endU = second.startU;
                         ReusableRenderFace third = getAFace();
                         third.copy(first);
@@ -122,6 +122,10 @@ public class RenderFacePool {
                         result.add(third);
                     }
                 }
+            }
+
+            if (first.side != 1) {
+                //first.renders = false;
             }
 
             if (first.renders) {

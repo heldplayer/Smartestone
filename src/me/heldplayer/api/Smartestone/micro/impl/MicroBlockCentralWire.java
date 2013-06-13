@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import me.heldplayer.api.Smartestone.micro.IMicroBlockMaterial;
 import me.heldplayer.api.Smartestone.micro.MicroBlockInfo;
-import me.heldplayer.api.Smartestone.micro.rendering.RenderFacePool;
+import me.heldplayer.api.Smartestone.micro.rendering.RenderFaceHelper;
 import me.heldplayer.api.Smartestone.micro.rendering.ReusableRenderFace;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
@@ -75,14 +75,14 @@ public class MicroBlockCentralWire extends MicroBlockImpl {
         if (split) {
             if (top) {
                 for (int i = 2; i <= 5; i++) {
-                    ReusableRenderFace face = RenderFacePool.getAFace();
+                    ReusableRenderFace face = RenderFaceHelper.getAFace();
                     face.setValues(i, (i % 2) == 0 ? 0.25D : 0.75D, 0.25D, 0.75D, 0.25D, 1.0D);
                     faceList.add(face);
                 }
             }
             if (bottom) {
                 for (int i = 2; i <= 5; i++) {
-                    ReusableRenderFace face = RenderFacePool.getAFace();
+                    ReusableRenderFace face = RenderFaceHelper.getAFace();
                     face.setValues(i, (i % 2) == 0 ? 0.25D : 0.75D, 0.25D, 0.75D, 0.0D, 0.75D);
                     faceList.add(face);
                 }
@@ -111,24 +111,24 @@ public class MicroBlockCentralWire extends MicroBlockImpl {
         if (split) {
             if (north) {
                 for (int i = 0; i <= 1; i++) {
-                    ReusableRenderFace face = RenderFacePool.getAFace();
+                    ReusableRenderFace face = RenderFaceHelper.getAFace();
                     face.setValues(i, (i % 2) == 0 ? 0.25D : 0.75D, 0.25D, 0.75D, 0.0D, 0.25D);
                     faceList.add(face);
                 }
                 for (int i = 4; i <= 5; i++) {
-                    ReusableRenderFace face = RenderFacePool.getAFace();
+                    ReusableRenderFace face = RenderFaceHelper.getAFace();
                     face.setValues(i, (i % 2) == 0 ? 0.25D : 0.75D, 0.0D, 0.25D, 0.25D, 0.75D);
                     faceList.add(face);
                 }
             }
             if (south) {
                 for (int i = 0; i <= 1; i++) {
-                    ReusableRenderFace face = RenderFacePool.getAFace();
+                    ReusableRenderFace face = RenderFaceHelper.getAFace();
                     face.setValues(i, (i % 2) == 0 ? 0.25D : 0.75D, 0.25D, 0.75D, 0.75D, 1.0D);
                     faceList.add(face);
                 }
                 for (int i = 4; i <= 5; i++) {
-                    ReusableRenderFace face = RenderFacePool.getAFace();
+                    ReusableRenderFace face = RenderFaceHelper.getAFace();
                     face.setValues(i, (i % 2) == 0 ? 0.25D : 0.75D, 0.75D, 1.0D, 0.25D, 0.75D);
                     faceList.add(face);
                 }
@@ -157,14 +157,14 @@ public class MicroBlockCentralWire extends MicroBlockImpl {
         if (split) {
             if (west) {
                 for (int i = 0; i <= 3; i++) {
-                    ReusableRenderFace face = RenderFacePool.getAFace();
+                    ReusableRenderFace face = RenderFaceHelper.getAFace();
                     face.setValues(i, (i % 2) == 0 ? 0.25D : 0.75D, 0.0D, 0.25D, 0.25D, 0.75D);
                     faceList.add(face);
                 }
             }
             if (east) {
                 for (int i = 0; i <= 3; i++) {
-                    ReusableRenderFace face = RenderFacePool.getAFace();
+                    ReusableRenderFace face = RenderFaceHelper.getAFace();
                     face.setValues(i, (i % 2) == 0 ? 0.25D : 0.75D, 0.75D, 1.0D, 0.25D, 0.75D);
                     faceList.add(face);
                 }

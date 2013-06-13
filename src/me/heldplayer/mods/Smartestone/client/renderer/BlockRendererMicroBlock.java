@@ -7,7 +7,7 @@ import java.util.List;
 import me.heldplayer.api.Smartestone.micro.IMicroBlockMaterial;
 import me.heldplayer.api.Smartestone.micro.IMicroBlockSubBlock;
 import me.heldplayer.api.Smartestone.micro.MicroBlockInfo;
-import me.heldplayer.api.Smartestone.micro.rendering.RenderFacePool;
+import me.heldplayer.api.Smartestone.micro.rendering.RenderFaceHelper;
 import me.heldplayer.api.Smartestone.micro.rendering.ReusableRenderFace;
 import me.heldplayer.mods.Smartestone.client.ClientProxy;
 import me.heldplayer.mods.Smartestone.tileentity.TileEntityMicro;
@@ -83,9 +83,9 @@ public class BlockRendererMicroBlock implements ISimpleBlockRenderingHandler {
             rendered = true;
         }
 
-        RenderFacePool.updateIndex();
+        RenderFaceHelper.updateIndex();
 
-        faces = RenderFacePool.processFaces(faces);
+        faces = RenderFaceHelper.processFaces(faces);
 
         for (ReusableRenderFace face : faces) {
             if (face.renderPass == Objects.blockMicro.renderPass) {
