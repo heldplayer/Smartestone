@@ -63,32 +63,39 @@ public class RenderFacePool {
                 if (first.side != second.side || first.offset != second.offset) {
                     continue;
                 }
+                if (first.startU >= second.startU && first.endU <= second.endU && first.startV >= second.startV && first.endV <= second.endV) {
+                    first.renders = false;
+                    continue;
+                }
+                if (second.startU >= first.startU && second.endU <= first.endU && second.startV >= first.startV && second.endV <= first.endV) {
+                    second.renders = false;
+                    continue;
+                }
 
-                // FIXME
                 if (first.startU >= second.startU && first.endU <= second.endU) {
                     if (first.startV >= second.startV && first.endV <= second.endV) {
                         first.renders = false;
                         continue;
                     }
-                    else if (first.startV >= second.startV) {
+                    else if (first.startV >= second.startV && first.startV <= second.endV) {
                         first.startV = second.endV;
                     }
-                    else if (first.endV <= second.endV) {
+                    else if (first.endV <= second.endV && first.endV >= second.startV) {
                         first.endV = second.startV;
                     }
                 }
-                else if (first.startU >= second.startU) {
+                else if (first.startU >= second.startU && first.startU <= second.endU) {
                     if (first.startV >= second.startV && first.endV <= second.endV) {
                         first.startU = second.endU;
                     }
-                    else if (first.startV >= second.startV) {
+                    else if (first.startV >= second.startV && first.startV <= second.endV) {
                         first.startU = second.endU;
                         ReusableRenderFace third = getAFace();
                         third.copy(first);
                         third.startV = second.endV;
                         result.add(third);
                     }
-                    else if (first.endV <= second.endV) {
+                    else if (first.endV <= second.endV && first.endV >= second.startV) {
                         first.startU = second.endU;
                         ReusableRenderFace third = getAFace();
                         third.copy(first);
@@ -96,18 +103,18 @@ public class RenderFacePool {
                         result.add(third);
                     }
                 }
-                else if (first.endU <= second.endU) {
+                else if (first.endU <= second.endU && first.endU >= second.startU) {
                     if (first.startV >= second.startV && first.endV <= second.endV) {
                         first.endU = second.startU;
                     }
-                    else if (first.startV >= second.startV) {
+                    else if (first.startV >= second.startV && first.startV <= second.endV) {
                         first.endU = second.startU;
                         ReusableRenderFace third = getAFace();
                         third.copy(first);
                         third.startV = second.endV;
                         result.add(third);
                     }
-                    else if (first.endV <= second.endV) {
+                    else if (first.endV <= second.endV && first.endV >= second.startV) {
                         first.endU = second.startU;
                         ReusableRenderFace third = getAFace();
                         third.copy(first);
@@ -119,6 +126,8 @@ public class RenderFacePool {
 
             if (first.renders) {
                 result.add(first);
+                feed.remove(i1);
+                i1--;
             }
         }
 
