@@ -240,6 +240,10 @@ public class MicroBlockCentralWire extends MicroBlockImpl {
 
             Block block = Block.blocksList[world.getBlockId(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ)];
 
+            if (block == null) {
+                continue;
+            }
+
             if (block.blockID == MicroBlockAPI.microBlockId) {
                 IMicroBlock tile = (IMicroBlock) world.getBlockTileEntity(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ);
 
