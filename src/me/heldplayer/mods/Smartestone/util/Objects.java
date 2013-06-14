@@ -34,5 +34,8 @@ public final class Objects {
     public static CreativeTabs creativeTab;
 
     public static IconProvider redstoneIcon;
+    public static IconProvider bluestoneIcon;
+    public static IconProvider greenstoneIcon;
+    public static IconProvider yellowstoneIcon;
 
 }

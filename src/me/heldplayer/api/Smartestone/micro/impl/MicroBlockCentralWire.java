@@ -238,13 +238,13 @@ public class MicroBlockCentralWire extends MicroBlockImpl {
         for (int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++) {
             ForgeDirection dir = ForgeDirection.VALID_DIRECTIONS[i];
 
-            if (canConnectTo(world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, this)) {
+            if (canConnectTo(world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, info)) {
                 data |= (1 << i);
             }
         }
 
         for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-            if (!canConnectTo(world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, this)) {
+            if (!canConnectTo(world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, info)) {
                 continue;
             }
 
@@ -300,7 +300,7 @@ public class MicroBlockCentralWire extends MicroBlockImpl {
         return 0;
     }
 
-    public static boolean canConnectTo(World world, int x, int y, int z, MicroBlockCentralWire wireType) {
+    public static boolean canConnectTo(World world, int x, int y, int z, MicroBlockInfo info) {
         Block block = Block.blocksList[world.getBlockId(x, y, z)];
 
         if (block == null) {
@@ -316,8 +316,8 @@ public class MicroBlockCentralWire extends MicroBlockImpl {
 
             List<MicroBlockInfo> infos = tile.getSubBlocks();
 
-            for (MicroBlockInfo info : infos) {
-                if (info.getType().equals(wireType)) {
+            for (MicroBlockInfo current : infos) {
+                if (current.getType().equals(info.getType()) && current.getMaterial().equals(info.getMaterial())) {
                     return true;
                 }
             }

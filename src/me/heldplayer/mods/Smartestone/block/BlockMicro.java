@@ -91,6 +91,9 @@ public class BlockMicro extends Block {
     public void registerIcons(IconRegister register) {
         this.icon = register.registerIcon("stone");
         Objects.redstoneIcon.icon = register.registerIcon("Smartestone:redstone");
+        Objects.bluestoneIcon.icon = register.registerIcon("Smartestone:bluestone");
+        Objects.greenstoneIcon.icon = register.registerIcon("Smartestone:greenstone");
+        Objects.yellowstoneIcon.icon = register.registerIcon("Smartestone:yellowstone");
     }
 
     @Override
