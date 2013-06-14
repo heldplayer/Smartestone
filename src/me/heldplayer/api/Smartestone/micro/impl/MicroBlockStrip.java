@@ -16,11 +16,11 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class SimpleStripMicroBlock extends MicroBlockImpl {
+public class MicroBlockStrip extends MicroBlockImpl {
 
     public final double width;
 
-    public SimpleStripMicroBlock(String typeName, double width) {
+    public MicroBlockStrip(String typeName, double width) {
         super(typeName);
         this.typeName = typeName;
         this.renderBounds = new double[] { 0.5D - width / 2.0D, 0.0D, 0.5D - width / 2.0D, 0.5D + width / 2.0D, 1.0D, 0.5D + width / 2.0D };
@@ -295,7 +295,7 @@ public class SimpleStripMicroBlock extends MicroBlockImpl {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        SimpleStripMicroBlock other = (SimpleStripMicroBlock) obj;
+        MicroBlockStrip other = (MicroBlockStrip) obj;
         if (typeName == null) {
             if (other.typeName != null)
                 return false;

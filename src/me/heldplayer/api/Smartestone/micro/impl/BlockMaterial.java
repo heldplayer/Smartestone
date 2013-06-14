@@ -8,7 +8,7 @@ import net.minecraft.util.Icon;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class SimpleMicroBlockMaterial implements IMicroBlockMaterial {
+public class BlockMaterial implements IMicroBlockMaterial {
 
     public final int id;
     public final int meta;
@@ -16,7 +16,7 @@ public class SimpleMicroBlockMaterial implements IMicroBlockMaterial {
     public final String identifier;
     public final int renderPass;
 
-    public SimpleMicroBlockMaterial(ItemStack stack) {
+    public BlockMaterial(ItemStack stack) {
         this.id = stack.itemID;
         this.meta = stack.getItemDamage();
         this.stack = stack;
@@ -31,7 +31,7 @@ public class SimpleMicroBlockMaterial implements IMicroBlockMaterial {
         }
     }
 
-    public SimpleMicroBlockMaterial(ItemStack stack, int forcedRenderPass) {
+    public BlockMaterial(ItemStack stack, int forcedRenderPass) {
         this.id = stack.itemID;
         this.meta = stack.getItemDamage();
         this.stack = stack;
@@ -95,7 +95,7 @@ public class SimpleMicroBlockMaterial implements IMicroBlockMaterial {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        SimpleMicroBlockMaterial other = (SimpleMicroBlockMaterial) obj;
+        BlockMaterial other = (BlockMaterial) obj;
         if (id != other.id)
             return false;
         if (identifier == null) {

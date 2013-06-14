@@ -6,10 +6,10 @@ import java.util.Random;
 import me.heldplayer.api.Smartestone.micro.IconProvider;
 import me.heldplayer.api.Smartestone.micro.MicroBlockAPI;
 import me.heldplayer.api.Smartestone.micro.impl.MicroBlockCentralWire;
-import me.heldplayer.api.Smartestone.micro.impl.SimpleCornerMicroBlock;
-import me.heldplayer.api.Smartestone.micro.impl.SimpleMicroBlockMaterial;
-import me.heldplayer.api.Smartestone.micro.impl.SimplePaneMicroBlock;
-import me.heldplayer.api.Smartestone.micro.impl.SimpleStripMicroBlock;
+import me.heldplayer.api.Smartestone.micro.impl.MicroBlockCorner;
+import me.heldplayer.api.Smartestone.micro.impl.BlockMaterial;
+import me.heldplayer.api.Smartestone.micro.impl.MicroBlockPane;
+import me.heldplayer.api.Smartestone.micro.impl.MicroBlockStrip;
 import me.heldplayer.api.Smartestone.micro.impl.WireMaterial;
 import me.heldplayer.mods.Smartestone.block.BlockMicro;
 import me.heldplayer.mods.Smartestone.block.BlockMulti1;
@@ -97,46 +97,46 @@ public class CommonProxy implements IGuiHandler {
     }
 
     public void postInit(FMLPostInitializationEvent event) {
-        MicroBlockAPI.registerSubBlock(new SimplePaneMicroBlock("Cover", 0.125D));
-        MicroBlockAPI.registerSubBlock(new SimplePaneMicroBlock("Panel", 0.25D));
-        MicroBlockAPI.registerSubBlock(new SimplePaneMicroBlock("Tricover", 0.375D));
-        MicroBlockAPI.registerSubBlock(new SimplePaneMicroBlock("Slab", 0.5D));
-        MicroBlockAPI.registerSubBlock(new SimplePaneMicroBlock("Anti-Tricover", 0.625D));
-        MicroBlockAPI.registerSubBlock(new SimplePaneMicroBlock("Anti-Panel", 0.75D));
-        MicroBlockAPI.registerSubBlock(new SimplePaneMicroBlock("Anti-Cover", 0.875D));
+        MicroBlockAPI.registerSubBlock(new MicroBlockPane("Cover", 0.125D));
+        MicroBlockAPI.registerSubBlock(new MicroBlockPane("Panel", 0.25D));
+        MicroBlockAPI.registerSubBlock(new MicroBlockPane("Tricover", 0.375D));
+        MicroBlockAPI.registerSubBlock(new MicroBlockPane("Slab", 0.5D));
+        MicroBlockAPI.registerSubBlock(new MicroBlockPane("Anti-Tricover", 0.625D));
+        MicroBlockAPI.registerSubBlock(new MicroBlockPane("Anti-Panel", 0.75D));
+        MicroBlockAPI.registerSubBlock(new MicroBlockPane("Anti-Cover", 0.875D));
 
-        MicroBlockAPI.registerSubBlock(new SimpleStripMicroBlock("Cover Strip", 0.125D));
-        MicroBlockAPI.registerSubBlock(new SimpleStripMicroBlock("Panel Strip", 0.25D));
-        MicroBlockAPI.registerSubBlock(new SimpleStripMicroBlock("Tricover Strip", 0.375D));
-        MicroBlockAPI.registerSubBlock(new SimpleStripMicroBlock("Slab Strip", 0.5D));
-        MicroBlockAPI.registerSubBlock(new SimpleStripMicroBlock("Anti-Tricover Strip", 0.625D));
-        MicroBlockAPI.registerSubBlock(new SimpleStripMicroBlock("Anti-Panel Strip", 0.75D));
-        MicroBlockAPI.registerSubBlock(new SimpleStripMicroBlock("Anti-Cover Strip", 0.875D));
+        MicroBlockAPI.registerSubBlock(new MicroBlockStrip("Cover Strip", 0.125D));
+        MicroBlockAPI.registerSubBlock(new MicroBlockStrip("Panel Strip", 0.25D));
+        MicroBlockAPI.registerSubBlock(new MicroBlockStrip("Tricover Strip", 0.375D));
+        MicroBlockAPI.registerSubBlock(new MicroBlockStrip("Slab Strip", 0.5D));
+        MicroBlockAPI.registerSubBlock(new MicroBlockStrip("Anti-Tricover Strip", 0.625D));
+        MicroBlockAPI.registerSubBlock(new MicroBlockStrip("Anti-Panel Strip", 0.75D));
+        MicroBlockAPI.registerSubBlock(new MicroBlockStrip("Anti-Cover Strip", 0.875D));
 
-        MicroBlockAPI.registerSubBlock(new SimpleCornerMicroBlock("Cover Corner", 0.125D));
-        MicroBlockAPI.registerSubBlock(new SimpleCornerMicroBlock("Panel Corner", 0.25D));
-        MicroBlockAPI.registerSubBlock(new SimpleCornerMicroBlock("Tricover Corner", 0.375D));
-        MicroBlockAPI.registerSubBlock(new SimpleCornerMicroBlock("Slab Corner", 0.5D));
-        MicroBlockAPI.registerSubBlock(new SimpleCornerMicroBlock("Anti-Tricover Corner", 0.625D));
-        MicroBlockAPI.registerSubBlock(new SimpleCornerMicroBlock("Anti-Panel Corner", 0.75D));
-        MicroBlockAPI.registerSubBlock(new SimpleCornerMicroBlock("Anti-Cover Corner", 0.875D));
+        MicroBlockAPI.registerSubBlock(new MicroBlockCorner("Cover Corner", 0.125D));
+        MicroBlockAPI.registerSubBlock(new MicroBlockCorner("Panel Corner", 0.25D));
+        MicroBlockAPI.registerSubBlock(new MicroBlockCorner("Tricover Corner", 0.375D));
+        MicroBlockAPI.registerSubBlock(new MicroBlockCorner("Slab Corner", 0.5D));
+        MicroBlockAPI.registerSubBlock(new MicroBlockCorner("Anti-Tricover Corner", 0.625D));
+        MicroBlockAPI.registerSubBlock(new MicroBlockCorner("Anti-Panel Corner", 0.75D));
+        MicroBlockAPI.registerSubBlock(new MicroBlockCorner("Anti-Cover Corner", 0.875D));
 
         MicroBlockAPI.registerSubBlock(new MicroBlockCentralWire("Central Wire"));
 
         int[] blocks = new int[] { 1, 3, 4, 8, 12, 13, 19, 22, 41, 42, 45, 48, 49, 57, 79, 80, 82, 87, 88, 89, 98, 112, 121, 133, 152 };
 
         for (int block : blocks) {
-            MicroBlockAPI.registerMaterial(new SimpleMicroBlockMaterial(new ItemStack(block, 1, 0)));
+            MicroBlockAPI.registerMaterial(new BlockMaterial(new ItemStack(block, 1, 0)));
         }
 
         for (int meta = 0; meta < 4; meta++) {
-            MicroBlockAPI.registerMaterial(new SimpleMicroBlockMaterial(new ItemStack(5, 1, meta)));
+            MicroBlockAPI.registerMaterial(new BlockMaterial(new ItemStack(5, 1, meta)));
         }
         for (int meta = 0; meta < 4; meta++) {
-            MicroBlockAPI.registerMaterial(new SimpleMicroBlockMaterial(new ItemStack(17, 1, meta)));
+            MicroBlockAPI.registerMaterial(new BlockMaterial(new ItemStack(17, 1, meta)));
         }
         for (int meta = 0; meta < 16; meta++) {
-            MicroBlockAPI.registerMaterial(new SimpleMicroBlockMaterial(new ItemStack(35, 1, meta)));
+            MicroBlockAPI.registerMaterial(new BlockMaterial(new ItemStack(35, 1, meta)));
         }
 
         MicroBlockAPI.registerMaterial(new WireMaterial("WireRedstone", "Redstone Wire", Objects.redstoneIcon));

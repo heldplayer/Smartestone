@@ -79,7 +79,7 @@ public class WireMaterial implements IMicroBlockMaterial {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        SimpleMicroBlockMaterial other = (SimpleMicroBlockMaterial) obj;
+        BlockMaterial other = (BlockMaterial) obj;
         if (identifier == null) {
             if (other.identifier != null)
                 return false;

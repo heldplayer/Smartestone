@@ -4,8 +4,6 @@ package me.heldplayer.api.Smartestone.micro.impl;
 import me.heldplayer.api.Smartestone.micro.MicroBlockAPI;
 import me.heldplayer.api.Smartestone.micro.MicroBlockInfo;
 import me.heldplayer.api.Smartestone.micro.rendering.MicroBlockRenderHelper;
-import me.heldplayer.mods.Smartestone.util.Direction;
-import me.heldplayer.mods.Smartestone.util.Side;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,60 +13,41 @@ import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.relauncher.SideOnly;
-
-public class SimplePaneMicroBlock extends MicroBlockImpl {
+public class MicroBlockCorner extends MicroBlockImpl {
 
     public final double width;
 
-    public SimplePaneMicroBlock(String typeName, double width) {
+    public MicroBlockCorner(String typeName, double width) {
         super(typeName);
-        this.renderBounds = new double[] { 0.0D, 0.0D, 0.5D - width / 2.0D, 1.0D, 1.0D, 0.5D + width / 2.0D };
+        this.renderBounds = new double[] { 0.5D - width / 2.0D, 0.5D - width / 2.0D, 0.5D - width / 2.0D, 0.5D + width / 2.0D, 0.5D + width / 2.0D, 0.5D + width / 2.0D };
         this.width = width;
     }
 
     @Override
     public AxisAlignedBB getBoundsInBlock(MicroBlockInfo info) {
-        switch (info.getData() & 0x7) {
+        switch (info.getData()) {
         case 0:
-            return AxisAlignedBB.getAABBPool().getAABB(0.0D, 1.0D - width, 0.0D, 1.0D, 1.0D, 1.0D);
+            return AxisAlignedBB.getAABBPool().getAABB(1.0D - width, 1.0D - width, 1.0D - width, 1.0D, 1.0D, 1.0D); // ---111
         case 1:
-            return AxisAlignedBB.getAABBPool().getAABB(0.0D, 0.0D, 0.0D, 1.0D, width, 1.0D);
+            return AxisAlignedBB.getAABBPool().getAABB(1.0D - width, 0.0D, 0.0D, 1.0D, width, width); // -001++
         case 2:
-            return AxisAlignedBB.getAABBPool().getAABB(0.0D, 0.0D, 1.0D - width, 1.0D, 1.0D, 1.0D);
+            return AxisAlignedBB.getAABBPool().getAABB(0.0D, 1.0D - width, 0.0D, width, 1.0D, width); // 0-0+1+
         case 3:
-            return AxisAlignedBB.getAABBPool().getAABB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, width);
+            return AxisAlignedBB.getAABBPool().getAABB(0.0D, 1.0D - width, 1.0D - width, width, 1.0D, 1.0D); // 0--+11
         case 4:
-            return AxisAlignedBB.getAABBPool().getAABB(1.0D - width, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
+            return AxisAlignedBB.getAABBPool().getAABB(0.0D, 0.0D, 0.0D, width, width, width); // 000+++
         case 5:
-            return AxisAlignedBB.getAABBPool().getAABB(0.0D, 0.0D, 0.0D, width, 1.0D, 1.0D);
+            return AxisAlignedBB.getAABBPool().getAABB(1.0D - width, 1.0D - width, 0.0D, 1.0D, 1.0D, width); // --011+
+        case 6:
+            return AxisAlignedBB.getAABBPool().getAABB(1.0D - width, 0.0D, 1.0D - width, 1.0D, width, 1.0D); // -0-1+1
+        case 7:
+            return AxisAlignedBB.getAABBPool().getAABB(0.0D, 0.0D, 1.0D - width, width, width, 1.0D); // 00-++1
         }
 
         return AxisAlignedBB.getAABBPool().getAABB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
     }
 
     @Override
-    public boolean isSideSolid(MicroBlockInfo info, int side) {
-        switch (info.getData() & 0x7) {
-        case 0:
-            return side == 1;
-        case 1:
-            return side == 0;
-        case 2:
-            return side == 3;
-        case 3:
-            return side == 2;
-        case 4:
-            return side == 5;
-        case 5:
-            return side == 4;
-        }
-
-        return false;
-    }
-
-    @Override
-    @SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
     public void drawHitbox(DrawBlockHighlightEvent event, MicroBlockInfo info) {
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -94,87 +73,73 @@ public class SimplePaneMicroBlock extends MicroBlockImpl {
         AxisAlignedBB aabb = AxisAlignedBB.getAABBPool().getAABB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D).offset(event.target.blockX, event.target.blockY, event.target.blockZ).expand((double) outset, (double) outset, (double) outset).getOffsetBoundingBox(-x, -y, -z);
 
         double minX = aabb.minX;
-        double minX2 = minX + 0.1875F;
         double minY = aabb.minY;
-        double minY2 = minY + 0.1875F;
         double minZ = aabb.minZ;
-        double minZ2 = minZ + 0.1875F;
         double maxX = aabb.maxX;
-        double maxX2 = maxX - 0.1875F;
         double maxY = aabb.maxY;
-        double maxY2 = maxY - 0.1875F;
         double maxZ = aabb.maxZ;
-        double maxZ2 = maxZ - 0.1875F;
+
+        double midX = (minX + maxX) / 2.0D;
+        double midY = (minY + maxY) / 2.0D;
+        double midZ = (minZ + maxZ) / 2.0D;
+
         boolean swapped = false;
 
+        tessellator.startDrawing(1);
         switch (pos.sideHit) {
         case 0:
             maxY = minY = bAabb.minY;
-            maxY2 = minY2 = bAabb.minY;
+            tessellator.addVertex(midX, minY, minZ);
+            tessellator.addVertex(midX, minY, maxZ);
+
+            tessellator.addVertex(minX, minY, midZ);
+            tessellator.addVertex(maxX, minY, midZ);
         break;
         case 1:
             minY = maxY = bAabb.maxY;
-            minY2 = maxY2 = bAabb.maxY;
+            tessellator.addVertex(midX, maxY, minZ);
+            tessellator.addVertex(midX, maxY, maxZ);
+
+            tessellator.addVertex(minX, maxY, midZ);
+            tessellator.addVertex(maxX, maxY, midZ);
         break;
         case 2:
             maxZ = minZ = bAabb.minZ;
-            maxZ2 = minZ2 = bAabb.minZ;
+            tessellator.addVertex(minX, midY, maxZ);
+            tessellator.addVertex(maxX, midY, maxZ);
+
+            tessellator.addVertex(midX, minY, maxZ);
+            tessellator.addVertex(midX, maxY, maxZ);
         break;
         case 3:
             minZ = maxZ = bAabb.maxZ;
-            minZ2 = maxZ2 = bAabb.maxZ;
+            tessellator.addVertex(minX, midY, minZ);
+            tessellator.addVertex(maxX, midY, minZ);
+
+            tessellator.addVertex(midX, minY, minZ);
+            tessellator.addVertex(midX, maxY, minZ);
         break;
         case 4:
             maxX = minX = bAabb.minX;
-            maxX2 = minX2 = bAabb.minX;
+            tessellator.addVertex(maxX, midY, minZ);
+            tessellator.addVertex(maxX, midY, maxZ);
+
+            tessellator.addVertex(maxX, minY, midZ);
+            tessellator.addVertex(maxX, maxY, midZ);
+
             swapped = true;
         break;
         case 5:
             minX = maxX = bAabb.maxX;
-            minX2 = maxX2 = bAabb.maxX;
+            tessellator.addVertex(minX, midY, minZ);
+            tessellator.addVertex(minX, midY, maxZ);
+
+            tessellator.addVertex(minX, minY, midZ);
+            tessellator.addVertex(minX, maxY, midZ);
+
             swapped = true;
         break;
         }
-
-        tessellator.startDrawing(1);
-
-        tessellator.addVertex(minX, minY, minZ);
-        tessellator.addVertex(minX2, minY2, minZ2);
-
-        tessellator.addVertex(maxX2, maxY2, maxZ2);
-        tessellator.addVertex(maxX, maxY, maxZ);
-
-        if (swapped) {
-            tessellator.addVertex(minX, minY, maxZ);
-            tessellator.addVertex(minX2, minY2, maxZ2);
-
-            tessellator.addVertex(maxX2, maxY2, minZ2);
-            tessellator.addVertex(maxX, maxY, minZ);
-        }
-        else {
-            tessellator.addVertex(minX, maxY, maxZ);
-            tessellator.addVertex(minX2, maxY2, maxZ2);
-
-            tessellator.addVertex(maxX2, minY2, minZ2);
-            tessellator.addVertex(maxX, minY, minZ);
-        }
-
-        tessellator.draw();
-
-        tessellator.startDrawing(3);
-        tessellator.addVertex(minX2, minY2, minZ2);
-        if (swapped) {
-            tessellator.addVertex(maxX2, maxY2, minZ2);
-            tessellator.addVertex(maxX2, maxY2, maxZ2);
-            tessellator.addVertex(minX2, minY2, maxZ2);
-        }
-        else {
-            tessellator.addVertex(maxX2, minY2, minZ2);
-            tessellator.addVertex(maxX2, maxY2, maxZ2);
-            tessellator.addVertex(minX2, maxY2, maxZ2);
-        }
-        tessellator.addVertex(minX2, minY2, minZ2);
-
         tessellator.draw();
 
         tessellator.startDrawing(3);
@@ -206,27 +171,119 @@ public class SimplePaneMicroBlock extends MicroBlockImpl {
         float u = MicroBlockAPI.getU(side, hitX, hitY, hitZ);
         float v = MicroBlockAPI.getV(side, hitX, hitY, hitZ);
 
-        if (u > 0.1875F && u < 0.8125F && v > 0.1875F && v < 0.8125F) {
-            return side | (side << 3);
-        }
-        else {
-            if (u < v) {
-                if (u < 1.0F - v) {
-                    return Direction.getDirection(side).getRelativeSide(Side.LEFT).ordinal();
-                }
-                else {
-                    return Direction.getDirection(side).getRelativeSide(Side.BOTTOM).ordinal();
-                }
+        int vector = 0;
+
+        if (u > 0.5F) {
+            if (v > 0.5F) {
+                vector = 1;
             }
             else {
-                if (1.0F - u < v) {
-                    return Direction.getDirection(side).getRelativeSide(Side.RIGHT).ordinal();
-                }
-                else {
-                    return Direction.getDirection(side).getRelativeSide(Side.TOP).ordinal();
-                }
+                vector = 3;
             }
         }
+        else {
+            if (v > 0.5F) {
+                vector = 0;
+            }
+            else {
+                vector = 2;
+            }
+        }
+
+        int data = -1;
+
+        switch (vector) {
+        case 0:
+            switch (side) {
+            case 0:
+                data = 0;
+            break;
+            case 1:
+                data = 1;
+            break;
+            case 2:
+                data = 0;
+            break;
+            case 3:
+                data = 2;
+            break;
+            case 4:
+                data = 0;
+            break;
+            case 5:
+                data = 2;
+            break;
+            }
+        break;
+        case 1:
+            switch (side) {
+            case 0:
+                data = 3;
+            break;
+            case 1:
+                data = 4;
+            break;
+            case 2:
+                data = 3;
+            break;
+            case 3:
+                data = 5;
+            break;
+            case 4:
+                data = 5;
+            break;
+            case 5:
+                data = 3;
+            break;
+            }
+        break;
+        case 2:
+            switch (side) {
+            case 0:
+                data = 5;
+            break;
+            case 1:
+                data = 6;
+            break;
+            case 2:
+                data = 6;
+            break;
+            case 3:
+                data = 4;
+            break;
+            case 4:
+                data = 6;
+            break;
+            case 5:
+                data = 4;
+            break;
+            }
+        break;
+        case 3:
+            switch (side) {
+            case 0:
+                data = 2;
+            break;
+            case 1:
+                data = 7;
+            break;
+            case 2:
+                data = 7;
+            break;
+            case 3:
+                data = 1;
+            break;
+            case 4:
+                data = 1;
+            break;
+            case 5:
+                data = 7;
+            break;
+            }
+        break;
+        }
+
+        return data;
     }
 
     @Override
@@ -248,7 +305,7 @@ public class SimplePaneMicroBlock extends MicroBlockImpl {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        SimplePaneMicroBlock other = (SimplePaneMicroBlock) obj;
+        MicroBlockCorner other = (MicroBlockCorner) obj;
         if (typeName == null) {
             if (other.typeName != null)
                 return false;
