@@ -223,7 +223,7 @@ public class MicroBlockCentralWire extends MicroBlockImpl {
 
     @Override
     public void onBlockUpdate(MicroBlockInfo info, World world, int x, int y, int z) {
-        position++;
+        this.position++;
         int data = info.getData();
         int origData = data;
 
@@ -283,13 +283,13 @@ public class MicroBlockCentralWire extends MicroBlockImpl {
 
         data |= (newPower << 6);
 
-        if (data != origData && position < 128) {
+        if (data != origData && this.position < 128) {
             info.setData(data);
             world.notifyBlocksOfNeighborChange(x, y, z, MicroBlockAPI.microBlockId);
             ((IMicroBlock) world.getBlockTileEntity(x, y, z)).resendTileData();
         }
 
-        position--;
+        this.position--;
     }
 
     @Override

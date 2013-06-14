@@ -49,8 +49,8 @@ public class TileEntityItemStand extends TileEntityRotatable implements IInvento
         else {
             ItemStack stack = this.inventory[0];
             if (stack != null && stack.getItem() == Item.map) {
-                MapData data = Item.map.getMapData(stack, worldObj);
-                Iterator iterator = worldObj.playerEntities.iterator();
+                MapData data = Item.map.getMapData(stack, this.worldObj);
+                Iterator iterator = this.worldObj.playerEntities.iterator();
 
                 while (iterator.hasNext()) {
                     Object obj = iterator.next();
@@ -58,7 +58,7 @@ public class TileEntityItemStand extends TileEntityRotatable implements IInvento
                     data.func_82568_a(player);
 
                     if (player.playerNetServerHandler.packetSize() < 5) {
-                        Packet packet = Item.map.createMapDataPacket(stack, worldObj, player);
+                        Packet packet = Item.map.createMapDataPacket(stack, this.worldObj, player);
 
                         if (packet != null) {
                             player.playerNetServerHandler.sendPacketToPlayer(packet);

@@ -104,7 +104,7 @@ public class TileEntityMicro extends TileEntity implements IMicroBlock {
 
     @Override
     public List<MicroBlockInfo> getSubBlocks() {
-        return info;
+        return this.info;
     }
 
     @Override

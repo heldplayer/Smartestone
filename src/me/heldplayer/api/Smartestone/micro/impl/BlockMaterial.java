@@ -81,31 +81,38 @@ public class BlockMaterial implements IMicroBlockMaterial {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + id;
-        result = prime * result + ((identifier == null) ? 0 : identifier.hashCode());
-        result = prime * result + meta;
+        result = prime * result + this.id;
+        result = prime * result + ((this.identifier == null) ? 0 : this.identifier.hashCode());
+        result = prime * result + this.meta;
         return result;
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        BlockMaterial other = (BlockMaterial) obj;
-        if (id != other.id)
-            return false;
-        if (identifier == null) {
-            if (other.identifier != null)
-                return false;
         }
-        else if (!identifier.equals(other.identifier))
+        if (obj == null) {
             return false;
-        if (meta != other.meta)
+        }
+        if (this.getClass() != obj.getClass()) {
             return false;
+        }
+        BlockMaterial other = (BlockMaterial) obj;
+        if (this.id != other.id) {
+            return false;
+        }
+        if (this.identifier == null) {
+            if (other.identifier != null) {
+                return false;
+            }
+        }
+        else if (!this.identifier.equals(other.identifier)) {
+            return false;
+        }
+        if (this.meta != other.meta) {
+            return false;
+        }
         return true;
     }
 

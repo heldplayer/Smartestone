@@ -33,35 +33,43 @@ public class MicroBlockInfo {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + data;
-        result = prime * result + ((material == null) ? 0 : material.hashCode());
-        result = prime * result + ((subBlock == null) ? 0 : subBlock.hashCode());
+        result = prime * result + this.data;
+        result = prime * result + ((this.material == null) ? 0 : this.material.hashCode());
+        result = prime * result + ((this.subBlock == null) ? 0 : this.subBlock.hashCode());
         return result;
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (this.getClass() != obj.getClass()) {
             return false;
+        }
         MicroBlockInfo other = (MicroBlockInfo) obj;
-        if (data != other.data)
+        if (this.data != other.data) {
             return false;
-        if (material == null) {
-            if (other.material != null)
-                return false;
         }
-        else if (!material.equals(other.material))
-            return false;
-        if (subBlock == null) {
-            if (other.subBlock != null)
+        if (this.material == null) {
+            if (other.material != null) {
                 return false;
+            }
         }
-        else if (!subBlock.equals(other.subBlock))
+        else if (!this.material.equals(other.material)) {
             return false;
+        }
+        if (this.subBlock == null) {
+            if (other.subBlock != null) {
+                return false;
+            }
+        }
+        else if (!this.subBlock.equals(other.subBlock)) {
+            return false;
+        }
         return true;
     }
 

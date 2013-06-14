@@ -31,17 +31,17 @@ public class MicroBlockPane extends MicroBlockImpl {
     public AxisAlignedBB getBoundsInBlock(MicroBlockInfo info) {
         switch (info.getData() & 0x7) {
         case 0:
-            return AxisAlignedBB.getAABBPool().getAABB(0.0D, 1.0D - width, 0.0D, 1.0D, 1.0D, 1.0D);
+            return AxisAlignedBB.getAABBPool().getAABB(0.0D, 1.0D - this.width, 0.0D, 1.0D, 1.0D, 1.0D);
         case 1:
-            return AxisAlignedBB.getAABBPool().getAABB(0.0D, 0.0D, 0.0D, 1.0D, width, 1.0D);
+            return AxisAlignedBB.getAABBPool().getAABB(0.0D, 0.0D, 0.0D, 1.0D, this.width, 1.0D);
         case 2:
-            return AxisAlignedBB.getAABBPool().getAABB(0.0D, 0.0D, 1.0D - width, 1.0D, 1.0D, 1.0D);
+            return AxisAlignedBB.getAABBPool().getAABB(0.0D, 0.0D, 1.0D - this.width, 1.0D, 1.0D, 1.0D);
         case 3:
-            return AxisAlignedBB.getAABBPool().getAABB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, width);
+            return AxisAlignedBB.getAABBPool().getAABB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, this.width);
         case 4:
-            return AxisAlignedBB.getAABBPool().getAABB(1.0D - width, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
+            return AxisAlignedBB.getAABBPool().getAABB(1.0D - this.width, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
         case 5:
-            return AxisAlignedBB.getAABBPool().getAABB(0.0D, 0.0D, 0.0D, width, 1.0D, 1.0D);
+            return AxisAlignedBB.getAABBPool().getAABB(0.0D, 0.0D, 0.0D, this.width, 1.0D, 1.0D);
         }
 
         return AxisAlignedBB.getAABBPool().getAABB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
@@ -233,30 +233,36 @@ public class MicroBlockPane extends MicroBlockImpl {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((typeName == null) ? 0 : typeName.hashCode());
+        result = prime * result + ((this.typeName == null) ? 0 : this.typeName.hashCode());
         long temp;
-        temp = Double.doubleToLongBits(width);
+        temp = Double.doubleToLongBits(this.width);
         result = prime * result + (int) (temp ^ (temp >>> 32));
         return result;
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        MicroBlockPane other = (MicroBlockPane) obj;
-        if (typeName == null) {
-            if (other.typeName != null)
-                return false;
         }
-        else if (!typeName.equals(other.typeName))
+        if (obj == null) {
             return false;
-        if (Double.doubleToLongBits(width) != Double.doubleToLongBits(other.width))
+        }
+        if (this.getClass() != obj.getClass()) {
             return false;
+        }
+        MicroBlockPane other = (MicroBlockPane) obj;
+        if (this.typeName == null) {
+            if (other.typeName != null) {
+                return false;
+            }
+        }
+        else if (!this.typeName.equals(other.typeName)) {
+            return false;
+        }
+        if (Double.doubleToLongBits(this.width) != Double.doubleToLongBits(other.width)) {
+            return false;
+        }
         return true;
     }
 

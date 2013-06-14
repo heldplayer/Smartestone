@@ -60,7 +60,7 @@ public class BlockMicro extends Block {
 
     @Override
     public boolean canRenderInPass(int pass) {
-        renderPass = pass;
+        this.renderPass = pass;
         return true;
     }
 

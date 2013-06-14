@@ -51,7 +51,7 @@ public class ModSmartestone {
 
         Objects.log = event.getModLog();
 
-        reporter = new UsageReporter(Objects.MOD_ID, Objects.MOD_VERSION, FMLCommonHandler.instance().getSide(), file);
+        this.reporter = new UsageReporter(Objects.MOD_ID, Objects.MOD_VERSION, FMLCommonHandler.instance().getSide(), file);
 
         // Config
         silentUpdates = new ConfigValue<Boolean>("silentUpdates", Configuration.CATEGORY_GENERAL, null, Boolean.TRUE, "Set this to true to hide update messages in the main menu");
@@ -60,15 +60,15 @@ public class ModSmartestone {
         blockMicroId = new ConfigValue<Integer>("MicroId", Configuration.CATEGORY_BLOCK, null, 2102, "");
         itemRotatorId = new ConfigValue<Integer>("Rotator", Configuration.CATEGORY_ITEM, null, 5240, "");
         itemMicroBlockId = new ConfigValue<Integer>("MicroBlockItem", Configuration.CATEGORY_ITEM, null, 5241, "");
-        config = new Config(event.getSuggestedConfigurationFile());
-        config.addConfigKey(silentUpdates);
-        config.addConfigKey(blockMulti1Id);
-        config.addConfigKey(blockMulti2Id);
-        config.addConfigKey(blockMicroId);
-        config.addConfigKey(itemRotatorId);
-        config.addConfigKey(itemMicroBlockId);
-        config.load();
-        config.saveOnChange();
+        this.config = new Config(event.getSuggestedConfigurationFile());
+        this.config.addConfigKey(silentUpdates);
+        this.config.addConfigKey(blockMulti1Id);
+        this.config.addConfigKey(blockMulti2Id);
+        this.config.addConfigKey(blockMicroId);
+        this.config.addConfigKey(itemRotatorId);
+        this.config.addConfigKey(itemMicroBlockId);
+        this.config.load();
+        this.config.saveOnChange();
 
         Updater.initializeUpdater(Objects.MOD_ID, Objects.MOD_VERSION, silentUpdates.getValue());
 
@@ -82,7 +82,7 @@ public class ModSmartestone {
 
     @PostInit
     public void postInit(FMLPostInitializationEvent event) {
-        Thread thread = new Thread(reporter, Objects.MOD_ID + " usage reporter");
+        Thread thread = new Thread(this.reporter, Objects.MOD_ID + " usage reporter");
         thread.setDaemon(true);
         thread.setPriority(Thread.MIN_PRIORITY);
         thread.start();

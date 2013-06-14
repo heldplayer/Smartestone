@@ -27,7 +27,7 @@ public class ReusableRenderFace {
         this.endV = 1.0D;
         this.color = 0xFFFFFF;
 
-        renders = true;
+        this.renders = true;
     }
 
     public void copy(ReusableRenderFace other) {
@@ -75,18 +75,18 @@ public class ReusableRenderFace {
         this.startV = startV;
         this.endV = endV;
 
-        renders = true;
+        this.renders = true;
     }
 
     public void setValues(AxisAlignedBB aabb, int side) {
         this.side = side;
 
         if (aabb == null) {
-            renders = false;
+            this.renders = false;
             return;
         }
 
-        renders = true;
+        this.renders = true;
 
         switch (this.side) {
         case 0:

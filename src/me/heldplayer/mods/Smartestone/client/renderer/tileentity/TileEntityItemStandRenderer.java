@@ -98,7 +98,7 @@ public class TileEntityItemStandRenderer extends TileEntitySpecialRenderer {
                 tessellator.draw();
                 MapData mapdata = null;
                 if (stack.getItem() == Item.map) {
-                    mapdata = Item.map.getMapData(entityitem.getEntityItem(), this.entityitem.worldObj);
+                    mapdata = Item.map.getMapData(this.entityitem.getEntityItem(), this.entityitem.worldObj);
                 }
                 GL11.glTranslatef(0.0F, 0.0F, -1.0F);
 

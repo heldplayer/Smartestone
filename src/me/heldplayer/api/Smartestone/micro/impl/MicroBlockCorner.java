@@ -27,21 +27,21 @@ public class MicroBlockCorner extends MicroBlockImpl {
     public AxisAlignedBB getBoundsInBlock(MicroBlockInfo info) {
         switch (info.getData()) {
         case 0:
-            return AxisAlignedBB.getAABBPool().getAABB(1.0D - width, 1.0D - width, 1.0D - width, 1.0D, 1.0D, 1.0D); // ---111
+            return AxisAlignedBB.getAABBPool().getAABB(1.0D - this.width, 1.0D - this.width, 1.0D - this.width, 1.0D, 1.0D, 1.0D); // ---111
         case 1:
-            return AxisAlignedBB.getAABBPool().getAABB(1.0D - width, 0.0D, 0.0D, 1.0D, width, width); // -001++
+            return AxisAlignedBB.getAABBPool().getAABB(1.0D - this.width, 0.0D, 0.0D, 1.0D, this.width, this.width); // -001++
         case 2:
-            return AxisAlignedBB.getAABBPool().getAABB(0.0D, 1.0D - width, 0.0D, width, 1.0D, width); // 0-0+1+
+            return AxisAlignedBB.getAABBPool().getAABB(0.0D, 1.0D - this.width, 0.0D, this.width, 1.0D, this.width); // 0-0+1+
         case 3:
-            return AxisAlignedBB.getAABBPool().getAABB(0.0D, 1.0D - width, 1.0D - width, width, 1.0D, 1.0D); // 0--+11
+            return AxisAlignedBB.getAABBPool().getAABB(0.0D, 1.0D - this.width, 1.0D - this.width, this.width, 1.0D, 1.0D); // 0--+11
         case 4:
-            return AxisAlignedBB.getAABBPool().getAABB(0.0D, 0.0D, 0.0D, width, width, width); // 000+++
+            return AxisAlignedBB.getAABBPool().getAABB(0.0D, 0.0D, 0.0D, this.width, this.width, this.width); // 000+++
         case 5:
-            return AxisAlignedBB.getAABBPool().getAABB(1.0D - width, 1.0D - width, 0.0D, 1.0D, 1.0D, width); // --011+
+            return AxisAlignedBB.getAABBPool().getAABB(1.0D - this.width, 1.0D - this.width, 0.0D, 1.0D, 1.0D, this.width); // --011+
         case 6:
-            return AxisAlignedBB.getAABBPool().getAABB(1.0D - width, 0.0D, 1.0D - width, 1.0D, width, 1.0D); // -0-1+1
+            return AxisAlignedBB.getAABBPool().getAABB(1.0D - this.width, 0.0D, 1.0D - this.width, 1.0D, this.width, 1.0D); // -0-1+1
         case 7:
-            return AxisAlignedBB.getAABBPool().getAABB(0.0D, 0.0D, 1.0D - width, width, width, 1.0D); // 00-++1
+            return AxisAlignedBB.getAABBPool().getAABB(0.0D, 0.0D, 1.0D - this.width, this.width, this.width, 1.0D); // 00-++1
         }
 
         return AxisAlignedBB.getAABBPool().getAABB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
@@ -290,30 +290,36 @@ public class MicroBlockCorner extends MicroBlockImpl {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((typeName == null) ? 0 : typeName.hashCode());
+        result = prime * result + ((this.typeName == null) ? 0 : this.typeName.hashCode());
         long temp;
-        temp = Double.doubleToLongBits(width);
+        temp = Double.doubleToLongBits(this.width);
         result = prime * result + (int) (temp ^ (temp >>> 32));
         return result;
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        MicroBlockCorner other = (MicroBlockCorner) obj;
-        if (typeName == null) {
-            if (other.typeName != null)
-                return false;
         }
-        else if (!typeName.equals(other.typeName))
+        if (obj == null) {
             return false;
-        if (Double.doubleToLongBits(width) != Double.doubleToLongBits(other.width))
+        }
+        if (this.getClass() != obj.getClass()) {
             return false;
+        }
+        MicroBlockCorner other = (MicroBlockCorner) obj;
+        if (this.typeName == null) {
+            if (other.typeName != null) {
+                return false;
+            }
+        }
+        else if (!this.typeName.equals(other.typeName)) {
+            return false;
+        }
+        if (Double.doubleToLongBits(this.width) != Double.doubleToLongBits(other.width)) {
+            return false;
+        }
         return true;
     }
 
