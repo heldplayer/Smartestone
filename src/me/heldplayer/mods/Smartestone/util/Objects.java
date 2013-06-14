@@ -33,7 +33,6 @@ public final class Objects {
     public static ItemMicroBlock itemMicroBlock;
     public static CreativeTabs creativeTab;
 
-    public static IconProvider redstoneOffIcon;
-    public static IconProvider redstoneOnIcon;
+    public static IconProvider redstoneIcon;
 
 }

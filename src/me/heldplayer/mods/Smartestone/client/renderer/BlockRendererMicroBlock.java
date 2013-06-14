@@ -95,7 +95,8 @@ public class BlockRendererMicroBlock implements ISimpleBlockRenderingHandler {
                     renderer.renderMinZ = face.startV;
                     renderer.renderMaxZ = face.endV;
                     tes.setBrightness(renderer.renderMinY > 0.0D ? brightness : theBlock.getMixedBrightnessForBlock(world, x, y - 1, z));
-                    tes.setColorOpaque_F(0.5F, 0.5F, 0.5F);
+                    tes.setColorOpaque_I(face.getColor());
+                    tes.setNormal(0.0F, -1.0F, 0.0F);
                     renderer.renderFaceYNeg(null, x, y, z, face.icon);
                 break;
                 case 1:
@@ -106,7 +107,8 @@ public class BlockRendererMicroBlock implements ISimpleBlockRenderingHandler {
                     renderer.renderMinZ = face.startV;
                     renderer.renderMaxZ = face.endV;
                     tes.setBrightness(renderer.renderMaxY < 1.0D ? brightness : theBlock.getMixedBrightnessForBlock(world, x, y + 1, z));
-                    tes.setColorOpaque_F(1.0F, 1.0F, 1.0F);
+                    tes.setColorOpaque_I(face.getColor());
+                    tes.setNormal(0.0F, 1.0F, 0.0F);
                     renderer.renderFaceYPos(null, x, y, z, face.icon);
                 break;
                 case 2:
@@ -117,7 +119,8 @@ public class BlockRendererMicroBlock implements ISimpleBlockRenderingHandler {
                     renderer.renderMinZ = face.offset;
                     renderer.renderMaxZ = face.offset;
                     tes.setBrightness(renderer.renderMinZ > 0.0D ? brightness : theBlock.getMixedBrightnessForBlock(world, x, y, z - 1));
-                    tes.setColorOpaque_F(0.8F, 0.8F, 0.8F);
+                    tes.setColorOpaque_I(face.getColor());
+                    tes.setNormal(-1.0F, 0.0F, 0.0F);
                     renderer.renderFaceZNeg(null, x, y, z, face.icon);
                 break;
                 case 3:
@@ -128,7 +131,8 @@ public class BlockRendererMicroBlock implements ISimpleBlockRenderingHandler {
                     renderer.renderMinZ = face.offset;
                     renderer.renderMaxZ = face.offset;
                     tes.setBrightness(renderer.renderMaxZ < 1.0D ? brightness : theBlock.getMixedBrightnessForBlock(world, x, y, z + 1));
-                    tes.setColorOpaque_F(0.8F, 0.8F, 0.8F);
+                    tes.setColorOpaque_I(face.getColor());
+                    tes.setNormal(1.0F, 0.0F, 0.0F);
                     renderer.renderFaceZPos(null, x, y, z, face.icon);
                 break;
                 case 4:
@@ -139,7 +143,8 @@ public class BlockRendererMicroBlock implements ISimpleBlockRenderingHandler {
                     renderer.renderMinZ = face.startU;
                     renderer.renderMaxZ = face.endU;
                     tes.setBrightness(renderer.renderMinX > 0.0D ? brightness : theBlock.getMixedBrightnessForBlock(world, x - 1, y, z));
-                    tes.setColorOpaque_F(0.6F, 0.6F, 0.6F);
+                    tes.setColorOpaque_I(face.getColor());
+                    tes.setNormal(0.0F, 0.0F, -1.0F);
                     renderer.renderFaceXNeg(null, x, y, z, face.icon);
                 break;
                 case 5:
@@ -150,7 +155,8 @@ public class BlockRendererMicroBlock implements ISimpleBlockRenderingHandler {
                     renderer.renderMinZ = face.startU;
                     renderer.renderMaxZ = face.endU;
                     tes.setBrightness(renderer.renderMaxX < 1.0D ? brightness : theBlock.getMixedBrightnessForBlock(world, x + 1, y, z));
-                    tes.setColorOpaque_F(0.6F, 0.6F, 0.6F);
+                    tes.setColorOpaque_I(face.getColor());
+                    tes.setNormal(0.0F, 0.0F, 1.0F);
                     renderer.renderFaceXPos(null, x, y, z, face.icon);
                 break;
                 }

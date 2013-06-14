@@ -56,8 +56,7 @@ public class CommonProxy implements IGuiHandler {
         rand = new Random();
 
         MicroBlockAPI.microBlockId = ModSmartestone.blockMicroId.getValue();
-        Objects.redstoneOnIcon = new IconProvider();
-        Objects.redstoneOffIcon = new IconProvider();
+        Objects.redstoneIcon = new IconProvider();
     }
 
     public void init(FMLInitializationEvent event) {
@@ -140,7 +139,7 @@ public class CommonProxy implements IGuiHandler {
             MicroBlockAPI.registerMaterial(new SimpleMicroBlockMaterial(new ItemStack(35, 1, meta)));
         }
 
-        MicroBlockAPI.registerMaterial(new WireMaterial("WireRedstone", "Redstone Wire", Objects.redstoneOffIcon, Objects.redstoneOnIcon));
+        MicroBlockAPI.registerMaterial(new WireMaterial("WireRedstone", "Redstone Wire", Objects.redstoneIcon));
     }
 
     @Override

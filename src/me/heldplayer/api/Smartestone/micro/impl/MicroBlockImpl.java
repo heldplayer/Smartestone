@@ -61,6 +61,7 @@ public abstract class MicroBlockImpl implements IMicroBlockSubBlock {
             faces[i].setValues(aabb, i);
             faces[i].icon = info.getMaterial().getIcon(i);
             faces[i].renderPass = info.getMaterial().getRenderPass();
+            faces[i].color = info.getMaterial().getColor(i, info.getData());
         }
 
         return faces;

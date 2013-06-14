@@ -59,6 +59,7 @@ public class MicroBlockCentralWire extends MicroBlockImpl {
             faces[i].setValues(aabb, i);
             faces[i].icon = info.getMaterial().getIcon(i, data);
             faces[i].renderPass = info.getMaterial().getRenderPass();
+            faces[i].color = info.getMaterial().getColor(i, info.getData());
             faceList.add(faces[i]);
         }
 
@@ -68,7 +69,7 @@ public class MicroBlockCentralWire extends MicroBlockImpl {
             faces[3].startV = 0.0D;
             faces[4].startV = 0.0D;
             faces[5].startV = 0.0D;
-            faces[0].offset = 1.0D;
+            faces[0].offset = 0.0D;
         }
         else {
             split = true;
@@ -78,7 +79,7 @@ public class MicroBlockCentralWire extends MicroBlockImpl {
             faces[3].endV = 1.0D;
             faces[4].endV = 1.0D;
             faces[5].endV = 1.0D;
-            faces[1].offset = 0.0D;
+            faces[1].offset = 1.0D;
         }
         else {
             split = true;
@@ -90,6 +91,7 @@ public class MicroBlockCentralWire extends MicroBlockImpl {
                     face.setValues(i, (i % 2) == 0 ? 0.25D : 0.75D, 0.25D, 0.75D, 0.0D, 0.75D);
                     face.icon = info.getMaterial().getIcon(i, data);
                     face.renderPass = info.getMaterial().getRenderPass();
+                    face.color = info.getMaterial().getColor(i, info.getData());
                     faceList.add(face);
                 }
                 faces[0].offset = 0.0D;
@@ -100,6 +102,7 @@ public class MicroBlockCentralWire extends MicroBlockImpl {
                     face.setValues(i, (i % 2) == 0 ? 0.25D : 0.75D, 0.25D, 0.75D, 0.25D, 1.0D);
                     face.icon = info.getMaterial().getIcon(i, data);
                     face.renderPass = info.getMaterial().getRenderPass();
+                    face.color = info.getMaterial().getColor(i, info.getData());
                     faceList.add(face);
                 }
                 faces[1].offset = 1.0D;
@@ -134,6 +137,7 @@ public class MicroBlockCentralWire extends MicroBlockImpl {
                     face.setValues(i, (i % 2) == 0 ? 0.25D : 0.75D, 0.25D, 0.75D, 0.0D, 0.25D);
                     face.icon = info.getMaterial().getIcon(i, data);
                     face.renderPass = info.getMaterial().getRenderPass();
+                    face.color = info.getMaterial().getColor(i, info.getData());
                     faceList.add(face);
                 }
                 for (int i = 4; i <= 5; i++) {
@@ -141,6 +145,7 @@ public class MicroBlockCentralWire extends MicroBlockImpl {
                     face.setValues(i, (i % 2) == 0 ? 0.25D : 0.75D, 0.0D, 0.25D, 0.25D, 0.75D);
                     face.icon = info.getMaterial().getIcon(i, data);
                     face.renderPass = info.getMaterial().getRenderPass();
+                    face.color = info.getMaterial().getColor(i, info.getData());
                     faceList.add(face);
                 }
                 faces[2].offset = 0.0D;
@@ -151,6 +156,7 @@ public class MicroBlockCentralWire extends MicroBlockImpl {
                     face.setValues(i, (i % 2) == 0 ? 0.25D : 0.75D, 0.25D, 0.75D, 0.75D, 1.0D);
                     face.icon = info.getMaterial().getIcon(i, data);
                     face.renderPass = info.getMaterial().getRenderPass();
+                    face.color = info.getMaterial().getColor(i, info.getData());
                     faceList.add(face);
                 }
                 for (int i = 4; i <= 5; i++) {
@@ -158,6 +164,7 @@ public class MicroBlockCentralWire extends MicroBlockImpl {
                     face.setValues(i, (i % 2) == 0 ? 0.25D : 0.75D, 0.75D, 1.0D, 0.25D, 0.75D);
                     face.icon = info.getMaterial().getIcon(i, data);
                     face.renderPass = info.getMaterial().getRenderPass();
+                    face.color = info.getMaterial().getColor(i, info.getData());
                     faceList.add(face);
                 }
                 faces[3].offset = 1.0D;
@@ -192,6 +199,7 @@ public class MicroBlockCentralWire extends MicroBlockImpl {
                     face.setValues(i, (i % 2) == 0 ? 0.25D : 0.75D, 0.0D, 0.25D, 0.25D, 0.75D);
                     face.icon = info.getMaterial().getIcon(i, data);
                     face.renderPass = info.getMaterial().getRenderPass();
+                    face.color = info.getMaterial().getColor(i, info.getData());
                     faceList.add(face);
                 }
                 faces[4].offset = 0.0D;
@@ -202,6 +210,7 @@ public class MicroBlockCentralWire extends MicroBlockImpl {
                     face.setValues(i, (i % 2) == 0 ? 0.25D : 0.75D, 0.75D, 1.0D, 0.25D, 0.75D);
                     face.icon = info.getMaterial().getIcon(i, data);
                     face.renderPass = info.getMaterial().getRenderPass();
+                    face.color = info.getMaterial().getColor(i, info.getData());
                     faceList.add(face);
                 }
                 faces[5].offset = 1.0D;
@@ -274,7 +283,7 @@ public class MicroBlockCentralWire extends MicroBlockImpl {
 
         data |= (newPower << 6);
 
-        if (data != origData) {
+        if (data != origData && position < 128) {
             info.setData(data);
             world.notifyBlocksOfNeighborChange(x, y, z, MicroBlockAPI.microBlockId);
             ((IMicroBlock) world.getBlockTileEntity(x, y, z)).resendTileData();
@@ -316,7 +325,16 @@ public class MicroBlockCentralWire extends MicroBlockImpl {
         else if (block.canProvidePower()) {
             return true;
         }
-
+        else if (block.blockID == Block.pistonBase.blockID || block.blockID == Block.pistonStickyBase.blockID || block.blockID == Block.pistonMoving.blockID) {
+            return true;
+        }
+        else if (block.blockID == Block.redstoneLampActive.blockID || block.blockID == Block.redstoneLampIdle.blockID) {
+            return true;
+        }
+        else if (block.blockID == Block.music.blockID) {
+            return true;
+        }
+        
         return false;
     }
 

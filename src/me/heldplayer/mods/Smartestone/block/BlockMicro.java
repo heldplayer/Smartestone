@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 import me.heldplayer.api.Smartestone.micro.MicroBlockInfo;
+import me.heldplayer.api.Smartestone.micro.impl.MicroBlockCentralWire;
 import me.heldplayer.mods.Smartestone.CommonProxy;
 import me.heldplayer.mods.Smartestone.tileentity.TileEntityMicro;
 import me.heldplayer.mods.Smartestone.util.Objects;
@@ -89,8 +90,7 @@ public class BlockMicro extends Block {
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister register) {
         this.icon = register.registerIcon("stone");
-        Objects.redstoneOnIcon.icon = register.registerIcon("Smartestone:redstone_on");
-        Objects.redstoneOffIcon.icon = register.registerIcon("Smartestone:redstone_off");
+        Objects.redstoneIcon.icon = register.registerIcon("Smartestone:redstone");
     }
 
     @Override
@@ -484,12 +484,72 @@ public class BlockMicro extends Block {
     @Override
     public int isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int side) {
         ForgeDirection dir = ForgeDirection.getOrientation(side).getOpposite();
+
         if (world.getBlockId(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ) == this.blockID) {
             TileEntityMicro tile = (TileEntityMicro) world.getBlockTileEntity(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ);
 
             if (tile != null) {
                 return 0;
             }
+        }
+
+        if (world.getBlockId(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ) == Block.redstoneWire.blockID) {
+            return 0;
+        }
+
+        TileEntityMicro tile = (TileEntityMicro) world.getBlockTileEntity(x, y, z);
+
+        if (tile == null) {
+            return 0;
+        }
+
+        int power = 0;
+
+        List<MicroBlockInfo> infos = tile.getSubBlocks();
+
+        for (MicroBlockInfo info : infos) {
+            int other = info.getType().getPowerOutput(info, side);
+            if (other > power) {
+                power = other;
+            }
+        }
+
+        if (power > 15) {
+            power = 15;
+        }
+
+        return power;
+    }
+
+    @Override
+    public boolean canProvidePower() {
+        return true;
+    }
+
+    @Override
+    public int isProvidingStrongPower(IBlockAccess world, int x, int y, int z, int side) {
+        ForgeDirection dir = ForgeDirection.getOrientation(side).getOpposite();
+
+        if (!MicroBlockCentralWire.canConnectTo((World) world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, null)) {
+            return 0;
+        }
+
+        int blockID = world.getBlockId(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ);
+
+        if (Block.blocksList[blockID] != null && Block.blocksList[blockID].isOpaqueCube()) {
+            return 0;
+        }
+
+        if (blockID == this.blockID) {
+            TileEntityMicro tile = (TileEntityMicro) world.getBlockTileEntity(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ);
+
+            if (tile != null) {
+                return 0;
+            }
+        }
+
+        if (blockID == Block.redstoneWire.blockID) {
+            return 0;
         }
 
         TileEntityMicro tile = (TileEntityMicro) world.getBlockTileEntity(x, y, z);

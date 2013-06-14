@@ -52,6 +52,12 @@ public class SimpleMicroBlockMaterial implements IMicroBlockMaterial {
 
     @Override
     @SideOnly(Side.CLIENT)
+    public int getColor(int side, int state) {
+        return Block.blocksList[this.id].getRenderColor(side);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
     public Icon getIcon(int side, int state) {
         return this.getIcon(side);
     }

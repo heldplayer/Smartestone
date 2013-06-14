@@ -16,6 +16,7 @@ public class ReusableRenderFace {
     public Icon icon;
     public int renderPass;
     public boolean renders;
+    public int color;
 
     public ReusableRenderFace() {
         this.side = 0;
@@ -24,6 +25,7 @@ public class ReusableRenderFace {
         this.endU = 1.0D;
         this.startV = 0.0D;
         this.endV = 1.0D;
+        this.color = 0xFFFFFF;
 
         renders = true;
     }
@@ -38,6 +40,31 @@ public class ReusableRenderFace {
         this.icon = other.icon;
         this.renderPass = other.renderPass;
         this.renders = other.renders;
+        this.color = other.color;
+    }
+
+    public int getColor() {
+        int red = (this.color >> 16) & 0xFF;
+        int green = (this.color >> 8) & 0xFF;
+        int blue = this.color & 0xFF;
+
+        if (this.side == 0) {
+            red *= 0.5F;
+            green *= 0.5F;
+            blue *= 0.5F;
+        }
+        if (this.side == 2 || this.side == 3) {
+            red *= 0.8F;
+            green *= 0.8F;
+            blue *= 0.8F;
+        }
+        if (this.side == 4 || this.side == 5) {
+            red *= 0.6F;
+            green *= 0.6F;
+            blue *= 0.6F;
+        }
+
+        return red << 16 | green << 8 | blue;
     }
 
     public void setValues(int side, double offset, double startU, double endU, double startV, double endV) {
@@ -105,6 +132,11 @@ public class ReusableRenderFace {
             this.endV = aabb.maxY;
         break;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Face[side=" + this.side + ";offset=" + this.offset + ";renderPass=" + this.renderPass + ";color=" + this.color + "]";
     }
 
 }

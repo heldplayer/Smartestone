@@ -15,6 +15,9 @@ public interface IMicroBlockMaterial {
     @SideOnly(Side.CLIENT)
     public abstract Icon getIcon(int side, int state);
 
+    @SideOnly(Side.CLIENT)
+    public abstract int getColor(int side, int state);
+
     public abstract String getDisplayName();
 
     public abstract boolean isBlock();
