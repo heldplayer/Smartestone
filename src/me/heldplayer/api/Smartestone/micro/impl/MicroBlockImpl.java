@@ -1,6 +1,9 @@
 
 package me.heldplayer.api.Smartestone.micro.impl;
 
+import java.util.List;
+
+import me.heldplayer.api.Smartestone.micro.IMicroBlock;
 import me.heldplayer.api.Smartestone.micro.IMicroBlockMaterial;
 import me.heldplayer.api.Smartestone.micro.IMicroBlockSubBlock;
 import me.heldplayer.api.Smartestone.micro.MicroBlockInfo;
@@ -83,6 +86,19 @@ public abstract class MicroBlockImpl implements IMicroBlockSubBlock {
     @Override
     public int getPowerOutput(MicroBlockInfo info, int side) {
         return 0;
+    }
+
+    @Override
+    public boolean canBeAdded(IMicroBlock tile, MicroBlockInfo info) {
+        List<MicroBlockInfo> infos = tile.getSubBlocks();
+
+        for (MicroBlockInfo current : infos) {
+            if (current.getClass() == info.getClass() && current.getData() == info.getData()) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
 }

@@ -334,13 +334,26 @@ public class MicroBlockCentralWire extends MicroBlockImpl {
         else if (block.blockID == Block.music.blockID) {
             return true;
         }
-        
+
         return false;
     }
 
     @Override
     public int getPowerOutput(MicroBlockInfo info, int side) {
         return info.getData() >> 6;
+    }
+
+    @Override
+    public boolean canBeAdded(IMicroBlock tile, MicroBlockInfo info) {
+        List<MicroBlockInfo> infos = tile.getSubBlocks();
+
+        for (MicroBlockInfo current : infos) {
+            if (current.getType().equals(this)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
 }

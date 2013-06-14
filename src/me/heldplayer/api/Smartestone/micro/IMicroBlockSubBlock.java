@@ -33,4 +33,6 @@ public interface IMicroBlockSubBlock {
 
     public abstract int getPowerOutput(MicroBlockInfo info, int side);
 
+    public abstract boolean canBeAdded(IMicroBlock tile, MicroBlockInfo info);
+
 }

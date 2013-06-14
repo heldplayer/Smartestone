@@ -141,17 +141,18 @@ public class ItemMicroBlock extends Item {
 
             int data = subBlock.onItemUse(player, side, hitX, hitY, hitZ);
 
-            if (data == -1) {
-                return false;
-            }
-
             TileEntityMicro tile = (TileEntityMicro) world.getBlockTileEntity(x, y, z);
 
             if (tile == null) {
                 return false;
             }
 
-            tile.getSubBlocks().add(new MicroBlockInfo(info.getMaterial(), info.getType(), data));
+            MicroBlockInfo result = new MicroBlockInfo(info.getMaterial(), info.getType(), data);
+            if (!subBlock.canBeAdded(tile, result)) {
+                return false;
+            }
+
+            tile.getSubBlocks().add(result);
 
             world.notifyBlockOfNeighborChange(x, y, z, MicroBlockAPI.microBlockId);
             world.notifyBlockChange(x, y, z, MicroBlockAPI.microBlockId);
