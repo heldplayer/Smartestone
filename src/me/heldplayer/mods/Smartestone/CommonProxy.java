@@ -20,6 +20,7 @@ import me.heldplayer.mods.Smartestone.client.gui.CreativeTab;
 import me.heldplayer.mods.Smartestone.client.gui.GuiCraftingChest;
 import me.heldplayer.mods.Smartestone.client.gui.GuiInductionishFurnace;
 import me.heldplayer.mods.Smartestone.client.gui.GuiItemStand;
+import me.heldplayer.mods.Smartestone.enchantment.EnchantmentDurabilityExt;
 import me.heldplayer.mods.Smartestone.inventory.ContainerInductionishFurnace;
 import me.heldplayer.mods.Smartestone.inventory.ContainerItemStand;
 import me.heldplayer.mods.Smartestone.inventory.craftingchest.ContainerCraftingChest;
@@ -33,6 +34,8 @@ import me.heldplayer.mods.Smartestone.tileentity.TileEntityItemStand;
 import me.heldplayer.mods.Smartestone.tileentity.TileEntityMicro;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentDurability;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -154,6 +157,9 @@ public class CommonProxy implements IGuiHandler {
         MicroBlockAPI.registerMaterial(new WireMaterial("WireBluestone", "Bluestone Wire", bluestoneIcon));
         MicroBlockAPI.registerMaterial(new WireMaterial("WireGreenstone", "Greenstone Wire", greenstoneIcon));
         MicroBlockAPI.registerMaterial(new WireMaterial("WireYellowstone", "Yellowstone Wire", yellowstoneIcon));
+
+        Enchantment.enchantmentsList[Enchantment.unbreaking.effectId] = null;
+        new EnchantmentDurabilityExt((EnchantmentDurability) Enchantment.unbreaking);
     }
 
     @Override
