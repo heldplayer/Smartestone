@@ -7,13 +7,17 @@ import net.minecraft.item.ItemStack;
 
 public class EnchantmentDurabilityExt extends EnchantmentDurability {
 
+    EnchantmentDurability original;
+
     public EnchantmentDurabilityExt(EnchantmentDurability original) {
         super(original.effectId, original.getWeight());
+
+        this.original = original;
     }
 
     @Override
     public boolean canApply(ItemStack stack) {
-        if (super.canApply(stack)) {
+        if (this.original.canApply(stack)) {
             return true;
         }
         return stack.getItem() instanceof ItemWaterCore;
@@ -21,7 +25,7 @@ public class EnchantmentDurabilityExt extends EnchantmentDurability {
 
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack) {
-        if (super.canApplyAtEnchantingTable(stack)) {
+        if (this.original.canApplyAtEnchantingTable(stack)) {
             return true;
         }
         return stack.getItem() instanceof ItemWaterCore;

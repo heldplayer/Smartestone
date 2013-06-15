@@ -158,8 +158,9 @@ public class CommonProxy implements IGuiHandler {
         MicroBlockAPI.registerMaterial(new WireMaterial("WireGreenstone", "Greenstone Wire", greenstoneIcon));
         MicroBlockAPI.registerMaterial(new WireMaterial("WireYellowstone", "Yellowstone Wire", yellowstoneIcon));
 
+        EnchantmentDurability enchant = (EnchantmentDurability) Enchantment.enchantmentsList[Enchantment.unbreaking.effectId];
         Enchantment.enchantmentsList[Enchantment.unbreaking.effectId] = null;
-        new EnchantmentDurabilityExt((EnchantmentDurability) Enchantment.unbreaking);
+        new EnchantmentDurabilityExt(enchant);
     }
 
     @Override
