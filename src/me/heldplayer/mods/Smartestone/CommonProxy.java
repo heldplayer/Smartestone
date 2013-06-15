@@ -1,6 +1,8 @@
 
 package me.heldplayer.mods.Smartestone;
 
+import static me.heldplayer.mods.Smartestone.util.Objects.*;
+
 import java.util.Random;
 
 import me.heldplayer.api.Smartestone.micro.IconProvider;
@@ -24,11 +26,11 @@ import me.heldplayer.mods.Smartestone.inventory.craftingchest.ContainerCraftingC
 import me.heldplayer.mods.Smartestone.item.ItemBlockMulti;
 import me.heldplayer.mods.Smartestone.item.ItemMicroBlock;
 import me.heldplayer.mods.Smartestone.item.ItemRotator;
+import me.heldplayer.mods.Smartestone.item.ItemWaterCore;
 import me.heldplayer.mods.Smartestone.tileentity.TileEntityCraftingChest;
 import me.heldplayer.mods.Smartestone.tileentity.TileEntityInductionishFurnace;
 import me.heldplayer.mods.Smartestone.tileentity.TileEntityItemStand;
 import me.heldplayer.mods.Smartestone.tileentity.TileEntityMicro;
-import me.heldplayer.mods.Smartestone.util.Objects;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
@@ -52,43 +54,49 @@ public class CommonProxy implements IGuiHandler {
     public void preInit(FMLPreInitializationEvent event) {
         MinecraftForge.EVENT_BUS.register(this);
 
-        Objects.log = event.getModLog();
+        log = event.getModLog();
         rand = new Random();
 
         MicroBlockAPI.microBlockId = ModSmartestone.blockMicroId.getValue();
-        Objects.redstoneIcon = new IconProvider();
-        Objects.bluestoneIcon = new IconProvider();
-        Objects.greenstoneIcon = new IconProvider();
-        Objects.yellowstoneIcon = new IconProvider();
+        redstoneIcon = new IconProvider();
+        bluestoneIcon = new IconProvider();
+        greenstoneIcon = new IconProvider();
+        yellowstoneIcon = new IconProvider();
     }
 
     public void init(FMLInitializationEvent event) {
-        Objects.blockMulti1 = new BlockMulti1(ModSmartestone.blockMulti1Id.getValue(), Material.rock);
-        Objects.blockMulti1.setUnlocalizedName("SSMulti1");
-        GameRegistry.registerBlock(Objects.blockMulti1, ItemBlockMulti.class, "SSMulti1");
-        GameRegistry.addRecipe(new ItemStack(Objects.blockMulti1, 1, 0), "obo", "scs", "sCs", 'o', new ItemStack(Block.cloth, 1, 1), 'b', new ItemStack(Block.cloth, 1, 12), 's', Block.stone, 'C', Block.workbench, 'c', Block.chest);
+        blockMulti1 = new BlockMulti1(ModSmartestone.blockMulti1Id.getValue(), Material.rock);
+        blockMulti1.setUnlocalizedName("SSMulti1");
+        GameRegistry.registerBlock(blockMulti1, ItemBlockMulti.class, "SSMulti1");
+        GameRegistry.addRecipe(new ItemStack(blockMulti1, 1, 0), "obo", "scs", "sCs", 'o', new ItemStack(Block.cloth, 1, 1), 'b', new ItemStack(Block.cloth, 1, 12), 's', Block.stone, 'C', Block.workbench, 'c', Block.chest);
 
-        Objects.blockMulti2 = new BlockMulti2(ModSmartestone.blockMulti2Id.getValue(), Material.rock);
-        Objects.blockMulti2.setUnlocalizedName("SSMulti2");
-        GameRegistry.registerBlock(Objects.blockMulti2, ItemBlockMulti.class, "SSMulti2");
-        GameRegistry.addRecipe(new ItemStack(Objects.blockMulti2, 1, 0), "bbb", "bsb", 'b', new ItemStack(Block.cloth, 1, 15), 's', Block.stone);
+        blockMulti2 = new BlockMulti2(ModSmartestone.blockMulti2Id.getValue(), Material.rock);
+        blockMulti2.setUnlocalizedName("SSMulti2");
+        GameRegistry.registerBlock(blockMulti2, ItemBlockMulti.class, "SSMulti2");
+        GameRegistry.addRecipe(new ItemStack(blockMulti2, 1, 0), "bbb", "bsb", 'b', new ItemStack(Block.cloth, 1, 15), 's', Block.stone);
 
-        Objects.blockMicro = new BlockMicro(ModSmartestone.blockMicroId.getValue());
-        Objects.blockMicro.setUnlocalizedName("SSMulti2");
-        GameRegistry.registerBlock(Objects.blockMicro, "SSMicro");
+        blockMicro = new BlockMicro(ModSmartestone.blockMicroId.getValue());
+        blockMicro.setUnlocalizedName("SSMulti2");
+        GameRegistry.registerBlock(blockMicro, "SSMicro");
 
-        Objects.itemRotator = new ItemRotator(ModSmartestone.itemRotatorId.getValue());
-        Objects.itemRotator.setUnlocalizedName("SSRotator");
-        GameRegistry.registerItem(Objects.itemRotator, "SSRotator");
+        itemRotator = new ItemRotator(ModSmartestone.itemRotatorId.getValue());
+        itemRotator.setUnlocalizedName("SSRotator");
+        GameRegistry.registerItem(itemRotator, "SSRotator");
 
-        Objects.itemMicroBlock = new ItemMicroBlock(ModSmartestone.itemMicroBlockId.getValue());
-        GameRegistry.registerItem(Objects.itemMicroBlock, "SSMicroBlockItem");
+        itemMicroBlock = new ItemMicroBlock(ModSmartestone.itemMicroBlockId.getValue());
+        GameRegistry.registerItem(itemMicroBlock, "SSMicroBlockItem");
 
-        Objects.creativeTab = new CreativeTab("Smartestone", new ItemStack(Objects.blockMulti1, 1, 0));
-        Objects.blockMulti1.setCreativeTab(Objects.creativeTab);
-        Objects.blockMulti2.setCreativeTab(Objects.creativeTab);
-        Objects.itemRotator.setCreativeTab(Objects.creativeTab);
-        Objects.itemMicroBlock.setCreativeTab(Objects.creativeTab);
+        itemWaterCore = new ItemWaterCore(ModSmartestone.itemWaterCoreId.getValue());
+        itemWaterCore.setUnlocalizedName("SSWaterCore");
+        GameRegistry.registerItem(itemWaterCore, "SSWaterCore");
+
+        creativeTab = new CreativeTab("Smartestone", new ItemStack(blockMulti1, 1, 0));
+        creativeTabMicroblocks = new CreativeTab("SmartestoneMicroblocks", new ItemStack(itemRotator, 1, 0));
+        blockMulti1.setCreativeTab(creativeTab);
+        blockMulti2.setCreativeTab(creativeTab);
+        itemRotator.setCreativeTab(creativeTab);
+        itemMicroBlock.setCreativeTab(creativeTabMicroblocks);
+        itemWaterCore.setCreativeTab(creativeTab);
 
         this.registerLanguage();
 
@@ -142,10 +150,10 @@ public class CommonProxy implements IGuiHandler {
             MicroBlockAPI.registerMaterial(new BlockMaterial(new ItemStack(35, 1, meta)));
         }
 
-        MicroBlockAPI.registerMaterial(new WireMaterial("WireRedstone", "Redstone Wire", Objects.redstoneIcon));
-        MicroBlockAPI.registerMaterial(new WireMaterial("WireBluestone", "Bluestone Wire", Objects.bluestoneIcon));
-        MicroBlockAPI.registerMaterial(new WireMaterial("WireGreenstone", "Greenstone Wire", Objects.greenstoneIcon));
-        MicroBlockAPI.registerMaterial(new WireMaterial("WireYellowstone", "Yellowstone Wire", Objects.yellowstoneIcon));
+        MicroBlockAPI.registerMaterial(new WireMaterial("WireRedstone", "Redstone Wire", redstoneIcon));
+        MicroBlockAPI.registerMaterial(new WireMaterial("WireBluestone", "Bluestone Wire", bluestoneIcon));
+        MicroBlockAPI.registerMaterial(new WireMaterial("WireGreenstone", "Greenstone Wire", greenstoneIcon));
+        MicroBlockAPI.registerMaterial(new WireMaterial("WireYellowstone", "Yellowstone Wire", yellowstoneIcon));
     }
 
     @Override
@@ -256,10 +264,12 @@ public class CommonProxy implements IGuiHandler {
         LanguageRegistry.instance().addStringLocalization("tile.SSMulti2.14.name", "Unknown Block");
         LanguageRegistry.instance().addStringLocalization("tile.SSMulti2.15.name", "Unknown Block");
         LanguageRegistry.instance().addStringLocalization("item.SSRotator.name", "Block Rotator");
+        LanguageRegistry.instance().addStringLocalization("item.SSWaterCore.name", "Water Core");
         LanguageRegistry.instance().addStringLocalization("container.SSCraftingChest", "Crafting Chest");
         LanguageRegistry.instance().addStringLocalization("container.SSInductionishFurnace", "Inductionish Furnace");
         LanguageRegistry.instance().addStringLocalization("container.SSItemStand", "Item Stand");
         LanguageRegistry.instance().addStringLocalization("itemGroup.Smartestone", "Smartestone");
+        LanguageRegistry.instance().addStringLocalization("itemGroup.SmartestoneMicroblocks", "Microblocks");
     }
 
 }

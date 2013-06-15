@@ -40,6 +40,7 @@ public class ModSmartestone {
     public static ConfigValue<Integer> blockMicroId;
     public static ConfigValue<Integer> itemRotatorId;
     public static ConfigValue<Integer> itemMicroBlockId;
+    public static ConfigValue<Integer> itemWaterCoreId;
 
     @PreInit
     public void preInit(FMLPreInitializationEvent event) {
@@ -60,6 +61,7 @@ public class ModSmartestone {
         blockMicroId = new ConfigValue<Integer>("MicroId", Configuration.CATEGORY_BLOCK, null, 2102, "");
         itemRotatorId = new ConfigValue<Integer>("Rotator", Configuration.CATEGORY_ITEM, null, 5240, "");
         itemMicroBlockId = new ConfigValue<Integer>("MicroBlockItem", Configuration.CATEGORY_ITEM, null, 5241, "");
+        itemWaterCoreId = new ConfigValue<Integer>("WaterCore", Configuration.CATEGORY_ITEM, null, 5242, "");
         this.config = new Config(event.getSuggestedConfigurationFile());
         this.config.addConfigKey(silentUpdates);
         this.config.addConfigKey(blockMulti1Id);
@@ -67,6 +69,7 @@ public class ModSmartestone {
         this.config.addConfigKey(blockMicroId);
         this.config.addConfigKey(itemRotatorId);
         this.config.addConfigKey(itemMicroBlockId);
+        this.config.addConfigKey(itemWaterCoreId);
         this.config.load();
         this.config.saveOnChange();
 
