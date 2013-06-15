@@ -135,7 +135,8 @@ public class BlockMicro extends Block {
 
     @Override
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
-        return null;
+        // TODO: Find a way for items AND buckets to be happy about this
+        return super.getCollisionBoundingBoxFromPool(world, x, y, z);
     }
 
     @Override
