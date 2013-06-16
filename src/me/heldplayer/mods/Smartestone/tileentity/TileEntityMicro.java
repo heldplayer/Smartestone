@@ -1,27 +1,33 @@
 
 package me.heldplayer.mods.Smartestone.tileentity;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.logging.Level;
 
 import me.heldplayer.api.Smartestone.micro.IMicroBlock;
 import me.heldplayer.api.Smartestone.micro.IMicroBlockMaterial;
 import me.heldplayer.api.Smartestone.micro.IMicroBlockSubBlock;
 import me.heldplayer.api.Smartestone.micro.MicroBlockAPI;
 import me.heldplayer.api.Smartestone.micro.MicroBlockInfo;
-import me.heldplayer.mods.Smartestone.CommonProxy;
+import me.heldplayer.api.Smartestone.micro.MicroBlockInfoSorter;
 import me.heldplayer.mods.Smartestone.PacketHandler;
+import me.heldplayer.mods.Smartestone.util.Objects;
+import me.heldplayer.mods.Smartestone.util.Util;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.chunk.Chunk;
 
 public class TileEntityMicro extends TileEntity implements IMicroBlock {
 
-    public List<MicroBlockInfo> info;
+    public Set<MicroBlockInfo> infos;
+    public boolean[] usedIndices;
 
     public TileEntityMicro() {
-        this.info = new ArrayList<MicroBlockInfo>();
+        this.infos = new TreeSet<MicroBlockInfo>(new MicroBlockInfoSorter());
+        this.usedIndices = new boolean[64];
     }
 
     @Override
@@ -30,11 +36,15 @@ public class TileEntityMicro extends TileEntity implements IMicroBlock {
 
         NBTTagList list = new NBTTagList("Info");
 
-        for (MicroBlockInfo info : this.info) {
+        MicroBlockInfo[] infos = this.infos.toArray(new MicroBlockInfo[this.infos.size()]);
+
+        for (int i = 0; i < infos.length; i++) {
+            MicroBlockInfo info = infos[i];
             NBTTagCompound tag = new NBTTagCompound();
             tag.setString("Type", info.getType() != null ? info.getType().getTypeName() : "null");
             tag.setString("Material", info.getMaterial() != null ? info.getMaterial().getIdentifier() : "null");
             tag.setInteger("Data", info.getData());
+            tag.setInteger("Index", i);
 
             list.appendTag(tag);
         }
@@ -48,7 +58,7 @@ public class TileEntityMicro extends TileEntity implements IMicroBlock {
 
         NBTTagList list = compound.getTagList("Info");
 
-        this.info.clear();
+        this.infos.clear();
 
         for (int i = 0; i < list.tagCount(); i++) {
             NBTTagCompound tag = (NBTTagCompound) list.tagAt(i);
@@ -57,20 +67,30 @@ public class TileEntityMicro extends TileEntity implements IMicroBlock {
             IMicroBlockSubBlock type = MicroBlockAPI.getSubBlock(tag.getString("Type"));
             int data = tag.getInteger("Data");
 
-            MicroBlockInfo info = new MicroBlockInfo(material, type, data);
+            int index = getNextAvailableIndex();
 
-            this.info.add(info);
+            if (index < 0) {
+                Objects.log.log(Level.WARNING, "Skipping a MicroBlock component because there are no available slots");
+            }
+            else {
+                MicroBlockInfo info = new MicroBlockInfo(material, type, data);
+                info.index = index;
+                this.usedIndices[index] = true;
+
+                this.infos.add(info);
+            }
         }
     }
 
     public void writeNBT(NBTTagCompound compound) {
         NBTTagList list = new NBTTagList("Info");
 
-        for (MicroBlockInfo info : this.info) {
+        for (MicroBlockInfo info : this.infos) {
             NBTTagCompound tag = new NBTTagCompound();
             tag.setString("Type", info.getType() != null ? info.getType().getTypeName() : "null");
             tag.setString("Material", info.getMaterial() != null ? info.getMaterial().getIdentifier() : "null");
             tag.setInteger("Data", info.getData());
+            tag.setInteger("Index", info.index);
 
             list.appendTag(tag);
         }
@@ -81,7 +101,7 @@ public class TileEntityMicro extends TileEntity implements IMicroBlock {
     public void readNBT(NBTTagCompound compound) {
         NBTTagList list = compound.getTagList("Info");
 
-        this.info.clear();
+        this.infos.clear();
 
         for (int i = 0; i < list.tagCount(); i++) {
             NBTTagCompound tag = (NBTTagCompound) list.tagAt(i);
@@ -89,27 +109,82 @@ public class TileEntityMicro extends TileEntity implements IMicroBlock {
             IMicroBlockMaterial material = MicroBlockAPI.getMaterial(tag.getString("Material"));
             IMicroBlockSubBlock type = MicroBlockAPI.getSubBlock(tag.getString("Type"));
             int data = tag.getInteger("Data");
+            int index = tag.getInteger("Index");
 
             MicroBlockInfo info = new MicroBlockInfo(material, type, data);
+            info.index = index;
 
-            this.info.add(info);
+            this.infos.add(info);
         }
+    }
+
+    private int getNextAvailableIndex() {
+        int index = 0;
+
+        boolean flag = this.usedIndices[index];
+        while (flag) {
+            index++;
+            if (index >= this.usedIndices.length) {
+                flag = false;
+                index = -1;
+            }
+            else {
+                flag = this.usedIndices[index];
+            }
+        }
+
+        return index;
     }
 
     @Override
     public Packet getDescriptionPacket() {
-        Packet packet = PacketHandler.getPacket(1, this);
+        Packet packet = PacketHandler.getPacket(2, this);
         return packet;
     }
 
     @Override
-    public List<MicroBlockInfo> getSubBlocks() {
-        return this.info;
+    public Set<MicroBlockInfo> getSubBlocks() {
+        return this.infos;
     }
 
     @Override
-    public void resendTileData() {
-        CommonProxy.resendTileData(this);
+    public void addInfo(MicroBlockInfo info) {
+        if (this.worldObj.isRemote) {
+            return;
+        }
+
+        int index = this.getNextAvailableIndex();
+
+        if (index >= 0) {
+            info.index = index;
+            this.usedIndices[index] = true;
+            this.infos.add(info);
+            Chunk chunk = worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord);
+            Util.sendPacketToPlayersWatching(PacketHandler.getPacket(3, this, info), worldObj.getWorldInfo().getDimension(), chunk.xPosition, chunk.zPosition);
+        }
+    }
+
+    @Override
+    public void modifyInfo(MicroBlockInfo info) {
+        if (this.worldObj.isRemote) {
+            return;
+        }
+
+        Chunk chunk = worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord);
+        Util.sendPacketToPlayersWatching(PacketHandler.getPacket(5, this, info), worldObj.getWorldInfo().getDimension(), chunk.xPosition, chunk.zPosition);
+    }
+
+    @Override
+    public void removeInfo(MicroBlockInfo info) {
+        if (this.worldObj.isRemote) {
+            return;
+        }
+
+        this.infos.remove(info);
+        this.usedIndices[info.index] = false;
+
+        Chunk chunk = worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord);
+        Util.sendPacketToPlayersWatching(PacketHandler.getPacket(4, this, info), worldObj.getWorldInfo().getDimension(), chunk.xPosition, chunk.zPosition);
     }
 
 }

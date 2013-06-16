@@ -109,8 +109,24 @@ public class ItemMicroBlock extends Item {
         if (!player.canPlayerEdit(x, y, z, side, stack)) {
             return false;
         }
+        if (world.isRemote) {
+            return true;
+        }
 
-        //if (world.canPlaceEntityOnSide(MicroBlockAPI.microBlockId, x, y, z, false, side, player, stack)) {
+        int blockId = world.getBlockId(x, y, z);
+
+        if (blockId == Block.snow.blockID && (world.getBlockMetadata(y, y, z) & 7) < 1) {
+            side = 1;
+        }
+        else if (blockId != Block.vine.blockID && blockId != Block.tallGrass.blockID && blockId != Block.deadBush.blockID && (Block.blocksList[blockId] == null || !Block.blocksList[blockId].isBlockReplaceable(world, y, y, z))) {
+            ForgeDirection dir = ForgeDirection.getOrientation(side);
+
+            x += dir.offsetX;
+            y += dir.offsetY;
+            z += dir.offsetZ;
+        }
+
+        //if (blockId == Objects.blockMicro.blockID || world.canPlaceEntityOnSide(MicroBlockAPI.microBlockId, x, y, z, false, side, player, stack)) {
         NBTTagCompound compound = stack.getTagCompound();
 
         IMicroBlockMaterial material = MicroBlockAPI.getMaterial(compound != null ? compound.getString("Material") : "null");
@@ -122,14 +138,8 @@ public class ItemMicroBlock extends Item {
 
         MicroBlockInfo info = new MicroBlockInfo(material, subBlock, 0);
 
-        ForgeDirection dir = ForgeDirection.getOrientation(side);
-
-        x += dir.offsetX;
-        y += dir.offsetY;
-        z += dir.offsetZ;
-
         if (world.getBlockId(x, y, z) != Objects.blockMicro.blockID) {
-            if (world.getBlockId(x, y, z) == 0 && !world.setBlock(x, y, z, MicroBlockAPI.microBlockId, 0, 3)) {
+            if (!world.setBlock(x, y, z, MicroBlockAPI.microBlockId, 0, 3)) {
                 return false;
             }
         }
@@ -148,20 +158,25 @@ public class ItemMicroBlock extends Item {
             }
 
             MicroBlockInfo result = new MicroBlockInfo(info.getMaterial(), info.getType(), data);
+
             if (!subBlock.canBeAdded(tile, result)) {
                 return false;
             }
 
-            tile.getSubBlocks().add(result);
+            tile.addInfo(result);
 
             world.notifyBlockOfNeighborChange(x, y, z, MicroBlockAPI.microBlockId);
             world.notifyBlockChange(x, y, z, MicroBlockAPI.microBlockId);
 
-            tile.resendTileData();
-
             world.playSoundEffect((double) ((float) x + 0.5F), (double) ((float) y + 0.5F), (double) ((float) z + 0.5F), block.stepSound.getPlaceSound(), (block.stepSound.getVolume() + 1.0F) / 2.0F, block.stepSound.getPitch() * 0.8F);
 
-            stack.stackSize--;
+            if (!player.capabilities.isCreativeMode) {
+                stack.stackSize--;
+
+                if (stack.stackSize <= 0) {
+                    player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
+                }
+            }
         }
 
         return true;

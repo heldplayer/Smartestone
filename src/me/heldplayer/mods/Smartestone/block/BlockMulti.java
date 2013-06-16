@@ -269,7 +269,7 @@ public abstract class BlockMulti extends Block {
             }
 
             try {
-                ((EntityPlayerMP) player).playerNetServerHandler.netManager.addToSendQueue(PacketHandler.getPacket(0, tile));
+                ((EntityPlayerMP) player).playerNetServerHandler.netManager.addToSendQueue(PacketHandler.getPacket(1, tile));
             }
             catch (ClassCastException e) {}
 

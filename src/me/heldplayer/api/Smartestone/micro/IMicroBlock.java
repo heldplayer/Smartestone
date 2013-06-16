@@ -1,14 +1,16 @@
 
 package me.heldplayer.api.Smartestone.micro;
 
-import java.util.List;
+import java.util.Set;
 
 public interface IMicroBlock {
 
-    public abstract List<MicroBlockInfo> getSubBlocks();
+    public abstract Set<MicroBlockInfo> getSubBlocks();
 
-    @Deprecated
-    // This method is highly inefficient and won't be supported in the future, however it will be used temporarilly
-    public abstract void resendTileData();
+    public abstract void removeInfo(MicroBlockInfo info);
+
+    public abstract void addInfo(MicroBlockInfo info);
+
+    public abstract void modifyInfo(MicroBlockInfo info);
 
 }

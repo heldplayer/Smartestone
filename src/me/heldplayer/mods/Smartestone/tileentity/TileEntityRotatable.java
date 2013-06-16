@@ -1,10 +1,10 @@
 
 package me.heldplayer.mods.Smartestone.tileentity;
 
-import me.heldplayer.mods.Smartestone.CommonProxy;
 import me.heldplayer.mods.Smartestone.PacketHandler;
 import me.heldplayer.mods.Smartestone.util.Direction;
 import me.heldplayer.mods.Smartestone.util.Rotation;
+import me.heldplayer.mods.Smartestone.util.Util;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
@@ -40,14 +40,14 @@ public abstract class TileEntityRotatable extends TileEntity {
 
     @Override
     public Packet getDescriptionPacket() {
-        Packet packet = PacketHandler.getPacket(0, this);
+        Packet packet = PacketHandler.getPacket(1, this);
         return packet;
     }
 
     @Override
     public void onInventoryChanged() {
         super.onInventoryChanged();
-        CommonProxy.resendTileData(this);
+        Util.resendTileData(this);
     }
 
     public boolean isInvNameLocalized() {

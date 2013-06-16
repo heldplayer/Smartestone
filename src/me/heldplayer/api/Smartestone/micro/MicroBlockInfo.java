@@ -6,11 +6,13 @@ public class MicroBlockInfo {
     private IMicroBlockMaterial material;
     private IMicroBlockSubBlock subBlock;
     private int data;
+    public int index;
 
     public MicroBlockInfo(IMicroBlockMaterial material, IMicroBlockSubBlock subBlock, int data) {
         this.material = material;
         this.subBlock = subBlock;
         this.data = data;
+        this.index = 0;
     }
 
     public IMicroBlockMaterial getMaterial() {

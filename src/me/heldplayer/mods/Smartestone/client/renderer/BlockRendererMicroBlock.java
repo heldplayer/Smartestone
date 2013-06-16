@@ -3,6 +3,7 @@ package me.heldplayer.mods.Smartestone.client.renderer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import me.heldplayer.api.Smartestone.micro.IMicroBlockMaterial;
 import me.heldplayer.api.Smartestone.micro.IMicroBlockSubBlock;
@@ -42,7 +43,7 @@ public class BlockRendererMicroBlock implements ISimpleBlockRenderingHandler {
 
         List<ReusableRenderFace> faces = new ArrayList<ReusableRenderFace>();
 
-        List<MicroBlockInfo> infos = tile.getSubBlocks();
+        Set<MicroBlockInfo> infos = tile.getSubBlocks();
 
         Tessellator tes = Tessellator.instance;
 

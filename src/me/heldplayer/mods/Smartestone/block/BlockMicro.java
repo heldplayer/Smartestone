@@ -3,10 +3,10 @@ package me.heldplayer.mods.Smartestone.block;
 
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import me.heldplayer.api.Smartestone.micro.MicroBlockInfo;
 import me.heldplayer.api.Smartestone.micro.impl.MicroBlockCentralWire;
-import me.heldplayer.mods.Smartestone.CommonProxy;
 import me.heldplayer.mods.Smartestone.tileentity.TileEntityMicro;
 import me.heldplayer.mods.Smartestone.util.Objects;
 import me.heldplayer.mods.Smartestone.util.RayTrace;
@@ -116,7 +116,7 @@ public class BlockMicro extends Block {
             return;
         }
 
-        List<MicroBlockInfo> infos = tile.getSubBlocks();
+        Set<MicroBlockInfo> infos = tile.getSubBlocks();
 
         for (MicroBlockInfo info : infos) {
             AxisAlignedBB aabb = info.getType().getBoundsInBlock(info);
@@ -169,7 +169,7 @@ public class BlockMicro extends Block {
             return super.collisionRayTrace(world, x, y, z, start, end);
         }
 
-        List<MicroBlockInfo> infos = tile.getSubBlocks();
+        Set<MicroBlockInfo> infos = tile.getSubBlocks();
 
         if (infos.size() == 0) {
             return super.collisionRayTrace(world, x, y, z, start, end);
@@ -226,7 +226,7 @@ public class BlockMicro extends Block {
             return true;
         }
 
-        List<MicroBlockInfo> infos = tile.getSubBlocks();
+        Set<MicroBlockInfo> infos = tile.getSubBlocks();
 
         RayTrace.rayTrace(world, player, x, y, z);
 
@@ -239,9 +239,8 @@ public class BlockMicro extends Block {
             }
         }
 
-        if (targetted != null && player.capabilities.allowEdit) {
-            infos.remove(targetted);
-            CommonProxy.resendTileData(tile);
+        if (targetted != null && !world.isRemote && player.capabilities.allowEdit) {
+            tile.removeInfo(targetted);
             if (!world.isRemote && !player.capabilities.isCreativeMode) {
                 ItemStack stack = new ItemStack(Objects.itemMicroBlock.itemID, 1, 0);
                 NBTTagCompound compound = new NBTTagCompound("tag");
@@ -287,7 +286,7 @@ public class BlockMicro extends Block {
             return null;
         }
 
-        List<MicroBlockInfo> infos = tile.getSubBlocks();
+        Set<MicroBlockInfo> infos = tile.getSubBlocks();
 
         MicroBlockInfo targetted = null;
 
@@ -336,7 +335,7 @@ public class BlockMicro extends Block {
             return true;
         }
 
-        List<MicroBlockInfo> infos = tile.getSubBlocks();
+        Set<MicroBlockInfo> infos = tile.getSubBlocks();
 
         for (MicroBlockInfo info : infos) {
             if (info.getType().isSideSolid(info, side.ordinal())) {
@@ -359,7 +358,7 @@ public class BlockMicro extends Block {
             return true;
         }
 
-        List<MicroBlockInfo> infos = tile.getSubBlocks();
+        Set<MicroBlockInfo> infos = tile.getSubBlocks();
 
         MicroBlockInfo targetted = null;
 
@@ -442,7 +441,7 @@ public class BlockMicro extends Block {
             return true;
         }
 
-        List<MicroBlockInfo> infos = tile.getSubBlocks();
+        Set<MicroBlockInfo> infos = tile.getSubBlocks();
 
         RenderEngine renderEngine = RenderManager.instance.renderEngine;
 
@@ -478,7 +477,7 @@ public class BlockMicro extends Block {
             return;
         }
 
-        List<MicroBlockInfo> infos = tile.getSubBlocks();
+        Set<MicroBlockInfo> infos = tile.getSubBlocks();
 
         for (MicroBlockInfo info : infos) {
             info.getType().onBlockUpdate(info, world, x, y, z);
@@ -509,7 +508,7 @@ public class BlockMicro extends Block {
 
         int power = 0;
 
-        List<MicroBlockInfo> infos = tile.getSubBlocks();
+        Set<MicroBlockInfo> infos = tile.getSubBlocks();
 
         for (MicroBlockInfo info : infos) {
             int other = info.getType().getPowerOutput(info, side);
@@ -564,7 +563,7 @@ public class BlockMicro extends Block {
 
         int power = 0;
 
-        List<MicroBlockInfo> infos = tile.getSubBlocks();
+        Set<MicroBlockInfo> infos = tile.getSubBlocks();
 
         for (MicroBlockInfo info : infos) {
             int other = info.getType().getPowerOutput(info, side);
@@ -578,6 +577,17 @@ public class BlockMicro extends Block {
         }
 
         return power;
+    }
+
+    @Override
+    public boolean isAirBlock(World world, int x, int y, int z) {
+        TileEntityMicro tile = (TileEntityMicro) world.getBlockTileEntity(x, y, z);
+
+        if (tile == null) {
+            return true;
+        }
+
+        return tile.getSubBlocks().size() == 0;
     }
 
 }

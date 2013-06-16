@@ -2,7 +2,7 @@
 package me.heldplayer.api.Smartestone.micro.impl;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 import me.heldplayer.api.Smartestone.micro.IMicroBlock;
 import me.heldplayer.api.Smartestone.micro.IMicroBlockMaterial;
@@ -261,7 +261,7 @@ public class MicroBlockCentralWire extends MicroBlockImpl {
                     continue;
                 }
 
-                List<MicroBlockInfo> infos = tile.getSubBlocks();
+                Set<MicroBlockInfo> infos = tile.getSubBlocks();
 
                 for (MicroBlockInfo currInfo : infos) {
                     if (currInfo.getType().equals(this)) {
@@ -286,7 +286,7 @@ public class MicroBlockCentralWire extends MicroBlockImpl {
         if (data != origData && this.position < 128) {
             info.setData(data);
             world.notifyBlocksOfNeighborChange(x, y, z, MicroBlockAPI.microBlockId);
-            ((IMicroBlock) world.getBlockTileEntity(x, y, z)).resendTileData();
+            ((IMicroBlock) world.getBlockTileEntity(x, y, z)).modifyInfo(info);
         }
 
         this.position--;
@@ -314,7 +314,7 @@ public class MicroBlockCentralWire extends MicroBlockImpl {
                 return false;
             }
 
-            List<MicroBlockInfo> infos = tile.getSubBlocks();
+            Set<MicroBlockInfo> infos = tile.getSubBlocks();
 
             for (MicroBlockInfo current : infos) {
                 if (current.getType().equals(info.getType()) && current.getMaterial().equals(info.getMaterial())) {
@@ -345,7 +345,7 @@ public class MicroBlockCentralWire extends MicroBlockImpl {
 
     @Override
     public boolean canBeAdded(IMicroBlock tile, MicroBlockInfo info) {
-        List<MicroBlockInfo> infos = tile.getSubBlocks();
+        Set<MicroBlockInfo> infos = tile.getSubBlocks();
 
         for (MicroBlockInfo current : infos) {
             if (current.getType().equals(this)) {

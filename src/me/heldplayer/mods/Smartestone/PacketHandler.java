@@ -4,7 +4,10 @@ package me.heldplayer.mods.Smartestone;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.Set;
 
+import me.heldplayer.api.Smartestone.micro.MicroBlockAPI;
+import me.heldplayer.api.Smartestone.micro.MicroBlockInfo;
 import me.heldplayer.mods.Smartestone.tileentity.TileEntityMicro;
 import me.heldplayer.mods.Smartestone.tileentity.TileEntityRotatable;
 import me.heldplayer.mods.Smartestone.util.Direction;
@@ -33,13 +36,13 @@ public class PacketHandler implements IPacketHandler {
 
         try {
             switch (type) {
-            case 0: {
+            case 1: {
                 int posX = dat.readInt();
                 int posY = dat.readInt();
                 int posZ = dat.readInt();
                 int direction = dat.readUnsignedByte();
                 int rotation = dat.readUnsignedByte();
-                int length = dat.readUnsignedByte();
+                int length = dat.readInt();
                 byte[] nameBytes = new byte[length];
                 dat.readFully(nameBytes);
 
@@ -57,7 +60,7 @@ public class PacketHandler implements IPacketHandler {
                 world.markBlockForUpdate(posX, posY, posZ);
             }
             break;
-            case 1: {
+            case 2: {
                 int posX = dat.readInt();
                 int posY = dat.readInt();
                 int posZ = dat.readInt();
@@ -73,6 +76,80 @@ public class PacketHandler implements IPacketHandler {
                 world.markBlockForUpdate(posX, posY, posZ);
             }
             break;
+            case 3: {
+                int posX = dat.readInt();
+                int posY = dat.readInt();
+                int posZ = dat.readInt();
+                int index = dat.readInt();
+                int length = dat.readInt();
+                byte[] typeBytes = new byte[length];
+                dat.readFully(typeBytes);
+                length = dat.readInt();
+                byte[] materialBytes = new byte[length];
+                dat.readFully(materialBytes);
+                int data = dat.readInt();
+
+                World world = ((EntityPlayer) player).worldObj;
+                TileEntityMicro tile = (TileEntityMicro) world.getBlockTileEntity(posX, posY, posZ);
+                if (tile != null) {
+                    MicroBlockInfo info = new MicroBlockInfo(MicroBlockAPI.getMaterial(new String(materialBytes)), MicroBlockAPI.getSubBlock(new String(typeBytes)), data);
+                    info.index = index;
+                    tile.getSubBlocks().add(info);
+                }
+
+                world.markBlockForUpdate(posX, posY, posZ);
+            }
+            break;
+            case 4: {
+                int posX = dat.readInt();
+                int posY = dat.readInt();
+                int posZ = dat.readInt();
+                int index = dat.readInt();
+
+                World world = ((EntityPlayer) player).worldObj;
+                TileEntityMicro tile = (TileEntityMicro) world.getBlockTileEntity(posX, posY, posZ);
+                if (tile != null) {
+                    Set<MicroBlockInfo> infos = tile.getSubBlocks();
+
+                    MicroBlockInfo removed = null;
+                    for (MicroBlockInfo info : infos) {
+                        if (info.index == index) {
+                            removed = info;
+                            break;
+                        }
+                    }
+
+                    if (removed != null) {
+                        infos.remove(removed);
+                    }
+                }
+
+                world.markBlockForUpdate(posX, posY, posZ);
+            }
+            break;
+            case 5: {
+                int posX = dat.readInt();
+                int posY = dat.readInt();
+                int posZ = dat.readInt();
+                int index = dat.readInt();
+                int data = dat.readInt();
+
+                World world = ((EntityPlayer) player).worldObj;
+                TileEntityMicro tile = (TileEntityMicro) world.getBlockTileEntity(posX, posY, posZ);
+                if (tile != null) {
+                    Set<MicroBlockInfo> infos = tile.getSubBlocks();
+
+                    for (MicroBlockInfo info : infos) {
+                        if (info.index == index) {
+                            info.setData(data);
+
+                            break;
+                        }
+                    }
+                }
+
+                world.markBlockForUpdate(posX, posY, posZ);
+            }
             }
         }
         catch (IOException e) {
@@ -83,11 +160,29 @@ public class PacketHandler implements IPacketHandler {
     /**
      * Constructs a packet when requested<br/>
      * <br/>
-     * Types:<br/>
-     * 0: Basic Tile information, args: TileEntityBase;
-     * Sends name, direction and rotation
-     * 1: MicroBlock tile information, agrs: TileEntityMicro;
-     * Sends all sub blocks
+     * Types:
+     * <ol>
+     * <li>
+     * <b>Basic Tile information</b><br>
+     * <b>Arguments:</b> TileEntityRotatable<br>
+     * Sends name, direction, rotation and custom data</li>
+     * <li>
+     * <b>MicroBlock tile information</b><br>
+     * <b>Arguments:</b> TileEntityMicro;<br>
+     * Sends all sub blocks</li>
+     * <li>
+     * <b>Add Microblock</b><br>
+     * <b>Arguments: TileEntityMicro, MicroBlockInfo</b><br>
+     * Sends to the client that a new block has been added to a microblock</li>
+     * <li>
+     * <b>Remove Microblock</b><br>
+     * <b>Arguments: TileEntityMicro, MicroBlockInfo</b><br>
+     * Sends to the client that a block has been removed from a microblock</li>
+     * <li>
+     * <b>Modify Microblock</b><br>
+     * <b>Arguments: TileEntityMicro, MicroBlockInfo</b><br>
+     * Sends to the client that a block has been modifed in a microblock</li>
+     * </ol>
      * 
      * @param type
      *        The type of the packet
@@ -102,7 +197,7 @@ public class PacketHandler implements IPacketHandler {
         try {
             dos.writeByte(type);
             switch (type) {
-            case 0: {
+            case 1: {
                 TileEntityRotatable tile = (TileEntityRotatable) args[0];
                 byte[] nameBytes = tile.customName.getBytes();
 
@@ -114,13 +209,13 @@ public class PacketHandler implements IPacketHandler {
                 dos.writeInt(tile.zCoord);
                 dos.writeByte(tile.direction.ordinal());
                 dos.writeByte(tile.rotation.ordinal());
-                dos.writeByte(nameBytes.length);
+                dos.writeInt(nameBytes.length);
                 dos.write(nameBytes);
 
                 NBTBase.writeNamedTag(compound, dos);
             }
             break;
-            case 1: {
+            case 2: {
                 TileEntityMicro tile = (TileEntityMicro) args[0];
 
                 NBTTagCompound compound = new NBTTagCompound();
@@ -131,6 +226,45 @@ public class PacketHandler implements IPacketHandler {
                 dos.writeInt(tile.zCoord);
 
                 NBTBase.writeNamedTag(compound, dos);
+            }
+            break;
+            case 3: {
+                TileEntityMicro tile = (TileEntityMicro) args[0];
+                MicroBlockInfo info = (MicroBlockInfo) args[1];
+
+                byte[] typeBytes = info.getType().getTypeName().getBytes();
+                byte[] materialBytes = info.getMaterial().getIdentifier().getBytes();
+
+                dos.writeInt(tile.xCoord);
+                dos.writeInt(tile.yCoord);
+                dos.writeInt(tile.zCoord);
+                dos.writeInt(info.index);
+                dos.writeInt(typeBytes.length);
+                dos.write(typeBytes);
+                dos.writeInt(materialBytes.length);
+                dos.write(materialBytes);
+                dos.writeInt(info.getData());
+            }
+            break;
+            case 4: {
+                TileEntityMicro tile = (TileEntityMicro) args[0];
+                MicroBlockInfo info = (MicroBlockInfo) args[1];
+
+                dos.writeInt(tile.xCoord);
+                dos.writeInt(tile.yCoord);
+                dos.writeInt(tile.zCoord);
+                dos.writeInt(info.index);
+            }
+            break;
+            case 5: {
+                TileEntityMicro tile = (TileEntityMicro) args[0];
+                MicroBlockInfo info = (MicroBlockInfo) args[1];
+
+                dos.writeInt(tile.xCoord);
+                dos.writeInt(tile.yCoord);
+                dos.writeInt(tile.zCoord);
+                dos.writeInt(info.index);
+                dos.writeInt(info.getData());
             }
             break;
             }

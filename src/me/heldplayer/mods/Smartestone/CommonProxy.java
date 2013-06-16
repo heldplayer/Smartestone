@@ -41,7 +41,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -227,16 +226,6 @@ public class CommonProxy implements IGuiHandler {
         }
 
         return null;
-    }
-
-    public static void resendTileData(TileEntity tile) {
-        if (!(tile.worldObj instanceof WorldServer)) {
-            return;
-        }
-
-        WorldServer world = (WorldServer) tile.worldObj;
-
-        world.getPlayerManager().flagChunkForUpdate(tile.xCoord, tile.yCoord, tile.zCoord);
     }
 
     public void registerLanguage() {

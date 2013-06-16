@@ -1,7 +1,7 @@
 
 package me.heldplayer.mods.Smartestone.util;
 
-import java.util.List;
+import java.util.Set;
 
 import me.heldplayer.api.Smartestone.micro.MicroBlockInfo;
 import me.heldplayer.mods.Smartestone.tileentity.TileEntityMicro;
@@ -30,7 +30,7 @@ public class RayTrace {
             return;
         }
 
-        List<MicroBlockInfo> infos = tile.getSubBlocks();
+        Set<MicroBlockInfo> infos = tile.getSubBlocks();
 
         if (infos.size() == 0) {
             aabb = null;
