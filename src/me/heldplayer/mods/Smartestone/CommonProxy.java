@@ -37,6 +37,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentDurability;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -92,6 +93,7 @@ public class CommonProxy implements IGuiHandler {
         itemWaterCore = new ItemWaterCore(ModSmartestone.itemWaterCoreId.getValue());
         itemWaterCore.setUnlocalizedName("SSWaterCore");
         GameRegistry.registerItem(itemWaterCore, "SSWaterCore");
+        GameRegistry.addRecipe(new ItemStack(itemWaterCore, 1, 0), "iIi", "IbI", "iIi", 'i', Item.ingotIron, 'I', Block.ice, 'b', Item.bucketWater);
 
         creativeTab = new CreativeTab("Smartestone", new ItemStack(blockMulti1, 1, 0));
         creativeTabMicroblocks = new CreativeTab("SmartestoneMicroblocks", new ItemStack(itemRotator, 1, 0));
