@@ -31,7 +31,7 @@ public final class MicroBlockRenderHelper {
         double y = event.player.lastTickPosY + (event.player.posY - event.player.lastTickPosY) * (double) event.partialTicks;
         double z = event.player.lastTickPosZ + (event.player.posZ - event.player.lastTickPosZ) * (double) event.partialTicks;
 
-        AxisAlignedBB aabb = info.getType().getBoundsInBlock(info);
+        AxisAlignedBB aabb = info.getType().getBoundsInBlock(info).expand(-0.001D, -0.001D, -0.001D);
 
         GL11.glTranslated(-x, -y, -z);
 
