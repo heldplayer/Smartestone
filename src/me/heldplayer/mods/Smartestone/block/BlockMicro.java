@@ -486,6 +486,10 @@ public class BlockMicro extends Block {
 
     @Override
     public int isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int side) {
+        if (Objects.disableRedstoneFlag) {
+            return 0;
+        }
+
         ForgeDirection dir = ForgeDirection.getOrientation(side).getOpposite();
 
         if (world.getBlockId(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ) == this.blockID) {
@@ -526,11 +530,15 @@ public class BlockMicro extends Block {
 
     @Override
     public boolean canProvidePower() {
-        return true;
+        return !Objects.disableRedstoneFlag;
     }
 
     @Override
     public int isProvidingStrongPower(IBlockAccess world, int x, int y, int z, int side) {
+        if (Objects.disableRedstoneFlag) {
+            return 0;
+        }
+
         ForgeDirection dir = ForgeDirection.getOrientation(side).getOpposite();
 
         if (!MicroBlockCentralWire.canConnectTo((World) world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, null)) {

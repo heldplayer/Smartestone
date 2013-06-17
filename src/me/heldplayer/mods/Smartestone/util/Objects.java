@@ -26,6 +26,8 @@ public final class Objects {
     public static final String SERVER_PROXY = "me.heldplayer.mods.Smartestone.CommonProxy";
     public static String TEXTURE_PREFIX = "Smartestone";
 
+    public static boolean disableRedstoneFlag = true;
+
     public static Logger log;
 
     public static BlockMulti1 blockMulti1;

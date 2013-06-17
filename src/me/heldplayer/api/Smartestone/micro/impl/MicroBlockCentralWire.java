@@ -10,6 +10,7 @@ import me.heldplayer.api.Smartestone.micro.MicroBlockAPI;
 import me.heldplayer.api.Smartestone.micro.MicroBlockInfo;
 import me.heldplayer.api.Smartestone.micro.rendering.RenderFaceHelper;
 import me.heldplayer.api.Smartestone.micro.rendering.ReusableRenderFace;
+import me.heldplayer.mods.Smartestone.util.Objects;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
@@ -19,13 +20,9 @@ import net.minecraftforge.common.ForgeDirection;
 
 public class MicroBlockCentralWire extends MicroBlockImpl {
 
-    private int position;
-
     public MicroBlockCentralWire(String typeName) {
         super(typeName);
         this.renderBounds = new double[] { 0.25D, 0.25D, 0.25D, 0.75D, 0.75D, 0.75D };
-
-        this.position = 0;
     }
 
     @Override
@@ -223,81 +220,74 @@ public class MicroBlockCentralWire extends MicroBlockImpl {
 
     @Override
     public void onBlockUpdate(MicroBlockInfo info, World world, int x, int y, int z) {
-        this.position++;
-        int data = info.getData();
-        int origData = data;
+        int origData = info.getData();
+        int data = 0;
 
-        int newPower = world.getStrongestIndirectPower(x, y, z);
-        if (newPower == 15) {
-            newPower = newPower << 2;
+        int strength = 0;
+        Objects.disableRedstoneFlag = true;
+        int indirectStrength = world.getStrongestIndirectPower(x, y, z) << 2;
+        Objects.disableRedstoneFlag = false;
+
+        if (indirectStrength > 0 && indirectStrength > strength - 1) {
+            strength = indirectStrength;
         }
-        int originalpower = origData >> 6;
 
-        data = 0;
+        int highestNeighbour = 0;
 
         for (int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++) {
             ForgeDirection dir = ForgeDirection.VALID_DIRECTIONS[i];
 
             if (canConnectTo(world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, info)) {
                 data |= (1 << i);
+
+                highestNeighbour = this.getMaxCurrentStrength(world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, highestNeighbour);
             }
         }
 
-        for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-            if (!canConnectTo(world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, info)) {
-                continue;
-            }
-
-            Block block = Block.blocksList[world.getBlockId(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ)];
-
-            if (block == null) {
-                continue;
-            }
-
-            if (block.blockID == MicroBlockAPI.microBlockId) {
-                IMicroBlock tile = (IMicroBlock) world.getBlockTileEntity(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ);
-
-                if (tile == null) {
-                    continue;
-                }
-
-                Set<MicroBlockInfo> infos = tile.getSubBlocks();
-
-                for (MicroBlockInfo currInfo : infos) {
-                    if (currInfo.getType().equals(this)) {
-                        int wirePower = currInfo.getData() >> 6;
-
-                        if (wirePower - 1 > newPower) {
-                            newPower = wirePower - 1;
-                        }
-
-                        break;
-                    }
-                }
-            }
+        if (highestNeighbour > strength) {
+            strength = highestNeighbour - 1;
+        }
+        else if (strength > 0) {
+            strength--;
+        }
+        else {
+            strength = 0;
         }
 
-        if (originalpower > newPower) {
-            newPower = 0;
+        if (indirectStrength > strength - 1) {
+            strength = indirectStrength;
         }
 
-        data |= (newPower << 6);
+        data |= (strength << 6);
 
-        if (data != origData && this.position < 128) {
+        if (data != origData) {
             info.setData(data);
-            world.notifyBlocksOfNeighborChange(x, y, z, MicroBlockAPI.microBlockId);
             ((IMicroBlock) world.getBlockTileEntity(x, y, z)).modifyInfo(info);
-        }
 
-        this.position--;
+            for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+                world.notifyBlockOfNeighborChange(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, MicroBlockAPI.microBlockId);
+            }
+        }
     }
 
-    @Override
-    public void drawHitbox(DrawBlockHighlightEvent event, MicroBlockInfo info) {}
+    public int getMaxCurrentStrength(World world, int x, int y, int z, int strength) {
+        if (world.getBlockId(x, y, z) == MicroBlockAPI.microBlockId) {
+            IMicroBlock microBlock = (IMicroBlock) world.getBlockTileEntity(x, y, z);
 
-    @Override
-    public int onItemUse(EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
-        return 0;
+            if (microBlock == null) {
+                return strength;
+            }
+
+            Set<MicroBlockInfo> infos = microBlock.getSubBlocks();
+
+            for (MicroBlockInfo currInfo : infos) {
+                if (currInfo.getType().equals(this)) {
+                    int currStrength = currInfo.getData() >> 6;
+                    return currStrength > strength ? currStrength : strength;
+                }
+            }
+        }
+        return strength;
     }
 
     public static boolean canConnectTo(World world, int x, int y, int z, MicroBlockInfo info) {
@@ -336,6 +326,14 @@ public class MicroBlockCentralWire extends MicroBlockImpl {
         }
 
         return false;
+    }
+
+    @Override
+    public void drawHitbox(DrawBlockHighlightEvent event, MicroBlockInfo info) {}
+
+    @Override
+    public int onItemUse(EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
+        return 0;
     }
 
     @Override

@@ -153,6 +153,8 @@ public class TileEntityMicro extends TileEntity implements IMicroBlock {
             return;
         }
 
+        Objects.log.log(Level.INFO, "Info was added at (" + this.xCoord + ", " + this.yCoord + ", " + this.zCoord + ")");
+
         int index = this.getNextAvailableIndex();
 
         if (index >= 0) {
@@ -170,6 +172,8 @@ public class TileEntityMicro extends TileEntity implements IMicroBlock {
             return;
         }
 
+        Objects.log.log(Level.INFO, "Info was modified at (" + this.xCoord + ", " + this.yCoord + ", " + this.zCoord + ")");
+
         Chunk chunk = worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord);
         Util.sendPacketToPlayersWatching(PacketHandler.getPacket(5, this, info), worldObj.getWorldInfo().getDimension(), chunk.xPosition, chunk.zPosition);
     }
@@ -179,6 +183,8 @@ public class TileEntityMicro extends TileEntity implements IMicroBlock {
         if (this.worldObj.isRemote) {
             return;
         }
+
+        Objects.log.log(Level.INFO, "Info was removed at (" + this.xCoord + ", " + this.yCoord + ", " + this.zCoord + ")");
 
         this.infos.remove(info);
         this.usedIndices[info.index] = false;
