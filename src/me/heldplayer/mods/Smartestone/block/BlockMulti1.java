@@ -7,6 +7,7 @@ import me.heldplayer.mods.Smartestone.tileentity.TileEntityCraftingChest;
 import me.heldplayer.mods.Smartestone.tileentity.TileEntityInductionishFurnace;
 import me.heldplayer.mods.Smartestone.tileentity.TileEntityRotatable;
 import me.heldplayer.mods.Smartestone.util.Const;
+import me.heldplayer.mods.Smartestone.util.Objects;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.item.EntityItem;
@@ -166,12 +167,12 @@ public class BlockMulti1 extends BlockMulti {
 
         for (int i = 0; i < 16; i++) {
             if (this.hasTileEntity(i)) {
-                this.bottom[i] = register.registerIcon("Smartestone:multi1_" + i + "_bottom");
-                this.top[i] = register.registerIcon("Smartestone:multi1_" + i + "_top");
-                this.front[i] = register.registerIcon("Smartestone:multi1_" + i + "_front");
-                this.back[i] = register.registerIcon("Smartestone:multi1_" + i + "_back");
-                this.left[i] = register.registerIcon("Smartestone:multi1_" + i + "_left");
-                this.right[i] = register.registerIcon("Smartestone:multi1_" + i + "_right");
+                this.bottom[i] = register.registerIcon(Objects.TEXTURE_PREFIX + ":multi1_" + i + "_bottom");
+                this.top[i] = register.registerIcon(Objects.TEXTURE_PREFIX + ":multi1_" + i + "_top");
+                this.front[i] = register.registerIcon(Objects.TEXTURE_PREFIX + ":multi1_" + i + "_front");
+                this.back[i] = register.registerIcon(Objects.TEXTURE_PREFIX + ":multi1_" + i + "_back");
+                this.left[i] = register.registerIcon(Objects.TEXTURE_PREFIX + ":multi1_" + i + "_left");
+                this.right[i] = register.registerIcon(Objects.TEXTURE_PREFIX + ":multi1_" + i + "_right");
             }
             else {
                 this.bottom[i] = register.registerIcon("Smartestone:missing");

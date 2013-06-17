@@ -1,6 +1,7 @@
 
 package me.heldplayer.mods.Smartestone.item;
 
+import me.heldplayer.mods.Smartestone.util.Objects;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -100,7 +101,7 @@ public class ItemWaterCore extends Item {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister register) {
-        this.icon = register.registerIcon("Smartestone:water_core");
+        this.icon = register.registerIcon(Objects.TEXTURE_PREFIX + ":water_core");
     }
 
     @Override

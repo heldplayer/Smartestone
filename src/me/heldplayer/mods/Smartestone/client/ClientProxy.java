@@ -7,6 +7,7 @@ import me.heldplayer.api.Smartestone.micro.MicroBlockAPI;
 import me.heldplayer.api.Smartestone.micro.MicroBlockInfo;
 import me.heldplayer.api.Smartestone.micro.rendering.RenderFaceHelper;
 import me.heldplayer.mods.Smartestone.CommonProxy;
+import me.heldplayer.mods.Smartestone.ModSmartestone;
 import me.heldplayer.mods.Smartestone.block.BlockMicro;
 import me.heldplayer.mods.Smartestone.block.BlockMulti;
 import me.heldplayer.mods.Smartestone.client.renderer.BlockRendererMicroBlock;
@@ -38,6 +39,7 @@ import net.minecraftforge.event.ForgeSubscribe;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -46,6 +48,15 @@ public class ClientProxy extends CommonProxy {
 
     public static final String textureLocation = "/mods/Smartestone/textures/";
     public static Icon missingTextureIcon;
+
+    @Override
+    public void preInit(FMLPreInitializationEvent event) {
+        super.preInit(event);
+
+        if (ModSmartestone.HDTextures.getValue()) {
+            Objects.TEXTURE_PREFIX += "/HD";
+        }
+    }
 
     @Override
     public void postInit(FMLPostInitializationEvent event) {

@@ -20,6 +20,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
+import cpw.mods.fml.relauncher.Side;
 
 @Mod(name = Objects.MOD_NAME, modid = Objects.MOD_ID, version = Objects.MOD_VERSION)
 @NetworkMod(clientSideRequired = true, serverSideRequired = false, channels = { Objects.MOD_CHANNEL }, packetHandler = PacketHandler.class)
@@ -41,6 +42,7 @@ public class ModSmartestone {
     public static ConfigValue<Integer> itemRotatorId;
     public static ConfigValue<Integer> itemMicroBlockId;
     public static ConfigValue<Integer> itemWaterCoreId;
+    public static ConfigValue<Boolean> HDTextures;
 
     @PreInit
     public void preInit(FMLPreInitializationEvent event) {
@@ -62,6 +64,7 @@ public class ModSmartestone {
         itemRotatorId = new ConfigValue<Integer>("Rotator", Configuration.CATEGORY_ITEM, null, 5240, "");
         itemMicroBlockId = new ConfigValue<Integer>("MicroBlockItem", Configuration.CATEGORY_ITEM, null, 5241, "");
         itemWaterCoreId = new ConfigValue<Integer>("WaterCore", Configuration.CATEGORY_ITEM, null, 5242, "");
+        HDTextures = new ConfigValue<Boolean>("HD-Textures", Configuration.CATEGORY_GENERAL, Side.CLIENT, Boolean.FALSE, "");
         this.config = new Config(event.getSuggestedConfigurationFile());
         this.config.addConfigKey(silentUpdates);
         this.config.addConfigKey(blockMulti1Id);
@@ -70,6 +73,7 @@ public class ModSmartestone {
         this.config.addConfigKey(itemRotatorId);
         this.config.addConfigKey(itemMicroBlockId);
         this.config.addConfigKey(itemWaterCoreId);
+        this.config.addConfigKey(HDTextures);
         this.config.load();
         this.config.saveOnChange();
 
