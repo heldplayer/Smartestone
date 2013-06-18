@@ -101,7 +101,7 @@ public abstract class MicroBlockImpl implements IMicroBlockSubBlock {
         Set<MicroBlockInfo> infos = tile.getSubBlocks();
 
         for (MicroBlockInfo current : infos) {
-            if (current.getClass() == info.getClass() && current.getData() == info.getData()) {
+            if (current.getType().getClass() == info.getType().getClass() && current.getData() == info.getData()) {
                 return false;
             }
         }
