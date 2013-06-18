@@ -11,6 +11,7 @@ import me.heldplayer.api.Smartestone.micro.impl.BlockMaterial;
 import me.heldplayer.api.Smartestone.micro.impl.MicroBlockCentralWire;
 import me.heldplayer.api.Smartestone.micro.impl.MicroBlockCorner;
 import me.heldplayer.api.Smartestone.micro.impl.MicroBlockPane;
+import me.heldplayer.api.Smartestone.micro.impl.MicroBlockPillar;
 import me.heldplayer.api.Smartestone.micro.impl.MicroBlockStrip;
 import me.heldplayer.api.Smartestone.micro.impl.WireMaterial;
 import me.heldplayer.mods.Smartestone.block.BlockMicro;
@@ -127,6 +128,14 @@ public class CommonProxy implements IGuiHandler {
         MicroBlockAPI.registerSubBlock(new MicroBlockStrip("Anti-Tricover Strip", 0.625D));
         MicroBlockAPI.registerSubBlock(new MicroBlockStrip("Anti-Panel Strip", 0.75D));
         MicroBlockAPI.registerSubBlock(new MicroBlockStrip("Anti-Cover Strip", 0.875D));
+
+        MicroBlockAPI.registerSubBlock(new MicroBlockPillar("Cover Pillar", 0.125D));
+        MicroBlockAPI.registerSubBlock(new MicroBlockPillar("Panel Pillar", 0.25D));
+        MicroBlockAPI.registerSubBlock(new MicroBlockPillar("Tricover Pillar", 0.375D));
+        MicroBlockAPI.registerSubBlock(new MicroBlockPillar("Slab Pillar", 0.5D));
+        MicroBlockAPI.registerSubBlock(new MicroBlockPillar("Anti-Tricover Pillar", 0.625D));
+        MicroBlockAPI.registerSubBlock(new MicroBlockPillar("Anti-Panel Pillar", 0.75D));
+        MicroBlockAPI.registerSubBlock(new MicroBlockPillar("Anti-Cover Pillar", 0.875D));
 
         MicroBlockAPI.registerSubBlock(new MicroBlockCorner("Cover Corner", 0.125D));
         MicroBlockAPI.registerSubBlock(new MicroBlockCorner("Panel Corner", 0.25D));

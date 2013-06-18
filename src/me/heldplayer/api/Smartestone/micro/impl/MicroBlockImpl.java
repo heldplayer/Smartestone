@@ -9,6 +9,7 @@ import me.heldplayer.api.Smartestone.micro.IMicroBlockSubBlock;
 import me.heldplayer.api.Smartestone.micro.MicroBlockInfo;
 import me.heldplayer.api.Smartestone.micro.rendering.RenderFaceHelper;
 import me.heldplayer.api.Smartestone.micro.rendering.ReusableRenderFace;
+import me.heldplayer.mods.Smartestone.client.ClientProxy;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
@@ -62,9 +63,16 @@ public abstract class MicroBlockImpl implements IMicroBlockSubBlock {
         for (int i = 0; i < faces.length; i++) {
             faces[i] = RenderFaceHelper.getAFace();
             faces[i].setValues(aabb, i);
-            faces[i].icon = info.getMaterial().getIcon(i);
-            faces[i].renderPass = info.getMaterial().getRenderPass();
-            faces[i].color = info.getMaterial().getColor(i, info.getData());
+            if (info.getMaterial() != null) {
+                faces[i].icon = info.getMaterial().getIcon(i);
+                faces[i].renderPass = info.getMaterial().getRenderPass();
+                faces[i].color = info.getMaterial().getColor(i, info.getData());
+            }
+            else {
+                faces[i].icon = ClientProxy.missingTextureIcon;
+                faces[i].renderPass = 0;
+                faces[i].color = 0xFFFFFF;
+            }
         }
 
         return faces;

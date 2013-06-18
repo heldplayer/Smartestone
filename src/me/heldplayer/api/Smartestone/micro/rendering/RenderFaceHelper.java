@@ -3,6 +3,9 @@ package me.heldplayer.api.Smartestone.micro.rendering;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+
+import me.heldplayer.mods.Smartestone.util.Objects;
 
 public class RenderFaceHelper {
 
@@ -11,6 +14,16 @@ public class RenderFaceHelper {
 
     private static int index = 0;
     private static int maxSize = 256;
+
+    // Fields because highlighting
+    private static double startU1;
+    private static double startU2;
+    private static double startV1;
+    private static double startV2;
+    private static double endU1;
+    private static double endU2;
+    private static double endV1;
+    private static double endV2;
 
     public static void updateIndex() {
         index = usedFaces.size();
@@ -40,10 +53,12 @@ public class RenderFaceHelper {
         return "ReusableRenderFace pool size: " + usedFaces.size() + "/" + maxSize;
     }
 
-    public static List<ReusableRenderFace> processFaces(List<ReusableRenderFace> feed) {
+    public static ArrayList<ReusableRenderFace> processFaces(List<ReusableRenderFace> feed) {
         while (feed.size() + 128 > maxSize) {
             maxSize += 128;
         }
+
+        double offset = 0.005D;
 
         ArrayList<ReusableRenderFace> result = new ArrayList<ReusableRenderFace>();
 
@@ -79,162 +94,201 @@ public class RenderFaceHelper {
                     }
                 }
 
-                if (first.startU >= second.startU && first.endU <= second.endU && first.startV >= second.startV && first.endV <= second.endV) {
+                startU1 = first.startU;
+                startU2 = second.startU;
+                startV1 = first.startV;
+                startV2 = second.startV;
+                endU1 = first.endU;
+                endU2 = second.endU;
+                endV1 = first.endV;
+                endV2 = second.endV;
+
+                if (startU1 >= startU2 && endU1 <= endU2 && startV1 >= startV2 && endV1 <= endV2) {
                     if (mode == 0) {
                         first.renders = false;
                     }
                     if (mode == 1) {
-                        first.offset += first.side % 2 == 0 ? 0.005D : -0.005D;
+                        first.offset += first.side % 2 == 0 ? offset : -offset;
                     }
                     if (mode == 2) {
-                        second.offset += second.side % 2 == 0 ? 0.005D : -0.005D;
+                        second.offset += second.side % 2 == 0 ? offset : -offset;
                     }
                     continue;
                 }
-                if (second.startU >= first.startU && second.endU <= first.endU && second.startV >= first.startV && second.endV <= first.endV) {
+                if (startU2 >= startU1 && endU2 <= endU1 && startV2 >= startV1 && endV2 <= endV1) {
                     if (mode == 0) {
                         second.renders = false;
                     }
                     if (mode == 1) {
-                        first.offset += first.side % 2 == 0 ? 0.005D : -0.005D;
+                        first.offset += first.side % 2 == 0 ? offset : -offset;
                     }
                     if (mode == 2) {
-                        second.offset += second.side % 2 == 0 ? 0.005D : -0.005D;
+                        second.offset += second.side % 2 == 0 ? offset : -offset;
                     }
                     continue;
                 }
 
-                if (first.startU >= second.startU && first.endU <= second.endU) {
-                    if (first.startV >= second.startV && first.endV <= second.endV) {
+                if (startU1 >= startU2 && endU1 <= endU2) {
+                    if (startV1 >= startV2 && endV1 <= endV2) {
                         if (mode == 0) {
                             first.renders = false;
                         }
                         if (mode == 1) {
-                            first.offset += first.side % 2 == 0 ? 0.005D : -0.005D;
+                            first.offset += first.side % 2 == 0 ? offset : -offset;
                         }
                         if (mode == 2) {
-                            second.offset += second.side % 2 == 0 ? 0.005D : -0.005D;
+                            second.offset += second.side % 2 == 0 ? offset : -offset;
                         }
                     }
-                    else if (first.startV >= second.startV && first.startV < second.endV) {
+                    else if (startV1 >= startV2 && startV1 < endV2) {
                         if (mode == 0) {
-                            first.startV = second.endV;
+                            first.startV = endV2;
                         }
                         if (mode == 1) {
-                            first.offset += first.side % 2 == 0 ? 0.005D : -0.005D;
+                            first.offset += first.side % 2 == 0 ? offset : -offset;
                         }
                         if (mode == 2) {
-                            second.offset += second.side % 2 == 0 ? 0.005D : -0.005D;
+                            second.offset += second.side % 2 == 0 ? offset : -offset;
                         }
                     }
-                    else if (first.endV <= second.endV && first.endV > second.startV) {
+                    else if (endV1 <= endV2 && endV1 > startV2) {
                         if (mode == 0) {
-                            first.endV = second.startV;
+                            first.endV = startV2;
                         }
                         if (mode == 1) {
-                            first.offset += first.side % 2 == 0 ? 0.005D : -0.005D;
+                            first.offset += first.side % 2 == 0 ? offset : -offset;
                         }
                         if (mode == 2) {
-                            second.offset += second.side % 2 == 0 ? 0.005D : -0.005D;
-                        }
-                    }
-                }
-                else if (first.startU >= second.startU && first.startU <= second.endU) {
-                    if (first.startV >= second.startV && first.endV <= second.endV) {
-                        if (mode == 0) {
-                            first.startU = second.endU;
-                        }
-                        if (mode == 1) {
-                            first.offset += first.side % 2 == 0 ? 0.005D : -0.005D;
-                        }
-                        if (mode == 2) {
-                            second.offset += second.side % 2 == 0 ? 0.005D : -0.005D;
-                        }
-                    }
-                    else if (first.startV >= second.startV && first.startV < second.endV) {
-                        if (mode == 0) {
-                            first.startU = second.endU;
-                            ReusableRenderFace third = getAFace();
-                            third.copy(first);
-                            third.startV = second.endV;
-                            result.add(third);
-                        }
-                        if (mode == 1) {
-                            first.offset += first.side % 2 == 0 ? 0.005D : -0.005D;
-                        }
-                        if (mode == 2) {
-                            second.offset += second.side % 2 == 0 ? 0.005D : -0.005D;
-                        }
-                    }
-                    else if (first.endV <= second.endV && first.endV > second.startV) {
-                        if (mode == 0) {
-                            first.startU = second.endU;
-                            ReusableRenderFace third = getAFace();
-                            third.copy(first);
-                            third.endV = second.startV;
-                            result.add(third);
-                        }
-                        if (mode == 1) {
-                            first.offset += first.side % 2 == 0 ? 0.005D : -0.005D;
-                        }
-                        if (mode == 2) {
-                            second.offset += second.side % 2 == 0 ? 0.005D : -0.005D;
+                            second.offset += second.side % 2 == 0 ? offset : -offset;
                         }
                     }
                 }
-                else if (first.endU <= second.endU && first.endU >= second.startU) {
-                    if (first.startV >= second.startV && first.endV <= second.endV) {
+                else if (startU1 >= startU2 && startU1 <= endU2) {
+                    if (startV1 >= startV2 && endV1 <= endV2) {
                         if (mode == 0) {
-                            first.endU = second.startU;
+                            first.startU = endU2;
                         }
                         if (mode == 1) {
-                            first.offset += first.side % 2 == 0 ? 0.005D : -0.005D;
+                            first.offset += first.side % 2 == 0 ? offset : -offset;
                         }
                         if (mode == 2) {
-                            second.offset += second.side % 2 == 0 ? 0.005D : -0.005D;
+                            second.offset += second.side % 2 == 0 ? offset : -offset;
                         }
                     }
-                    else if (first.startV >= second.startV && first.startV < second.endV) {
+                    else if (startV1 >= startV2 && startV1 < endV2) {
                         if (mode == 0) {
-                            first.endU = second.startU;
+                            first.startU = endU2;
                             ReusableRenderFace third = getAFace();
                             third.copy(first);
-                            third.startV = second.endV;
+                            third.startV = endV2;
                             result.add(third);
                         }
                         if (mode == 1) {
-                            first.offset += first.side % 2 == 0 ? 0.005D : -0.005D;
+                            first.offset += first.side % 2 == 0 ? offset : -offset;
                         }
                         if (mode == 2) {
-                            second.offset += second.side % 2 == 0 ? 0.005D : -0.005D;
+                            second.offset += second.side % 2 == 0 ? offset : -offset;
                         }
                     }
-                    else if (first.endV <= second.endV && first.endV > second.startV) {
+                    else if (endV1 <= endV2 && endV1 > startV2) {
                         if (mode == 0) {
-                            first.endU = second.startU;
+                            first.startU = endU2;
                             ReusableRenderFace third = getAFace();
                             third.copy(first);
-                            third.endV = second.startV;
+                            third.endV = startV2;
                             result.add(third);
                         }
                         if (mode == 1) {
-                            first.offset += first.side % 2 == 0 ? 0.005D : -0.005D;
+                            first.offset += first.side % 2 == 0 ? offset : -offset;
                         }
                         if (mode == 2) {
-                            second.offset += second.side % 2 == 0 ? 0.005D : -0.005D;
+                            second.offset += second.side % 2 == 0 ? offset : -offset;
                         }
+                    }
+                }
+                else if (endU1 <= endU2 && endU1 >= startU2) {
+                    if (startV1 >= startV2 && endV1 <= endV2) {
+                        if (mode == 0) {
+                            first.endU = startU2;
+                        }
+                        if (mode == 1) {
+                            first.offset += first.side % 2 == 0 ? offset : -offset;
+                        }
+                        if (mode == 2) {
+                            second.offset += second.side % 2 == 0 ? offset : -offset;
+                        }
+                    }
+                    else if (startV1 >= startV2 && startV1 < endV2) {
+                        if (mode == 0) {
+                            first.endU = startU2;
+                            ReusableRenderFace third = getAFace();
+                            third.copy(first);
+                            third.startV = endV2;
+                            result.add(third);
+                        }
+                        if (mode == 1) {
+                            first.offset += first.side % 2 == 0 ? offset : -offset;
+                        }
+                        if (mode == 2) {
+                            second.offset += second.side % 2 == 0 ? offset : -offset;
+                        }
+                    }
+                    else if (endV1 <= endV2 && endV1 > startV2) {
+                        if (mode == 0) {
+                            first.endU = startU2;
+                            ReusableRenderFace third = getAFace();
+                            third.copy(first);
+                            third.endV = startV2;
+                            result.add(third);
+                        }
+                        if (mode == 1) {
+                            first.offset += first.side % 2 == 0 ? offset : -offset;
+                        }
+                        if (mode == 2) {
+                            second.offset += second.side % 2 == 0 ? offset : -offset;
+                        }
+                    }
+                }
+                else if (startU1 > startU2 && endU1 < endU2 && startV1 < startV2 && endV1 > endV2) {
+                    if (mode == 0) {
+                        ReusableRenderFace third = getAFace();
+                        third.copy(first);
+                        second.endV = startV1;
+                        third.startV = endV1;
+                        result.add(third);
+                    }
+                    if (mode == 1) {
+                        first.offset += first.side % 2 == 0 ? offset : -offset;
+                    }
+                    if (mode == 2) {
+                        second.offset += second.side % 2 == 0 ? offset : -offset;
+                    }
+                }
+                else if (startU1 < startU2 && endU1 > endU2 && startV1 > startV2 && endV1 < endV2) {
+                    if (mode == 0) {
+                        ReusableRenderFace third = getAFace();
+                        third.copy(first);
+                        first.endU = startU2;
+                        third.startU = endU2;
+                        result.add(third);
+                    }
+                    if (mode == 1) {
+                        first.offset += first.side % 2 == 0 ? offset : -offset;
+                    }
+                    if (mode == 2) {
+                        second.offset += second.side % 2 == 0 ? offset : -offset;
                     }
                 }
             }
 
             if (first.renders) {
                 result.add(first);
-                feed.remove(i1);
-                i1--;
             }
-            else {
-                //Objects.log.log(Level.INFO, "A face was not rendered! " + first.toString());
-            }
+        }
+
+        if (feed.size() != result.size()) {
+            Objects.log.log(Level.INFO, "Re-iterating over faces");
+            result = processFaces(result);
         }
 
         return result;
