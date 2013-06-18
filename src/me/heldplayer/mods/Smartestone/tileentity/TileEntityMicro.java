@@ -67,7 +67,7 @@ public class TileEntityMicro extends TileEntity implements IMicroBlock {
             IMicroBlockSubBlock type = MicroBlockAPI.getSubBlock(tag.getString("Type"));
             int data = tag.getInteger("Data");
 
-            int index = getNextAvailableIndex();
+            int index = this.getNextAvailableIndex();
 
             if (index < 0) {
                 Objects.log.log(Level.WARNING, "Skipping a MicroBlock component because there are no available slots");
@@ -161,8 +161,8 @@ public class TileEntityMicro extends TileEntity implements IMicroBlock {
             info.index = index;
             this.usedIndices[index] = true;
             this.infos.add(info);
-            Chunk chunk = worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord);
-            Util.sendPacketToPlayersWatching(PacketHandler.getPacket(3, this, info), worldObj.getWorldInfo().getDimension(), chunk.xPosition, chunk.zPosition);
+            Chunk chunk = this.worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord);
+            Util.sendPacketToPlayersWatching(PacketHandler.getPacket(3, this, info), this.worldObj.getWorldInfo().getDimension(), chunk.xPosition, chunk.zPosition);
         }
     }
 
@@ -174,8 +174,8 @@ public class TileEntityMicro extends TileEntity implements IMicroBlock {
 
         Objects.log.log(Level.INFO, "Info was modified at (" + this.xCoord + ", " + this.yCoord + ", " + this.zCoord + ")");
 
-        Chunk chunk = worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord);
-        Util.sendPacketToPlayersWatching(PacketHandler.getPacket(5, this, info), worldObj.getWorldInfo().getDimension(), chunk.xPosition, chunk.zPosition);
+        Chunk chunk = this.worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord);
+        Util.sendPacketToPlayersWatching(PacketHandler.getPacket(5, this, info), this.worldObj.getWorldInfo().getDimension(), chunk.xPosition, chunk.zPosition);
     }
 
     @Override
@@ -189,8 +189,8 @@ public class TileEntityMicro extends TileEntity implements IMicroBlock {
         this.infos.remove(info);
         this.usedIndices[info.index] = false;
 
-        Chunk chunk = worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord);
-        Util.sendPacketToPlayersWatching(PacketHandler.getPacket(4, this, info), worldObj.getWorldInfo().getDimension(), chunk.xPosition, chunk.zPosition);
+        Chunk chunk = this.worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord);
+        Util.sendPacketToPlayersWatching(PacketHandler.getPacket(4, this, info), this.worldObj.getWorldInfo().getDimension(), chunk.xPosition, chunk.zPosition);
     }
 
 }

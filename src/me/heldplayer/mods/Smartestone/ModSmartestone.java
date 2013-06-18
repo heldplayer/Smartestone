@@ -68,7 +68,7 @@ public class ModSmartestone {
         silentUpdates = new ConfigValue<Boolean>("silentUpdates", Configuration.CATEGORY_GENERAL, null, Boolean.TRUE, "Set this to true to hide update messages in the main menu");
         optOut = new ConfigValue<Boolean>("optOut", Configuration.CATEGORY_GENERAL, null, Boolean.FALSE, "Set this to true to opt-out from statistics gathering. If you are configuring this mod for a modpack, please leave it set to false");
         modPack = new ConfigValue<String>("modPack", Configuration.CATEGORY_GENERAL, null, "", "If this mod is running in a modpack, please set this config value to the name of the modpack");
-        config = new Config(event.getSuggestedConfigurationFile());
+        this.config = new Config(event.getSuggestedConfigurationFile());
         this.config.addConfigKey(blockMulti1Id);
         this.config.addConfigKey(blockMulti2Id);
         this.config.addConfigKey(blockMicroId);
