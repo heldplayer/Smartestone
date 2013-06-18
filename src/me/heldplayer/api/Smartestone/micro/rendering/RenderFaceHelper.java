@@ -3,9 +3,6 @@ package me.heldplayer.api.Smartestone.micro.rendering;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-
-import me.heldplayer.mods.Smartestone.util.Objects;
 
 public class RenderFaceHelper {
 
@@ -284,11 +281,6 @@ public class RenderFaceHelper {
             if (first.renders) {
                 result.add(first);
             }
-        }
-
-        if (feed.size() != result.size()) {
-            Objects.log.log(Level.INFO, "Re-iterating over faces");
-            result = processFaces(result);
         }
 
         return result;
