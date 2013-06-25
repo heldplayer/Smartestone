@@ -194,6 +194,8 @@ public class PacketHandler implements IPacketHandler {
         ByteArrayOutputStream bos = new ByteArrayOutputStream(32767);
         DataOutputStream dos = new DataOutputStream(bos);
 
+        boolean mapPacket = false;
+
         try {
             dos.writeByte(type);
             switch (type) {
@@ -212,6 +214,8 @@ public class PacketHandler implements IPacketHandler {
                 dos.writeInt(nameBytes.length);
                 dos.write(nameBytes);
 
+                mapPacket = true;
+
                 NBTBase.writeNamedTag(compound, dos);
             }
             break;
@@ -224,6 +228,8 @@ public class PacketHandler implements IPacketHandler {
                 dos.writeInt(tile.xCoord);
                 dos.writeInt(tile.yCoord);
                 dos.writeInt(tile.zCoord);
+
+                mapPacket = true;
 
                 NBTBase.writeNamedTag(compound, dos);
             }
@@ -244,6 +250,8 @@ public class PacketHandler implements IPacketHandler {
                 dos.writeInt(materialBytes.length);
                 dos.write(materialBytes);
                 dos.writeInt(info.getData());
+
+                mapPacket = true;
             }
             break;
             case 4: {
@@ -254,6 +262,8 @@ public class PacketHandler implements IPacketHandler {
                 dos.writeInt(tile.yCoord);
                 dos.writeInt(tile.zCoord);
                 dos.writeInt(info.index);
+
+                mapPacket = true;
             }
             break;
             case 5: {
@@ -265,6 +275,8 @@ public class PacketHandler implements IPacketHandler {
                 dos.writeInt(tile.zCoord);
                 dos.writeInt(info.index);
                 dos.writeInt(info.getData());
+
+                mapPacket = true;
             }
             break;
             }
@@ -278,6 +290,7 @@ public class PacketHandler implements IPacketHandler {
         packet.channel = "SSChannel";
         packet.data = bos.toByteArray();
         packet.length = packet.data.length;
+        packet.isChunkDataPacket = mapPacket;
 
         return packet;
     }
