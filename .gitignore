@@ -11,5 +11,6 @@ local.properties
 .settings/
 
 /Smartestone/
-/HeldCore/
 /resources/buildcraft/
+/resources/codechicken/
+/HeldCore/
