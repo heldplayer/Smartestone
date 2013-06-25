@@ -1,7 +1,8 @@
 
 package me.heldplayer.mods.Smartestone.tileentity;
 
-import me.heldplayer.mods.Smartestone.PacketHandler;
+import me.heldplayer.mods.Smartestone.packet.Packet1RotatableTile;
+import me.heldplayer.mods.Smartestone.packet.PacketHandler;
 import me.heldplayer.mods.Smartestone.util.Direction;
 import me.heldplayer.mods.Smartestone.util.Rotation;
 import me.heldplayer.mods.Smartestone.util.Util;
@@ -40,8 +41,8 @@ public abstract class TileEntityRotatable extends TileEntity {
 
     @Override
     public Packet getDescriptionPacket() {
-        Packet packet = PacketHandler.getPacket(1, this);
-        return packet;
+        Packet1RotatableTile packet = new Packet1RotatableTile(this);
+        return PacketHandler.instance.createPacket(packet);
     }
 
     @Override

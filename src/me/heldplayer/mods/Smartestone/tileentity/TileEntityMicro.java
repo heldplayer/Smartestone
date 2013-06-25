@@ -11,7 +11,11 @@ import me.heldplayer.api.Smartestone.micro.IMicroBlockSubBlock;
 import me.heldplayer.api.Smartestone.micro.MicroBlockAPI;
 import me.heldplayer.api.Smartestone.micro.MicroBlockInfo;
 import me.heldplayer.api.Smartestone.micro.MicroBlockInfoSorter;
-import me.heldplayer.mods.Smartestone.PacketHandler;
+import me.heldplayer.mods.Smartestone.packet.Packet2MicroTile;
+import me.heldplayer.mods.Smartestone.packet.Packet3AddMicroblock;
+import me.heldplayer.mods.Smartestone.packet.Packet4RemoveMicroblock;
+import me.heldplayer.mods.Smartestone.packet.Packet5ModifyMicroblock;
+import me.heldplayer.mods.Smartestone.packet.PacketHandler;
 import me.heldplayer.mods.Smartestone.util.Objects;
 import me.heldplayer.mods.Smartestone.util.Util;
 import net.minecraft.nbt.NBTTagCompound;
@@ -138,8 +142,8 @@ public class TileEntityMicro extends TileEntity implements IMicroBlock {
 
     @Override
     public Packet getDescriptionPacket() {
-        Packet packet = PacketHandler.getPacket(2, this);
-        return packet;
+        Packet2MicroTile packet = new Packet2MicroTile(this);
+        return PacketHandler.instance.createPacket(packet);
     }
 
     @Override
@@ -162,7 +166,8 @@ public class TileEntityMicro extends TileEntity implements IMicroBlock {
             this.usedIndices[index] = true;
             this.infos.add(info);
             Chunk chunk = this.worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord);
-            Util.sendPacketToPlayersWatching(PacketHandler.getPacket(3, this, info), this.worldObj.getWorldInfo().getDimension(), chunk.xPosition, chunk.zPosition);
+            Packet3AddMicroblock packet = new Packet3AddMicroblock(this, info);
+            Util.sendPacketToPlayersWatching(PacketHandler.instance.createPacket(packet), this.worldObj.getWorldInfo().getDimension(), chunk.xPosition, chunk.zPosition);
         }
     }
 
@@ -175,7 +180,8 @@ public class TileEntityMicro extends TileEntity implements IMicroBlock {
         Objects.log.log(Level.INFO, "Info was modified at (" + this.xCoord + ", " + this.yCoord + ", " + this.zCoord + ")");
 
         Chunk chunk = this.worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord);
-        Util.sendPacketToPlayersWatching(PacketHandler.getPacket(5, this, info), this.worldObj.getWorldInfo().getDimension(), chunk.xPosition, chunk.zPosition);
+        Packet5ModifyMicroblock packet = new Packet5ModifyMicroblock(this, info);
+        Util.sendPacketToPlayersWatching(PacketHandler.instance.createPacket(packet), this.worldObj.getWorldInfo().getDimension(), chunk.xPosition, chunk.zPosition);
     }
 
     @Override
@@ -190,7 +196,8 @@ public class TileEntityMicro extends TileEntity implements IMicroBlock {
         this.usedIndices[info.index] = false;
 
         Chunk chunk = this.worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord);
-        Util.sendPacketToPlayersWatching(PacketHandler.getPacket(4, this, info), this.worldObj.getWorldInfo().getDimension(), chunk.xPosition, chunk.zPosition);
+        Packet4RemoveMicroblock packet = new Packet4RemoveMicroblock(this, info);
+        Util.sendPacketToPlayersWatching(PacketHandler.instance.createPacket(packet), this.worldObj.getWorldInfo().getDimension(), chunk.xPosition, chunk.zPosition);
     }
 
 }

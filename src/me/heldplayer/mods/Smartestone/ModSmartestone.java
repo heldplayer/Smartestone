@@ -3,6 +3,7 @@ package me.heldplayer.mods.Smartestone;
 
 import java.io.File;
 
+import me.heldplayer.mods.Smartestone.packet.PacketHandler;
 import me.heldplayer.mods.Smartestone.util.Objects;
 import me.heldplayer.util.HeldCore.Updater;
 import me.heldplayer.util.HeldCore.UsageReporter;
