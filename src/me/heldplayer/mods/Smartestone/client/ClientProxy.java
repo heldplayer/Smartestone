@@ -1,10 +1,6 @@
 
 package me.heldplayer.mods.Smartestone.client;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-
 import me.heldplayer.api.Smartestone.micro.IMicroBlockMaterial;
 import me.heldplayer.api.Smartestone.micro.IMicroBlockSubBlock;
 import me.heldplayer.api.Smartestone.micro.MicroBlockAPI;
@@ -26,8 +22,6 @@ import me.heldplayer.mods.Smartestone.tileentity.TileEntityInductionishFurnace;
 import me.heldplayer.mods.Smartestone.tileentity.TileEntityItemStand;
 import me.heldplayer.mods.Smartestone.util.Objects;
 import me.heldplayer.mods.Smartestone.util.RayTrace;
-import me.heldplayer.util.HeldCore.client.shader.Shader;
-import me.heldplayer.util.HeldCore.client.shader.ShaderLoader;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.player.EntityPlayer;
@@ -54,8 +48,6 @@ public class ClientProxy extends CommonProxy {
 
     public static final String textureLocation = "/mods/Smartestone/textures/";
     public static Icon missingTextureIcon;
-
-    public static Shader shader;
 
     @Override
     public void preInit(FMLPreInitializationEvent event) {
@@ -84,15 +76,6 @@ public class ClientProxy extends CommonProxy {
         catch (NoSuchMethodError e) {}
 
         MinecraftForgeClient.registerItemRenderer(Objects.itemMicroBlock.itemID, new ItemRendererMicroBlock());
-
-        try {
-            BufferedReader vertex = new BufferedReader(new FileReader(new File(ShaderLoader.class.getResource("/mods/Smartestone/shaders/sepia.vert").toURI())));
-            BufferedReader fragment = new BufferedReader(new FileReader(new File(ShaderLoader.class.getResource("/mods/Smartestone/shaders/sepia.frag").toURI())));
-            shader = ShaderLoader.createShader("Sepia", vertex, fragment);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     @ForgeSubscribe
