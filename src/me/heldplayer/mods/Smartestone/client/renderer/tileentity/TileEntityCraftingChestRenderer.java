@@ -1,11 +1,13 @@
 
 package me.heldplayer.mods.Smartestone.client.renderer.tileentity;
 
+import me.heldplayer.mods.Smartestone.client.ClientProxy;
 import me.heldplayer.mods.Smartestone.tileentity.TileEntityCraftingChest;
 import me.heldplayer.mods.Smartestone.util.Const;
 import me.heldplayer.mods.Smartestone.util.Direction;
 import me.heldplayer.mods.Smartestone.util.Rotation;
 import me.heldplayer.mods.Smartestone.util.Side;
+import me.heldplayer.util.HeldCore.client.shader.Shader;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -29,11 +31,15 @@ public class TileEntityCraftingChestRenderer extends TileEntitySpecialRenderer {
             return;
         }
 
+        ClientProxy.shader.bindShader();
+
         TileEntityCraftingChest tile = (TileEntityCraftingChest) tileentity;
         Direction direction = tile.direction;
         Rotation rotation = tile.rotation;
         Side top = direction.getRelativeSide(Side.TOP, rotation);
 
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glPushMatrix();
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -168,6 +174,8 @@ public class TileEntityCraftingChestRenderer extends TileEntitySpecialRenderer {
             GL11.glPopMatrix();
         }
         GL11.glPopMatrix();
+
+        Shader.unbindShader();
     }
 
 }
