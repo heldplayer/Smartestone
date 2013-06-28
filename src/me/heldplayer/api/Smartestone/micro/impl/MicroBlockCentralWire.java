@@ -219,7 +219,7 @@ public class MicroBlockCentralWire extends MicroBlockImpl {
     }
 
     @Override
-    public void onBlockUpdate(MicroBlockInfo info, World world, int x, int y, int z) {
+    public void onBlockUpdate(MicroBlockInfo info, MicroBlockInfo[] infos, World world, int x, int y, int z) {
         int origData = info.getData();
         int data = 0;
 
@@ -237,10 +237,21 @@ public class MicroBlockCentralWire extends MicroBlockImpl {
         for (int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++) {
             ForgeDirection dir = ForgeDirection.VALID_DIRECTIONS[i];
 
-            if (canConnectTo(world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, info)) {
-                data |= (1 << i);
+            solidCheck:
+            {
+                if (canConnectTo(world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, info, dir)) {
+                    for (MicroBlockInfo currentInfo : infos) {
+                        if (currentInfo != null && currentInfo.getMaterial() != null && currentInfo.getType() != null) {
+                            if (currentInfo.getType().isSideSolid(currentInfo, dir.ordinal())) {
+                                break solidCheck;
+                            }
+                        }
+                    }
 
-                highestNeighbour = this.getMaxCurrentStrength(world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, highestNeighbour);
+                    data |= (1 << i);
+
+                    highestNeighbour = this.getMaxCurrentStrength(world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, highestNeighbour);
+                }
             }
         }
 
@@ -290,7 +301,7 @@ public class MicroBlockCentralWire extends MicroBlockImpl {
         return strength;
     }
 
-    public static boolean canConnectTo(World world, int x, int y, int z, MicroBlockInfo info) {
+    public static boolean canConnectTo(World world, int x, int y, int z, MicroBlockInfo info, ForgeDirection side) {
         Block block = Block.blocksList[world.getBlockId(x, y, z)];
 
         if (block == null) {
@@ -306,11 +317,17 @@ public class MicroBlockCentralWire extends MicroBlockImpl {
 
             Set<MicroBlockInfo> infos = tile.getSubBlocks();
 
+            boolean hasCorrectWire = false;
             for (MicroBlockInfo current : infos) {
                 if (current.getType().equals(info.getType()) && current.getMaterial().equals(info.getMaterial())) {
-                    return true;
+                    hasCorrectWire = true;
+                }
+                if (current.getType().isSideSolid(current, side.getOpposite().ordinal())) {
+                    return false;
                 }
             }
+
+            return hasCorrectWire;
         }
         else if (block.canProvidePower()) {
             return true;

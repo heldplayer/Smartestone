@@ -89,7 +89,7 @@ public abstract class MicroBlockImpl implements IMicroBlockSubBlock {
     }
 
     @Override
-    public void onBlockUpdate(MicroBlockInfo info, World world, int x, int y, int z) {}
+    public void onBlockUpdate(MicroBlockInfo info, MicroBlockInfo[] infos, World world, int x, int y, int z) {}
 
     @Override
     public int getPowerOutput(MicroBlockInfo info, int side) {

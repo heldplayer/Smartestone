@@ -29,7 +29,7 @@ public interface IMicroBlockSubBlock {
 
     public abstract int getRedstoneStrength(MicroBlockInfo info, int side);
 
-    public abstract void onBlockUpdate(MicroBlockInfo info, World world, int x, int y, int z);
+    public abstract void onBlockUpdate(MicroBlockInfo info, MicroBlockInfo[] infos, World world, int x, int y, int z);
 
     public abstract int getPowerOutput(MicroBlockInfo info, int side);
 

@@ -477,10 +477,11 @@ public class BlockMicro extends Block {
             return;
         }
 
-        Set<MicroBlockInfo> infos = tile.getSubBlocks();
+        //Set<MicroBlockInfo> infos = tile.getSubBlocks();
+        MicroBlockInfo[] infos = tile.getSubBlocks().toArray(new MicroBlockInfo[0]);
 
         for (MicroBlockInfo info : infos) {
-            info.getType().onBlockUpdate(info, world, x, y, z);
+            info.getType().onBlockUpdate(info, infos, world, x, y, z);
         }
     }
 
@@ -541,7 +542,7 @@ public class BlockMicro extends Block {
 
         ForgeDirection dir = ForgeDirection.getOrientation(side).getOpposite();
 
-        if (!MicroBlockCentralWire.canConnectTo((World) world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, null)) {
+        if (!MicroBlockCentralWire.canConnectTo((World) world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, null, dir)) {
             return 0;
         }
 

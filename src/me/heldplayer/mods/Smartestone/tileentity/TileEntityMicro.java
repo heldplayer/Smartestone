@@ -157,7 +157,7 @@ public class TileEntityMicro extends TileEntity implements IMicroBlock {
             return;
         }
 
-        Objects.log.log(Level.INFO, "Info was added at (" + this.xCoord + ", " + this.yCoord + ", " + this.zCoord + ")");
+        //Objects.log.log(Level.INFO, "Info was added at (" + this.xCoord + ", " + this.yCoord + ", " + this.zCoord + ")");
 
         int index = this.getNextAvailableIndex();
 
@@ -177,7 +177,7 @@ public class TileEntityMicro extends TileEntity implements IMicroBlock {
             return;
         }
 
-        Objects.log.log(Level.INFO, "Info was modified at (" + this.xCoord + ", " + this.yCoord + ", " + this.zCoord + ")");
+        //Objects.log.log(Level.INFO, "Info was modified at (" + this.xCoord + ", " + this.yCoord + ", " + this.zCoord + ")");
 
         Chunk chunk = this.worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord);
         Packet5ModifyMicroblock packet = new Packet5ModifyMicroblock(this, info);
@@ -190,7 +190,7 @@ public class TileEntityMicro extends TileEntity implements IMicroBlock {
             return;
         }
 
-        Objects.log.log(Level.INFO, "Info was removed at (" + this.xCoord + ", " + this.yCoord + ", " + this.zCoord + ")");
+        //Objects.log.log(Level.INFO, "Info was removed at (" + this.xCoord + ", " + this.yCoord + ", " + this.zCoord + ")");
 
         this.infos.remove(info);
         this.usedIndices[info.index] = false;
