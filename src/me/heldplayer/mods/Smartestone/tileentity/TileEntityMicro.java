@@ -17,7 +17,6 @@ import me.heldplayer.mods.Smartestone.packet.Packet4RemoveMicroblock;
 import me.heldplayer.mods.Smartestone.packet.Packet5ModifyMicroblock;
 import me.heldplayer.mods.Smartestone.packet.PacketHandler;
 import me.heldplayer.mods.Smartestone.util.Objects;
-import me.heldplayer.mods.Smartestone.util.Util;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.packet.Packet;
@@ -167,7 +166,7 @@ public class TileEntityMicro extends TileEntity implements IMicroBlock {
             this.infos.add(info);
             Chunk chunk = this.worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord);
             Packet3AddMicroblock packet = new Packet3AddMicroblock(this, info);
-            Util.sendPacketToPlayersWatching(PacketHandler.instance.createPacket(packet), this.worldObj.getWorldInfo().getDimension(), chunk.xPosition, chunk.zPosition);
+            PacketHandler.sendPacketToPlayersWatching(PacketHandler.instance.createPacket(packet), this.worldObj.getWorldInfo().getDimension(), chunk.xPosition, chunk.zPosition);
         }
     }
 
@@ -181,7 +180,7 @@ public class TileEntityMicro extends TileEntity implements IMicroBlock {
 
         Chunk chunk = this.worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord);
         Packet5ModifyMicroblock packet = new Packet5ModifyMicroblock(this, info);
-        Util.sendPacketToPlayersWatching(PacketHandler.instance.createPacket(packet), this.worldObj.getWorldInfo().getDimension(), chunk.xPosition, chunk.zPosition);
+        PacketHandler.sendPacketToPlayersWatching(PacketHandler.instance.createPacket(packet), this.worldObj.getWorldInfo().getDimension(), chunk.xPosition, chunk.zPosition);
     }
 
     @Override
@@ -197,7 +196,7 @@ public class TileEntityMicro extends TileEntity implements IMicroBlock {
 
         Chunk chunk = this.worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord);
         Packet4RemoveMicroblock packet = new Packet4RemoveMicroblock(this, info);
-        Util.sendPacketToPlayersWatching(PacketHandler.instance.createPacket(packet), this.worldObj.getWorldInfo().getDimension(), chunk.xPosition, chunk.zPosition);
+        PacketHandler.sendPacketToPlayersWatching(PacketHandler.instance.createPacket(packet), this.worldObj.getWorldInfo().getDimension(), chunk.xPosition, chunk.zPosition);
     }
 
 }
