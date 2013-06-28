@@ -7,13 +7,13 @@ import net.minecraft.util.Icon;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class WireMaterial implements IMicroBlockMaterial {
+public class MaterialWire implements IMicroBlockMaterial {
 
     public final String identifier;
     public final String displayName;
     public final IconProvider icon;
 
-    public WireMaterial(String identifier, String displayName, IconProvider onState) {
+    public MaterialWire(String identifier, String displayName, IconProvider onState) {
         this.identifier = identifier;
         this.displayName = displayName;
         this.icon = onState;
@@ -82,7 +82,7 @@ public class WireMaterial implements IMicroBlockMaterial {
         if (this.getClass() != obj.getClass()) {
             return false;
         }
-        WireMaterial other = (WireMaterial) obj;
+        MaterialWire other = (MaterialWire) obj;
         if (this.identifier == null) {
             if (other.identifier != null) {
                 return false;

@@ -7,13 +7,13 @@ import java.util.Random;
 
 import me.heldplayer.api.Smartestone.micro.IconProvider;
 import me.heldplayer.api.Smartestone.micro.MicroBlockAPI;
-import me.heldplayer.api.Smartestone.micro.impl.BlockMaterial;
+import me.heldplayer.api.Smartestone.micro.impl.MaterialBlock;
 import me.heldplayer.api.Smartestone.micro.impl.MicroBlockCentralWire;
 import me.heldplayer.api.Smartestone.micro.impl.MicroBlockCorner;
 import me.heldplayer.api.Smartestone.micro.impl.MicroBlockPane;
 import me.heldplayer.api.Smartestone.micro.impl.MicroBlockPillar;
 import me.heldplayer.api.Smartestone.micro.impl.MicroBlockStrip;
-import me.heldplayer.api.Smartestone.micro.impl.WireMaterial;
+import me.heldplayer.api.Smartestone.micro.impl.MaterialWire;
 import me.heldplayer.mods.Smartestone.block.BlockMicro;
 import me.heldplayer.mods.Smartestone.block.BlockMulti1;
 import me.heldplayer.mods.Smartestone.block.BlockMulti2;
@@ -150,23 +150,23 @@ public class CommonProxy implements IGuiHandler {
         int[] blocks = new int[] { 1, 3, 4, 12, 13, 22, 41, 42, 45, 48, 49, 57, 79, 80, 82, 87, 88, 89, 98, 112, 121, 133, 152 };
 
         for (int block : blocks) {
-            MicroBlockAPI.registerMaterial(new BlockMaterial(new ItemStack(block, 1, 0)));
+            MicroBlockAPI.registerMaterial(new MaterialBlock(new ItemStack(block, 1, 0)));
         }
 
         for (int meta = 0; meta < 4; meta++) {
-            MicroBlockAPI.registerMaterial(new BlockMaterial(new ItemStack(5, 1, meta)));
+            MicroBlockAPI.registerMaterial(new MaterialBlock(new ItemStack(5, 1, meta)));
         }
         for (int meta = 0; meta < 4; meta++) {
-            MicroBlockAPI.registerMaterial(new BlockMaterial(new ItemStack(17, 1, meta)));
+            MicroBlockAPI.registerMaterial(new MaterialBlock(new ItemStack(17, 1, meta)));
         }
         for (int meta = 0; meta < 16; meta++) {
-            MicroBlockAPI.registerMaterial(new BlockMaterial(new ItemStack(35, 1, meta)));
+            MicroBlockAPI.registerMaterial(new MaterialBlock(new ItemStack(35, 1, meta)));
         }
 
-        MicroBlockAPI.registerMaterial(new WireMaterial("WireRedstone", "Redstone Wire", redstoneIcon));
-        MicroBlockAPI.registerMaterial(new WireMaterial("WireBluestone", "Bluestone Wire", bluestoneIcon));
-        MicroBlockAPI.registerMaterial(new WireMaterial("WireGreenstone", "Greenstone Wire", greenstoneIcon));
-        MicroBlockAPI.registerMaterial(new WireMaterial("WireYellowstone", "Yellowstone Wire", yellowstoneIcon));
+        MicroBlockAPI.registerMaterial(new MaterialWire("WireRedstone", "Redstone Wire", redstoneIcon));
+        MicroBlockAPI.registerMaterial(new MaterialWire("WireBluestone", "Bluestone Wire", bluestoneIcon));
+        MicroBlockAPI.registerMaterial(new MaterialWire("WireGreenstone", "Greenstone Wire", greenstoneIcon));
+        MicroBlockAPI.registerMaterial(new MaterialWire("WireYellowstone", "Yellowstone Wire", yellowstoneIcon));
 
         EnchantmentDurability enchant = (EnchantmentDurability) Enchantment.enchantmentsList[Enchantment.unbreaking.effectId];
         Enchantment.enchantmentsList[Enchantment.unbreaking.effectId] = null;

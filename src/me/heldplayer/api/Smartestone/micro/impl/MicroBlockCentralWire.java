@@ -32,7 +32,7 @@ public class MicroBlockCentralWire extends MicroBlockImpl {
 
     @Override
     public boolean isMaterialApplicable(IMicroBlockMaterial material) {
-        return material.getClass() == WireMaterial.class;
+        return material.getClass() == MaterialWire.class;
     }
 
     @Override
