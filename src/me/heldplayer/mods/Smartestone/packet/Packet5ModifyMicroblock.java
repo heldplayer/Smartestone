@@ -14,6 +14,8 @@ import net.minecraft.world.World;
 
 import com.google.common.io.ByteArrayDataInput;
 
+import cpw.mods.fml.relauncher.Side;
+
 public class Packet5ModifyMicroblock extends HeldCorePacket {
 
     public int blockX;
@@ -23,17 +25,22 @@ public class Packet5ModifyMicroblock extends HeldCorePacket {
     public int data;
 
     public Packet5ModifyMicroblock(int packetId) {
-        super(packetId);
+        super(packetId, null);
     }
 
     public Packet5ModifyMicroblock(TileEntityMicro tile, MicroBlockInfo info) {
-        super(5);
+        super(5, tile.worldObj);
 
         this.blockX = tile.xCoord;
         this.blockY = tile.yCoord;
         this.blockZ = tile.zCoord;
         this.index = info.index;
         this.data = info.getData();
+    }
+
+    @Override
+    public Side getSendingSide() {
+        return Side.SERVER;
     }
 
     @Override

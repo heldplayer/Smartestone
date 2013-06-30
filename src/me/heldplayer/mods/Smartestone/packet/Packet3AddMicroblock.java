@@ -14,6 +14,8 @@ import net.minecraft.world.World;
 
 import com.google.common.io.ByteArrayDataInput;
 
+import cpw.mods.fml.relauncher.Side;
+
 public class Packet3AddMicroblock extends HeldCorePacket {
 
     public int blockX;
@@ -22,11 +24,11 @@ public class Packet3AddMicroblock extends HeldCorePacket {
     public MicroBlockInfo info;
 
     public Packet3AddMicroblock(int packetId) {
-        super(packetId);
+        super(packetId, null);
     }
 
     public Packet3AddMicroblock(TileEntityMicro tile, MicroBlockInfo info) {
-        super(3);
+        super(3, tile.worldObj);
 
         this.blockX = tile.xCoord;
         this.blockY = tile.yCoord;
@@ -37,6 +39,11 @@ public class Packet3AddMicroblock extends HeldCorePacket {
     @Override
     public boolean isMapPacket() {
         return true;
+    }
+
+    @Override
+    public Side getSendingSide() {
+        return Side.SERVER;
     }
 
     @Override

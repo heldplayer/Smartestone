@@ -14,6 +14,7 @@ public class PacketHandler extends me.heldplayer.util.HeldCore.packet.PacketHand
         this.registerPacket(3, Packet3AddMicroblock.class);
         this.registerPacket(4, Packet4RemoveMicroblock.class);
         this.registerPacket(5, Packet5ModifyMicroblock.class);
+        this.registerPacket(6, Packet6SetInventorySlotContents.class);
         instance = this;
     }
 

@@ -4,6 +4,8 @@ package me.heldplayer.mods.Smartestone.tileentity;
 import java.util.Iterator;
 
 import me.heldplayer.mods.Smartestone.CommonProxy;
+import me.heldplayer.mods.Smartestone.packet.Packet6SetInventorySlotContents;
+import me.heldplayer.mods.Smartestone.packet.PacketHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
@@ -13,6 +15,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.storage.MapData;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -190,6 +193,12 @@ public class TileEntityItemStand extends TileEntityRotatable implements IInvento
 
         if (newStack != null && newStack.stackSize > this.getInventoryStackLimit()) {
             newStack.stackSize = this.getInventoryStackLimit();
+        }
+
+        if (index == 0 && !this.worldObj.isRemote) {
+            Chunk chunk = this.worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord);
+            Packet6SetInventorySlotContents packet = new Packet6SetInventorySlotContents(this, index, newStack);
+            PacketHandler.sendPacketToPlayersWatching(PacketHandler.instance.createPacket(packet), this.worldObj.getWorldInfo().getDimension(), chunk.xPosition, chunk.zPosition);
         }
 
         this.onInventoryChanged();

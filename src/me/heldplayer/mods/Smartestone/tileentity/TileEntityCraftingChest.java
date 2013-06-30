@@ -5,6 +5,8 @@ import me.heldplayer.mods.Smartestone.CommonProxy;
 import me.heldplayer.mods.Smartestone.inventory.craftingchest.ContainerCraftingChest;
 import me.heldplayer.mods.Smartestone.inventory.craftingchest.InventoryCraftingMatrix;
 import me.heldplayer.mods.Smartestone.inventory.craftingchest.InventoryCraftingResult;
+import me.heldplayer.mods.Smartestone.packet.Packet6SetInventorySlotContents;
+import me.heldplayer.mods.Smartestone.packet.PacketHandler;
 import me.heldplayer.mods.Smartestone.util.Const;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -14,6 +16,7 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.ForgeDirection;
 import buildcraft.api.inventory.ISpecialInventory;
 import cpw.mods.fml.relauncher.Side;
@@ -187,6 +190,12 @@ public class TileEntityCraftingChest extends TileEntityRotatable implements ISpe
             newStack.stackSize = this.getInventoryStackLimit();
         }
 
+        if (index >= Const.CRAFTINGCHEST_INV_SIZE && index < Const.CRAFTINGCHEST_TOTAL_INV_SIZE && !this.worldObj.isRemote) {
+            Chunk chunk = this.worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord);
+            Packet6SetInventorySlotContents packet = new Packet6SetInventorySlotContents(this, index, newStack);
+            PacketHandler.sendPacketToPlayersWatching(PacketHandler.instance.createPacket(packet), this.worldObj.getWorldInfo().getDimension(), chunk.xPosition, chunk.zPosition);
+        }
+
         this.onInventoryChanged();
     }
 
@@ -201,6 +210,12 @@ public class TileEntityCraftingChest extends TileEntityRotatable implements ISpe
 
                 this.onInventoryChanged();
 
+                if (slot >= Const.CRAFTINGCHEST_INV_SIZE && slot < Const.CRAFTINGCHEST_TOTAL_INV_SIZE && !this.worldObj.isRemote) {
+                    Chunk chunk = this.worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord);
+                    Packet6SetInventorySlotContents packet = new Packet6SetInventorySlotContents(this, slot, stack);
+                    PacketHandler.sendPacketToPlayersWatching(PacketHandler.instance.createPacket(packet), this.worldObj.getWorldInfo().getDimension(), chunk.xPosition, chunk.zPosition);
+                }
+
                 return stack;
             }
             else {
@@ -211,6 +226,12 @@ public class TileEntityCraftingChest extends TileEntityRotatable implements ISpe
                 }
 
                 this.onInventoryChanged();
+
+                if (slot >= Const.CRAFTINGCHEST_INV_SIZE && slot < Const.CRAFTINGCHEST_TOTAL_INV_SIZE && !this.worldObj.isRemote) {
+                    Chunk chunk = this.worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord);
+                    Packet6SetInventorySlotContents packet = new Packet6SetInventorySlotContents(this, slot, stack);
+                    PacketHandler.sendPacketToPlayersWatching(PacketHandler.instance.createPacket(packet), this.worldObj.getWorldInfo().getDimension(), chunk.xPosition, chunk.zPosition);
+                }
 
                 return stack;
             }

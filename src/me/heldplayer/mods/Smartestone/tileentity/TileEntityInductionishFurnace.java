@@ -2,6 +2,8 @@
 package me.heldplayer.mods.Smartestone.tileentity;
 
 import me.heldplayer.mods.Smartestone.CommonProxy;
+import me.heldplayer.mods.Smartestone.packet.Packet6SetInventorySlotContents;
+import me.heldplayer.mods.Smartestone.packet.PacketHandler;
 import me.heldplayer.mods.Smartestone.util.Const;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -12,6 +14,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.world.chunk.Chunk;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -118,6 +121,13 @@ public class TileEntityInductionishFurnace extends TileEntityRotatable implement
                     this.progress = 0;
                     this.smeltItem();
                     changed = true;
+
+                    Chunk chunk = this.worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord);
+                    Packet6SetInventorySlotContents packet = new Packet6SetInventorySlotContents(this, Const.INDUCTIONISHFURNACE_INPUT_SLOT, this.getStackInSlot(Const.INDUCTIONISHFURNACE_INPUT_SLOT));
+                    PacketHandler.sendPacketToPlayersWatching(PacketHandler.instance.createPacket(packet), this.worldObj.getWorldInfo().getDimension(), chunk.xPosition, chunk.zPosition);
+
+                    packet = new Packet6SetInventorySlotContents(this, Const.INDUCTIONISHFURNACE_OUTPUT_SLOT, this.getStackInSlot(Const.INDUCTIONISHFURNACE_OUTPUT_SLOT));
+                    PacketHandler.sendPacketToPlayersWatching(PacketHandler.instance.createPacket(packet), this.worldObj.getWorldInfo().getDimension(), chunk.xPosition, chunk.zPosition);
                 }
             }
             else {
@@ -315,6 +325,12 @@ public class TileEntityInductionishFurnace extends TileEntityRotatable implement
             newStack.stackSize = this.getInventoryStackLimit();
         }
 
+        if ((index == Const.INDUCTIONISHFURNACE_INPUT_SLOT || index == Const.INDUCTIONISHFURNACE_OUTPUT_SLOT) && !this.worldObj.isRemote) {
+            Chunk chunk = this.worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord);
+            Packet6SetInventorySlotContents packet = new Packet6SetInventorySlotContents(this, index, newStack);
+            PacketHandler.sendPacketToPlayersWatching(PacketHandler.instance.createPacket(packet), this.worldObj.getWorldInfo().getDimension(), chunk.xPosition, chunk.zPosition);
+        }
+
         this.onInventoryChanged();
     }
 
@@ -329,6 +345,12 @@ public class TileEntityInductionishFurnace extends TileEntityRotatable implement
 
                 this.onInventoryChanged();
 
+                if ((slot == Const.INDUCTIONISHFURNACE_INPUT_SLOT || slot == Const.INDUCTIONISHFURNACE_OUTPUT_SLOT) && !this.worldObj.isRemote) {
+                    Chunk chunk = this.worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord);
+                    Packet6SetInventorySlotContents packet = new Packet6SetInventorySlotContents(this, slot, stack);
+                    PacketHandler.sendPacketToPlayersWatching(PacketHandler.instance.createPacket(packet), this.worldObj.getWorldInfo().getDimension(), chunk.xPosition, chunk.zPosition);
+                }
+
                 return stack;
             }
             else {
@@ -339,6 +361,12 @@ public class TileEntityInductionishFurnace extends TileEntityRotatable implement
                 }
 
                 this.onInventoryChanged();
+
+                if ((slot == Const.INDUCTIONISHFURNACE_INPUT_SLOT || slot == Const.INDUCTIONISHFURNACE_OUTPUT_SLOT) && !this.worldObj.isRemote) {
+                    Chunk chunk = this.worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord);
+                    Packet6SetInventorySlotContents packet = new Packet6SetInventorySlotContents(this, slot, stack);
+                    PacketHandler.sendPacketToPlayersWatching(PacketHandler.instance.createPacket(packet), this.worldObj.getWorldInfo().getDimension(), chunk.xPosition, chunk.zPosition);
+                }
 
                 return stack;
             }

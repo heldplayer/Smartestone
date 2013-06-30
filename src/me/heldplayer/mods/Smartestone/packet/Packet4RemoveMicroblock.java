@@ -14,6 +14,8 @@ import net.minecraft.world.World;
 
 import com.google.common.io.ByteArrayDataInput;
 
+import cpw.mods.fml.relauncher.Side;
+
 public class Packet4RemoveMicroblock extends HeldCorePacket {
 
     public int blockX;
@@ -22,11 +24,11 @@ public class Packet4RemoveMicroblock extends HeldCorePacket {
     public int index;
 
     public Packet4RemoveMicroblock(int packetId) {
-        super(packetId);
+        super(packetId, null);
     }
 
     public Packet4RemoveMicroblock(TileEntityMicro tile, MicroBlockInfo info) {
-        super(4);
+        super(4, tile.worldObj);
 
         this.blockX = tile.xCoord;
         this.blockY = tile.yCoord;
@@ -37,6 +39,11 @@ public class Packet4RemoveMicroblock extends HeldCorePacket {
     @Override
     public boolean isMapPacket() {
         return true;
+    }
+
+    @Override
+    public Side getSendingSide() {
+        return Side.SERVER;
     }
 
     @Override

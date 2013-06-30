@@ -16,6 +16,8 @@ import net.minecraft.world.World;
 
 import com.google.common.io.ByteArrayDataInput;
 
+import cpw.mods.fml.relauncher.Side;
+
 public class Packet1RotatableTile extends HeldCorePacket {
 
     public int blockX;
@@ -27,11 +29,11 @@ public class Packet1RotatableTile extends HeldCorePacket {
     public NBTTagCompound compound;
 
     public Packet1RotatableTile(int packetId) {
-        super(packetId);
+        super(packetId, null);
     }
 
     public Packet1RotatableTile(TileEntityRotatable tile) {
-        super(1);
+        super(1, tile.worldObj);
 
         this.blockX = tile.xCoord;
         this.blockY = tile.yCoord;
@@ -47,6 +49,11 @@ public class Packet1RotatableTile extends HeldCorePacket {
     @Override
     public boolean isMapPacket() {
         return true;
+    }
+
+    @Override
+    public Side getSendingSide() {
+        return Side.SERVER;
     }
 
     @Override

@@ -4,9 +4,11 @@ package me.heldplayer.mods.Smartestone.packet;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import me.heldplayer.mods.Smartestone.tileentity.TileEntityMicro;
+import me.heldplayer.mods.Smartestone.tileentity.TileEntityRotatable;
 import me.heldplayer.util.HeldCore.packet.HeldCorePacket;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetworkManager;
@@ -16,31 +18,26 @@ import com.google.common.io.ByteArrayDataInput;
 
 import cpw.mods.fml.relauncher.Side;
 
-public class Packet2MicroTile extends HeldCorePacket {
+public class Packet6SetInventorySlotContents extends HeldCorePacket {
 
     public int blockX;
     public int blockY;
     public int blockZ;
-    public NBTTagCompound compound;
+    public int slot;
+    public ItemStack stack;
 
-    public Packet2MicroTile(int packetId) {
+    public Packet6SetInventorySlotContents(int packetId) {
         super(packetId, null);
     }
 
-    public Packet2MicroTile(TileEntityMicro tile) {
-        super(2, tile.worldObj);
+    public Packet6SetInventorySlotContents(TileEntityRotatable tile, int slot, ItemStack stack) {
+        super(6, tile.worldObj);
 
         this.blockX = tile.xCoord;
         this.blockY = tile.yCoord;
         this.blockZ = tile.zCoord;
-
-        this.compound = new NBTTagCompound();
-        tile.writeNBT(this.compound);
-    }
-
-    @Override
-    public boolean isMapPacket() {
-        return true;
+        this.slot = slot;
+        this.stack = stack;
     }
 
     @Override
@@ -53,8 +50,12 @@ public class Packet2MicroTile extends HeldCorePacket {
         this.blockX = in.readInt();
         this.blockY = in.readInt();
         this.blockZ = in.readInt();
+        this.slot = in.readInt();
 
-        this.compound = (NBTTagCompound) NBTBase.readNamedTag(in);
+        NBTTagCompound compound = (NBTTagCompound) NBTBase.readNamedTag(in);
+        if (compound.hasKey("Stack")) {
+            this.stack = ItemStack.loadItemStackFromNBT(compound.getCompoundTag("Stack"));
+        }
     }
 
     @Override
@@ -62,19 +63,22 @@ public class Packet2MicroTile extends HeldCorePacket {
         out.writeInt(this.blockX);
         out.writeInt(this.blockY);
         out.writeInt(this.blockZ);
+        out.writeInt(this.slot);
 
-        NBTBase.writeNamedTag(this.compound, out);
+        NBTTagCompound tag = new NBTTagCompound();
+        if (stack != null) {
+            tag.setCompoundTag("Stack", stack.writeToNBT(new NBTTagCompound("Stack")));
+        }
+        NBTBase.writeNamedTag(tag, out);
     }
 
     @Override
     public void onData(INetworkManager manager, EntityPlayer player) {
         World world = player.worldObj;
-        TileEntityMicro tile = (TileEntityMicro) world.getBlockTileEntity(blockX, blockY, blockZ);
-        if (tile != null) {
-            tile.readNBT(compound);
+        TileEntityRotatable tile = (TileEntityRotatable) world.getBlockTileEntity(this.blockX, this.blockY, this.blockZ);
+        if (tile != null && tile instanceof IInventory) {
+            ((IInventory) tile).setInventorySlotContents(this.slot, this.stack);
         }
-
-        world.markBlockForUpdate(blockX, blockY, blockZ);
     }
 
 }
