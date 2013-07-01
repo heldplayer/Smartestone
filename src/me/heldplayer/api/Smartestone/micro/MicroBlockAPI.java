@@ -1,9 +1,11 @@
 
 package me.heldplayer.api.Smartestone.micro;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Set;
 import java.util.TreeMap;
+
+import me.heldplayer.api.Smartestone.micro.placement.IMicroBlockPlacementRule;
 
 public final class MicroBlockAPI {
 
@@ -11,8 +13,9 @@ public final class MicroBlockAPI {
 
     private static final TreeMap<String, IMicroBlockMaterial> materials = new TreeMap<String, IMicroBlockMaterial>();
     private static final TreeMap<String, IMicroBlockSubBlock> blocks = new TreeMap<String, IMicroBlockSubBlock>();
-    private static final ArrayList<IMicroBlockMaterial> materialsList = new ArrayList<IMicroBlockMaterial>();
-    private static final ArrayList<IMicroBlockSubBlock> blocksList = new ArrayList<IMicroBlockSubBlock>();
+    private static final LinkedList<IMicroBlockMaterial> materialsList = new LinkedList<IMicroBlockMaterial>();
+    private static final LinkedList<IMicroBlockSubBlock> blocksList = new LinkedList<IMicroBlockSubBlock>();
+    private static final LinkedList<IMicroBlockPlacementRule> placementRules = new LinkedList<IMicroBlockPlacementRule>();
 
     public static void registerMaterial(IMicroBlockMaterial material) {
         materials.put(material.getIdentifier(), material);
@@ -22,6 +25,10 @@ public final class MicroBlockAPI {
     public static void registerSubBlock(IMicroBlockSubBlock block) {
         blocks.put(block.getTypeName(), block);
         blocksList.add(block);
+    }
+
+    public static void registerPlacementRule(IMicroBlockPlacementRule rule) {
+        placementRules.add(rule);
     }
 
     public static Set<String> getMaterialNames() {
@@ -54,6 +61,16 @@ public final class MicroBlockAPI {
      */
     public static int ordinal(IMicroBlockSubBlock block) {
         return blocksList.indexOf(block);
+    }
+
+    public static boolean canBeAdded(MicroBlockInfo first, MicroBlockInfo second) {
+        for (IMicroBlockPlacementRule rule : placementRules) {
+            if (rule.conflicts(first, second)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public static float getU(int side, float hitX, float hitY, float hitZ) {

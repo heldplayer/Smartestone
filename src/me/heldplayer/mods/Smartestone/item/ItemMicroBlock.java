@@ -136,7 +136,7 @@ public class ItemMicroBlock extends Item {
             return false;
         }
 
-        MicroBlockInfo info = new MicroBlockInfo(material, subBlock, 0);
+        MicroBlockInfo result = new MicroBlockInfo(material, subBlock, 0);
 
         if (world.getBlockId(x, y, z) != Objects.blockMicro.blockID) {
             if (!world.setBlock(x, y, z, MicroBlockAPI.microBlockId, 0, 3)) {
@@ -157,10 +157,13 @@ public class ItemMicroBlock extends Item {
                 return false;
             }
 
-            MicroBlockInfo result = new MicroBlockInfo(info.getMaterial(), info.getType(), data);
+            result = new MicroBlockInfo(result.getMaterial(), result.getType(), data);
 
-            if (!subBlock.canBeAdded(tile, result)) {
-                return false;
+            Set<MicroBlockInfo> infos = tile.getSubBlocks();
+            for (MicroBlockInfo info : infos) {
+                if (!MicroBlockAPI.canBeAdded(info, result)) {
+                    return false;
+                }
             }
 
             tile.addInfo(result);

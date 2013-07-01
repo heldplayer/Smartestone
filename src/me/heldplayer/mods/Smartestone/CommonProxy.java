@@ -8,12 +8,14 @@ import java.util.Random;
 import me.heldplayer.api.Smartestone.micro.IconProvider;
 import me.heldplayer.api.Smartestone.micro.MicroBlockAPI;
 import me.heldplayer.api.Smartestone.micro.impl.MaterialBlock;
+import me.heldplayer.api.Smartestone.micro.impl.MaterialWire;
 import me.heldplayer.api.Smartestone.micro.impl.MicroBlockCentralWire;
 import me.heldplayer.api.Smartestone.micro.impl.MicroBlockCorner;
 import me.heldplayer.api.Smartestone.micro.impl.MicroBlockPane;
 import me.heldplayer.api.Smartestone.micro.impl.MicroBlockPillar;
 import me.heldplayer.api.Smartestone.micro.impl.MicroBlockStrip;
-import me.heldplayer.api.Smartestone.micro.impl.MaterialWire;
+import me.heldplayer.api.Smartestone.micro.placement.PlacementRuleCentralWire;
+import me.heldplayer.api.Smartestone.micro.placement.PlacementRuleSameType;
 import me.heldplayer.mods.Smartestone.block.BlockMicro;
 import me.heldplayer.mods.Smartestone.block.BlockMulti1;
 import me.heldplayer.mods.Smartestone.block.BlockMulti2;
@@ -171,6 +173,9 @@ public class CommonProxy implements IGuiHandler {
         EnchantmentDurability enchant = (EnchantmentDurability) Enchantment.enchantmentsList[Enchantment.unbreaking.effectId];
         Enchantment.enchantmentsList[Enchantment.unbreaking.effectId] = null;
         new EnchantmentDurabilityExt(enchant);
+
+        MicroBlockAPI.registerPlacementRule(new PlacementRuleSameType());
+        MicroBlockAPI.registerPlacementRule(new PlacementRuleCentralWire());
     }
 
     @Override

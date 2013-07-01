@@ -220,6 +220,7 @@ public class MicroBlockCentralWire extends MicroBlockImpl {
 
     @Override
     public void onBlockUpdate(MicroBlockInfo info, MicroBlockInfo[] infos, World world, int x, int y, int z) {
+        // FIXME: Spams packets when powering down
         int origData = info.getData();
         int data = 0;
 
@@ -356,19 +357,6 @@ public class MicroBlockCentralWire extends MicroBlockImpl {
     @Override
     public int getPowerOutput(MicroBlockInfo info, int side) {
         return info.getData() >> 6;
-    }
-
-    @Override
-    public boolean canBeAdded(IMicroBlock tile, MicroBlockInfo info) {
-        Set<MicroBlockInfo> infos = tile.getSubBlocks();
-
-        for (MicroBlockInfo current : infos) {
-            if (current.getType().equals(this)) {
-                return false;
-            }
-        }
-
-        return true;
     }
 
 }
