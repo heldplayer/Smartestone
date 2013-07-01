@@ -107,7 +107,8 @@ public class TileEntityItemStand extends TileEntityRotatable implements IInvento
     }
 
     @Override
-    public void writeNBT(NBTTagCompound compound) {
+    public void writeToTag(NBTTagCompound compound) {
+        super.writeToTag(compound);
         NBTTagList items = new NBTTagList();
 
         for (int slot = 0; slot < this.inventory.length; ++slot) {
@@ -123,7 +124,8 @@ public class TileEntityItemStand extends TileEntityRotatable implements IInvento
     }
 
     @Override
-    public void readNBT(NBTTagCompound compound) {
+    public void readFromTag(NBTTagCompound compound) {
+        super.readFromTag(compound);
         NBTTagList items = compound.getTagList("Items");
 
         this.inventory[0] = null;

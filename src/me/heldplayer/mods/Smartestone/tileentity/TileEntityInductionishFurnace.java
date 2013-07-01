@@ -235,7 +235,8 @@ public class TileEntityInductionishFurnace extends TileEntityRotatable implement
     }
 
     @Override
-    public void writeNBT(NBTTagCompound compound) {
+    public void writeToTag(NBTTagCompound compound) {
+        super.writeToTag(compound);
         NBTTagList items = new NBTTagList();
 
         for (int slot = Const.INDUCTIONISHFURNACE_INPUT_SLOT; slot < this.inventory.length; ++slot) {
@@ -251,7 +252,8 @@ public class TileEntityInductionishFurnace extends TileEntityRotatable implement
     }
 
     @Override
-    public void readNBT(NBTTagCompound compound) {
+    public void readFromTag(NBTTagCompound compound) {
+        super.readFromTag(compound);
         NBTTagList items = compound.getTagList("Items");
 
         for (int slot = Const.INDUCTIONISHFURNACE_INPUT_SLOT; slot < this.inventory.length; ++slot) {

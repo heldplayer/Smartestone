@@ -100,7 +100,8 @@ public class TileEntityCraftingChest extends TileEntityRotatable implements ISpe
     }
 
     @Override
-    public void writeNBT(NBTTagCompound compound) {
+    public void writeToTag(NBTTagCompound compound) {
+        super.writeToTag(compound);
         NBTTagList items = new NBTTagList();
 
         for (int slot = Const.CRAFTINGCHEST_INV_SIZE; slot < this.inventory.length; ++slot) {
@@ -116,7 +117,8 @@ public class TileEntityCraftingChest extends TileEntityRotatable implements ISpe
     }
 
     @Override
-    public void readNBT(NBTTagCompound compound) {
+    public void readFromTag(NBTTagCompound compound) {
+        super.readFromTag(compound);
         NBTTagList items = compound.getTagList("Items");
 
         for (int slot = Const.CRAFTINGCHEST_INV_SIZE; slot < this.inventory.length; ++slot) {

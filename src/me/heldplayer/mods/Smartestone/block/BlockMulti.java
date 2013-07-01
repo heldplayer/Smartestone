@@ -4,7 +4,7 @@ package me.heldplayer.mods.Smartestone.block;
 import java.util.Random;
 
 import me.heldplayer.mods.Smartestone.item.ItemRotator;
-import me.heldplayer.mods.Smartestone.packet.Packet1RotatableTile;
+import me.heldplayer.mods.Smartestone.packet.Packet2SerializeableTile;
 import me.heldplayer.mods.Smartestone.packet.PacketHandler;
 import me.heldplayer.mods.Smartestone.tileentity.TileEntityRotatable;
 import me.heldplayer.mods.Smartestone.util.Direction;
@@ -270,7 +270,7 @@ public abstract class BlockMulti extends Block {
             }
 
             try {
-                Packet1RotatableTile packet = new Packet1RotatableTile(tile);
+                Packet2SerializeableTile packet = new Packet2SerializeableTile(tile);
                 ((EntityPlayerMP) player).playerNetServerHandler.netManager.addToSendQueue(PacketHandler.instance.createPacket(packet));
             }
             catch (ClassCastException e) {}

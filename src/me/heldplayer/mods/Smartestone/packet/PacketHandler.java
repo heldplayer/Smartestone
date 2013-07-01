@@ -9,8 +9,8 @@ public class PacketHandler extends me.heldplayer.util.HeldCore.packet.PacketHand
 
     public PacketHandler() {
         super(Objects.MOD_CHANNEL);
-        this.registerPacket(1, Packet1RotatableTile.class);
-        this.registerPacket(2, Packet2MicroTile.class);
+        //this.registerPacket(1, Packet1RotatableTile.class);
+        this.registerPacket(2, Packet2SerializeableTile.class);
         this.registerPacket(3, Packet3AddMicroblock.class);
         this.registerPacket(4, Packet4RemoveMicroblock.class);
         this.registerPacket(5, Packet5ModifyMicroblock.class);

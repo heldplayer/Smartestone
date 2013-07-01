@@ -1,15 +1,17 @@
 
 package me.heldplayer.mods.Smartestone.tileentity;
 
-import me.heldplayer.mods.Smartestone.packet.Packet1RotatableTile;
+import me.heldplayer.mods.Smartestone.packet.ISerializableTile;
+import me.heldplayer.mods.Smartestone.packet.Packet2SerializeableTile;
 import me.heldplayer.mods.Smartestone.packet.PacketHandler;
 import me.heldplayer.mods.Smartestone.util.Direction;
 import me.heldplayer.mods.Smartestone.util.Rotation;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 
-public abstract class TileEntityRotatable extends TileEntity {
+public abstract class TileEntityRotatable extends TileEntity implements ISerializableTile {
 
     public Direction direction = Direction.UNKNOWN;
     public Rotation rotation = Rotation.UNKNOWN;
@@ -40,7 +42,7 @@ public abstract class TileEntityRotatable extends TileEntity {
 
     @Override
     public Packet getDescriptionPacket() {
-        Packet1RotatableTile packet = new Packet1RotatableTile(this);
+        Packet2SerializeableTile packet = new Packet2SerializeableTile(this);
         return PacketHandler.instance.createPacket(packet);
     }
 
@@ -52,8 +54,38 @@ public abstract class TileEntityRotatable extends TileEntity {
         return this.isInvNameLocalized() ? this.customName : "container." + this.name;
     }
 
-    public abstract void writeNBT(NBTTagCompound compound);
+    @Override
+    public void writeToTag(NBTTagCompound compound) {
+        compound.setByte("Direction", (byte) this.direction.ordinal());
+        compound.setByte("Rotation", (byte) this.rotation.ordinal());
+        compound.setString("CustomName", this.customName);
+    }
 
-    public abstract void readNBT(NBTTagCompound compound);
+    @Override
+    public void readFromTag(NBTTagCompound compound) {
+        this.direction = Direction.getDirection(compound.getByte("Direction"));
+        this.rotation = Rotation.getRotation(compound.getByte("Rotation"));
+        this.customName = compound.getString("CustomName");
+    }
+
+    @Override
+    public World getWorld() {
+        return this.worldObj;
+    }
+
+    @Override
+    public int getX() {
+        return this.xCoord;
+    }
+
+    @Override
+    public int getY() {
+        return this.yCoord;
+    }
+
+    @Override
+    public int getZ() {
+        return this.zCoord;
+    }
 
 }

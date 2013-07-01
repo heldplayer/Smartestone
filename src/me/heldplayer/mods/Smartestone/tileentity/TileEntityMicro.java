@@ -11,7 +11,8 @@ import me.heldplayer.api.Smartestone.micro.IMicroBlockSubBlock;
 import me.heldplayer.api.Smartestone.micro.MicroBlockAPI;
 import me.heldplayer.api.Smartestone.micro.MicroBlockInfo;
 import me.heldplayer.api.Smartestone.micro.MicroBlockInfoSorter;
-import me.heldplayer.mods.Smartestone.packet.Packet2MicroTile;
+import me.heldplayer.mods.Smartestone.packet.ISerializableTile;
+import me.heldplayer.mods.Smartestone.packet.Packet2SerializeableTile;
 import me.heldplayer.mods.Smartestone.packet.Packet3AddMicroblock;
 import me.heldplayer.mods.Smartestone.packet.Packet4RemoveMicroblock;
 import me.heldplayer.mods.Smartestone.packet.Packet5ModifyMicroblock;
@@ -21,9 +22,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 
-public class TileEntityMicro extends TileEntity implements IMicroBlock {
+public class TileEntityMicro extends TileEntity implements IMicroBlock, ISerializableTile {
 
     public Set<MicroBlockInfo> infos;
     public boolean[] usedIndices;
@@ -85,7 +87,8 @@ public class TileEntityMicro extends TileEntity implements IMicroBlock {
         }
     }
 
-    public void writeNBT(NBTTagCompound compound) {
+    @Override
+    public void writeToTag(NBTTagCompound compound) {
         NBTTagList list = new NBTTagList("Info");
 
         for (MicroBlockInfo info : this.infos) {
@@ -101,7 +104,8 @@ public class TileEntityMicro extends TileEntity implements IMicroBlock {
         compound.setTag("Info", list);
     }
 
-    public void readNBT(NBTTagCompound compound) {
+    @Override
+    public void readFromTag(NBTTagCompound compound) {
         NBTTagList list = compound.getTagList("Info");
 
         this.infos.clear();
@@ -119,6 +123,26 @@ public class TileEntityMicro extends TileEntity implements IMicroBlock {
 
             this.infos.add(info);
         }
+    }
+
+    @Override
+    public World getWorld() {
+        return this.worldObj;
+    }
+
+    @Override
+    public int getX() {
+        return this.xCoord;
+    }
+
+    @Override
+    public int getY() {
+        return this.yCoord;
+    }
+
+    @Override
+    public int getZ() {
+        return this.zCoord;
     }
 
     private int getNextAvailableIndex() {
@@ -141,7 +165,7 @@ public class TileEntityMicro extends TileEntity implements IMicroBlock {
 
     @Override
     public Packet getDescriptionPacket() {
-        Packet2MicroTile packet = new Packet2MicroTile(this);
+        Packet2SerializeableTile packet = new Packet2SerializeableTile(this);
         return PacketHandler.instance.createPacket(packet);
     }
 

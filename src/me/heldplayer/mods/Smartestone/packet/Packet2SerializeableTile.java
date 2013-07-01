@@ -4,7 +4,6 @@ package me.heldplayer.mods.Smartestone.packet;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import me.heldplayer.mods.Smartestone.tileentity.TileEntityMicro;
 import me.heldplayer.util.HeldCore.packet.HeldCorePacket;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTBase;
@@ -16,26 +15,26 @@ import com.google.common.io.ByteArrayDataInput;
 
 import cpw.mods.fml.relauncher.Side;
 
-public class Packet2MicroTile extends HeldCorePacket {
+public class Packet2SerializeableTile extends HeldCorePacket {
 
     public int blockX;
     public int blockY;
     public int blockZ;
     public NBTTagCompound compound;
 
-    public Packet2MicroTile(int packetId) {
+    public Packet2SerializeableTile(int packetId) {
         super(packetId, null);
     }
 
-    public Packet2MicroTile(TileEntityMicro tile) {
-        super(2, tile.worldObj);
+    public Packet2SerializeableTile(ISerializableTile tile) {
+        super(2, tile.getWorld());
 
-        this.blockX = tile.xCoord;
-        this.blockY = tile.yCoord;
-        this.blockZ = tile.zCoord;
+        this.blockX = tile.getX();
+        this.blockY = tile.getY();
+        this.blockZ = tile.getZ();
 
         this.compound = new NBTTagCompound();
-        tile.writeNBT(this.compound);
+        tile.writeToTag(this.compound);
     }
 
     @Override
@@ -69,9 +68,9 @@ public class Packet2MicroTile extends HeldCorePacket {
     @Override
     public void onData(INetworkManager manager, EntityPlayer player) {
         World world = player.worldObj;
-        TileEntityMicro tile = (TileEntityMicro) world.getBlockTileEntity(blockX, blockY, blockZ);
+        ISerializableTile tile = (ISerializableTile) world.getBlockTileEntity(blockX, blockY, blockZ);
         if (tile != null) {
-            tile.readNBT(compound);
+            tile.readFromTag(compound);
         }
 
         world.markBlockForUpdate(blockX, blockY, blockZ);
