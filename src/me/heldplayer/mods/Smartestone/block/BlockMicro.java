@@ -36,7 +36,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class BlockMicro extends Block {
 
     public static int renderId = 0;
-    private static Random rnd = new Random();
+    public static Random rnd = new Random();
     @SideOnly(Side.CLIENT)
     private Icon icon;
     public int renderPass;
@@ -435,37 +435,6 @@ public class BlockMicro extends Block {
     @Override
     @SideOnly(Side.CLIENT)
     public boolean addBlockDestroyEffects(World world, int x, int y, int z, int meta, EffectRenderer effectRenderer) {
-        TileEntityMicro tile = (TileEntityMicro) world.getBlockTileEntity(x, y, z);
-
-        if (tile == null) {
-            return true;
-        }
-
-        Set<MicroBlockInfo> infos = tile.getSubBlocks();
-
-        RenderEngine renderEngine = RenderManager.instance.renderEngine;
-
-        for (MicroBlockInfo info : infos) {
-            byte pps = 2;
-
-            for (int tX = 0; tX < pps; ++tX) {
-                for (int tY = 0; tY < pps; ++tY) {
-                    for (int tZ = 0; tZ < pps; ++tZ) {
-                        double pX = (double) x + ((double) tX + 0.5D) / (double) pps;
-                        double pY = (double) y + ((double) tY + 0.5D) / (double) pps;
-                        double pZ = (double) z + ((double) tZ + 0.5D) / (double) pps;
-                        int side = rnd.nextInt(6);
-
-                        EntityDiggingFX fx = (new EntityDiggingFX(world, pX, pY, pZ, pX - (double) x - 0.5D, pY - (double) y - 0.5D, pZ - (double) z - 0.5D, this, side, meta, renderEngine));
-                        fx.func_70596_a(x, y, z);
-                        if (info.getMaterial() != null) {
-                            fx.setParticleIcon(renderEngine, info.getMaterial().getIcon(0));
-                        }
-                        effectRenderer.addEffect(fx);
-                    }
-                }
-            }
-        }
         return true;
     }
 
