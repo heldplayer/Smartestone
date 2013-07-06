@@ -2,12 +2,13 @@
 package me.heldplayer.api.Smartestone.micro.rendering;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class RenderFaceHelper {
 
-    private static ArrayList<ReusableRenderFace> usedFaces = new ArrayList<ReusableRenderFace>();
-    private static ArrayList<ReusableRenderFace> unusedFaces = new ArrayList<ReusableRenderFace>();
+    private static LinkedList<ReusableRenderFace> usedFaces = new LinkedList<ReusableRenderFace>();
+    private static LinkedList<ReusableRenderFace> unusedFaces = new LinkedList<ReusableRenderFace>();
 
     private static int index = 0;
     private static int maxSize = 256;
