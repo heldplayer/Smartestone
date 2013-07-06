@@ -1,6 +1,7 @@
 
 package me.heldplayer.mods.Smartestone.client.renderer.tileentity;
 
+import me.heldplayer.mods.Smartestone.Assets;
 import me.heldplayer.mods.Smartestone.tileentity.TileEntityItemStand;
 import me.heldplayer.mods.Smartestone.util.Direction;
 import me.heldplayer.mods.Smartestone.util.Rotation;
@@ -84,7 +85,7 @@ public class TileEntityItemStandRenderer extends TileEntitySpecialRenderer {
                 GL11.glScalef(0.004F, 0.004F, 0.004F);
 
                 RenderManager manager = RenderManager.instance;
-                manager.renderEngine.bindTexture("/misc/mapbg.png");
+                manager.renderEngine.func_110577_a(Assets.MAP_BACKGROUND);
                 Tessellator tessellator = Tessellator.instance;
                 GL11.glRotatef(90.0F, 0.0F, 0.0F, 1.0F);
                 GL11.glTranslatef(-64.0F, -64.0F, 80.0F);

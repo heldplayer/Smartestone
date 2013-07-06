@@ -69,20 +69,20 @@ public class Packet5ModifyMicroblock extends HeldCorePacket {
     @Override
     public void onData(INetworkManager manager, EntityPlayer player) {
         World world = player.worldObj;
-        TileEntityMicro tile = (TileEntityMicro) world.getBlockTileEntity(blockX, blockY, blockZ);
+        TileEntityMicro tile = (TileEntityMicro) world.getBlockTileEntity(this.blockX, this.blockY, this.blockZ);
         if (tile != null) {
             Set<MicroBlockInfo> infos = tile.getSubBlocks();
 
             for (MicroBlockInfo info : infos) {
-                if (info.index == index) {
-                    info.setData(data);
+                if (info.index == this.index) {
+                    info.setData(this.data);
 
                     break;
                 }
             }
         }
 
-        world.markBlockForUpdate(blockX, blockY, blockZ);
+        world.markBlockForUpdate(this.blockX, this.blockY, this.blockZ);
     }
 
 }

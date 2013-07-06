@@ -24,7 +24,7 @@ public final class Objects {
     public static final String MOD_CHANNEL = "SSChannel";
     public static final String CLIENT_PROXY = "me.heldplayer.mods.Smartestone.client.ClientProxy";
     public static final String SERVER_PROXY = "me.heldplayer.mods.Smartestone.CommonProxy";
-    public static String TEXTURE_PREFIX = "Smartestone";
+    public static String TEXTURE_PREFIX = "smartestone";
 
     public static boolean disableRedstoneFlag = true;
 

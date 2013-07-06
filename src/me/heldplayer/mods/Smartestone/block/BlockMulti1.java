@@ -2,7 +2,6 @@
 package me.heldplayer.mods.Smartestone.block;
 
 import me.heldplayer.mods.Smartestone.ModSmartestone;
-import me.heldplayer.mods.Smartestone.client.ClientProxy;
 import me.heldplayer.mods.Smartestone.tileentity.TileEntityCraftingChest;
 import me.heldplayer.mods.Smartestone.tileentity.TileEntityInductionishFurnace;
 import me.heldplayer.mods.Smartestone.tileentity.TileEntityRotatable;
@@ -156,8 +155,7 @@ public class BlockMulti1 extends BlockMulti {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister register) {
-        ClientProxy.missingTextureIcon = register.registerIcon("Smartestone:missing");
-        this.missing = register.registerIcon("Smartestone:missing");
+        this.missing = register.registerIcon("smartestone:missing");
         this.bottom = new Icon[16];
         this.top = new Icon[16];
         this.front = new Icon[16];
@@ -175,12 +173,12 @@ public class BlockMulti1 extends BlockMulti {
                 this.right[i] = register.registerIcon(Objects.TEXTURE_PREFIX + ":multi1_" + i + "_right");
             }
             else {
-                this.bottom[i] = register.registerIcon("Smartestone:missing");
-                this.top[i] = register.registerIcon("Smartestone:missing");
-                this.front[i] = register.registerIcon("Smartestone:missing");
-                this.back[i] = register.registerIcon("Smartestone:missing");
-                this.left[i] = register.registerIcon("Smartestone:missing");
-                this.right[i] = register.registerIcon("Smartestone:missing");
+                this.bottom[i] = register.registerIcon("smartestone:missing");
+                this.top[i] = register.registerIcon("smartestone:missing");
+                this.front[i] = register.registerIcon("smartestone:missing");
+                this.back[i] = register.registerIcon("smartestone:missing");
+                this.left[i] = register.registerIcon("smartestone:missing");
+                this.right[i] = register.registerIcon("smartestone:missing");
             }
         }
 

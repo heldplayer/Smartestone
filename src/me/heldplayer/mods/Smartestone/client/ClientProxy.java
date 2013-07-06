@@ -23,7 +23,9 @@ import me.heldplayer.mods.Smartestone.tileentity.TileEntityItemStand;
 import me.heldplayer.mods.Smartestone.util.Objects;
 import me.heldplayer.mods.Smartestone.util.RayTrace;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -124,7 +126,7 @@ public class ClientProxy extends CommonProxy {
                     info.setData(data);
 
                     if (RenderManager.instance.renderEngine != null) {
-                        RenderManager.instance.renderEngine.bindTexture("/terrain.png");
+                        Minecraft.getMinecraft().renderEngine.func_110577_a(TextureMap.field_110575_b);
                     }
 
                     subBlock.drawHitbox(event, info);

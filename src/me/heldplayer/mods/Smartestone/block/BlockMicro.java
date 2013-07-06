@@ -14,8 +14,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.particle.EntityDiggingFX;
-import net.minecraft.client.renderer.RenderEngine;
-import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -387,8 +385,6 @@ public class BlockMicro extends Block {
         }
 
         if (targetted != null) {
-            RenderEngine engine = RenderManager.instance.renderEngine;
-
             AxisAlignedBB aabb = targetted.getType().getPlacementBounds(targetted);
             float offset = 0.1F;
             double pX = (double) x + rnd.nextDouble() * (aabb.maxX - aabb.minX - (double) (offset * 2.0F)) + (double) offset + aabb.minX;
@@ -419,10 +415,10 @@ public class BlockMicro extends Block {
                 pX = (double) x + aabb.maxX + (double) offset;
             }
 
-            EntityDiggingFX fx = (new EntityDiggingFX(world, pX, pY, pZ, 0.0D, 0.0D, 0.0D, this, target.sideHit, world.getBlockMetadata(x, y, z), engine));
+            EntityDiggingFX fx = (new EntityDiggingFX(world, pX, pY, pZ, 0.0D, 0.0D, 0.0D, this, target.sideHit, world.getBlockMetadata(x, y, z)));
             fx.func_70596_a(x, y, z).multiplyVelocity(0.2F).multipleParticleScaleBy(0.6F);
             if (targetted.getMaterial() != null) {
-                fx.setParticleIcon(engine, targetted.getMaterial().getIcon(target.sideHit));
+                fx.func_110125_a(targetted.getMaterial().getIcon(target.sideHit));
             }
             effectRenderer.addEffect(fx);
 

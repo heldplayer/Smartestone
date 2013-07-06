@@ -11,7 +11,7 @@ public class CreativeTab extends CreativeTabs {
     public CreativeTab(String label, ItemStack displayStack) {
         super(label);
         this.displayStack = displayStack;
-        this.setBackgroundImageName("search.png");
+        this.setBackgroundImageName("item_search.png");
     }
 
     @Override
@@ -19,6 +19,7 @@ public class CreativeTab extends CreativeTabs {
         return this.displayStack;
     }
 
+    @Override
     public boolean getCanSearch() {
         return true;
     }

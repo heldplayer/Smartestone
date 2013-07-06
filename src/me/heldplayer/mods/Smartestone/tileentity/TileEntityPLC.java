@@ -1,3 +1,4 @@
+
 package me.heldplayer.mods.Smartestone.tileentity;
 
 import net.minecraft.tileentity.TileEntity;

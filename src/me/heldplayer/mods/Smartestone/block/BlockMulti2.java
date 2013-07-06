@@ -13,7 +13,7 @@ import net.minecraft.block.BlockPistonBase;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
@@ -80,7 +80,7 @@ public class BlockMulti2 extends BlockMulti {
     }
 
     @Override
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLiving entity, ItemStack itemStack) {
+    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack itemStack) {
         TileEntityRotatable tile = (TileEntityRotatable) world.getBlockTileEntity(x, y, z);
 
         if (tile == null) {
@@ -174,7 +174,7 @@ public class BlockMulti2 extends BlockMulti {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister register) {
-        this.missing = register.registerIcon("Smartestone:missing");
+        this.missing = register.registerIcon("smartestone:missing");
         this.bottom = new Icon[16];
         this.top = new Icon[16];
         this.front = new Icon[16];
@@ -192,12 +192,12 @@ public class BlockMulti2 extends BlockMulti {
                 this.right[i] = register.registerIcon(Objects.TEXTURE_PREFIX + ":multi2_" + i + "_right");
             }
             else {
-                this.bottom[i] = register.registerIcon("Smartestone:missing");
-                this.top[i] = register.registerIcon("Smartestone:missing");
-                this.front[i] = register.registerIcon("Smartestone:missing");
-                this.back[i] = register.registerIcon("Smartestone:missing");
-                this.left[i] = register.registerIcon("Smartestone:missing");
-                this.right[i] = register.registerIcon("Smartestone:missing");
+                this.bottom[i] = register.registerIcon("smartestone:missing");
+                this.top[i] = register.registerIcon("smartestone:missing");
+                this.front[i] = register.registerIcon("smartestone:missing");
+                this.back[i] = register.registerIcon("smartestone:missing");
+                this.left[i] = register.registerIcon("smartestone:missing");
+                this.right[i] = register.registerIcon("smartestone:missing");
             }
         }
 

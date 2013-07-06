@@ -1,7 +1,7 @@
 
 package me.heldplayer.mods.Smartestone.client.gui;
 
-import me.heldplayer.mods.Smartestone.client.ClientProxy;
+import me.heldplayer.mods.Smartestone.Assets;
 import me.heldplayer.mods.Smartestone.inventory.ContainerInductionishFurnace;
 import me.heldplayer.mods.Smartestone.tileentity.TileEntityInductionishFurnace;
 import me.heldplayer.mods.Smartestone.util.Util;
@@ -27,7 +27,7 @@ public class GuiInductionishFurnace extends GuiBase {
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-        this.mc.renderEngine.bindTexture(ClientProxy.textureLocation + "gui/inductionishfurnace.png");
+        this.mc.renderEngine.func_110577_a(Assets.BACKGROUND_INDUCTIONISH_FURNACE);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         int posX = (this.width - this.xSize) / 2;
         int posY = (this.height - this.ySize) / 2;

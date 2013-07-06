@@ -200,7 +200,7 @@ public class TileEntityItemStand extends TileEntityRotatable implements IInvento
         if (index == 0 && !this.worldObj.isRemote) {
             Chunk chunk = this.worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord);
             Packet6SetInventorySlotContents packet = new Packet6SetInventorySlotContents(this, index, newStack);
-            PacketHandler.sendPacketToPlayersWatching(PacketHandler.instance.createPacket(packet), this.worldObj.getWorldInfo().getDimension(), chunk.xPosition, chunk.zPosition);
+            me.heldplayer.util.HeldCore.packet.PacketHandler.sendPacketToPlayersWatching(PacketHandler.instance.createPacket(packet), this.worldObj.getWorldInfo().getDimension(), chunk.xPosition, chunk.zPosition);
         }
 
         this.onInventoryChanged();

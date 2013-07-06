@@ -1,7 +1,7 @@
 
 package me.heldplayer.mods.Smartestone.client.gui;
 
-import me.heldplayer.mods.Smartestone.client.ClientProxy;
+import me.heldplayer.mods.Smartestone.Assets;
 import me.heldplayer.mods.Smartestone.inventory.craftingchest.ContainerCraftingChest;
 import me.heldplayer.mods.Smartestone.tileentity.TileEntityCraftingChest;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -29,7 +29,7 @@ public class GuiCraftingChest extends GuiBase {
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-        this.mc.renderEngine.bindTexture(ClientProxy.textureLocation + "gui/craftingchest.png");
+        this.mc.renderEngine.func_110577_a(Assets.BACKGROUND_CRAFTING_CHEST);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         int var5 = (this.width - this.xSize) / 2;
         int var6 = (this.height - this.ySize) / 2;

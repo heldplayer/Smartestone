@@ -13,10 +13,13 @@ import net.minecraft.util.Icon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.IFluidContainerItem;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemWaterCore extends Item {
+public class ItemWaterCore extends Item implements IFluidContainerItem {
 
     @SideOnly(Side.CLIENT)
     private Icon icon;
@@ -123,6 +126,41 @@ public class ItemWaterCore extends Item {
     @Override
     public EnumAction getItemUseAction(ItemStack stack) {
         return EnumAction.bow;
+    }
+
+    // FIXME: Test if this works
+
+    @Override
+    public FluidStack getFluid(ItemStack container) {
+        FluidStack result = new FluidStack(FluidRegistry.WATER, container.getItemDamage() * 1000);
+        return result;
+    }
+
+    @Override
+    public int getCapacity(ItemStack container) {
+        return 255000;
+    }
+
+    @Override
+    public int fill(ItemStack container, FluidStack resource, boolean doFill) {
+        int meta = container.getItemDamage();
+        int inserted = resource.amount;
+        int result = 0;
+        while (inserted >= 1000 && meta < 0) {
+            meta--;
+            inserted -= 1000;
+            result += 1000;
+        }
+        if (doFill) {
+            container.setItemDamage(meta);
+            resource.amount = inserted;
+        }
+        return result;
+    }
+
+    @Override
+    public FluidStack drain(ItemStack container, int maxDrain, boolean doDrain) {
+        return null;
     }
 
 }

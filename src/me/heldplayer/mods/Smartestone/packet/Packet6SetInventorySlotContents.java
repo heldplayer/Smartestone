@@ -66,8 +66,8 @@ public class Packet6SetInventorySlotContents extends HeldCorePacket {
         out.writeInt(this.slot);
 
         NBTTagCompound tag = new NBTTagCompound();
-        if (stack != null) {
-            tag.setCompoundTag("Stack", stack.writeToNBT(new NBTTagCompound("Stack")));
+        if (this.stack != null) {
+            tag.setCompoundTag("Stack", this.stack.writeToNBT(new NBTTagCompound("Stack")));
         }
         NBTBase.writeNamedTag(tag, out);
     }

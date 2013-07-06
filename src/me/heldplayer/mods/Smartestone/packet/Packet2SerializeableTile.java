@@ -68,12 +68,12 @@ public class Packet2SerializeableTile extends HeldCorePacket {
     @Override
     public void onData(INetworkManager manager, EntityPlayer player) {
         World world = player.worldObj;
-        ISerializableTile tile = (ISerializableTile) world.getBlockTileEntity(blockX, blockY, blockZ);
+        ISerializableTile tile = (ISerializableTile) world.getBlockTileEntity(this.blockX, this.blockY, this.blockZ);
         if (tile != null) {
-            tile.readFromTag(compound);
+            tile.readFromTag(this.compound);
         }
 
-        world.markBlockForUpdate(blockX, blockY, blockZ);
+        world.markBlockForUpdate(this.blockX, this.blockY, this.blockZ);
     }
 
 }

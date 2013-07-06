@@ -195,7 +195,7 @@ public class TileEntityCraftingChest extends TileEntityRotatable implements ISpe
         if (index >= Const.CRAFTINGCHEST_INV_SIZE && index < Const.CRAFTINGCHEST_TOTAL_INV_SIZE && !this.worldObj.isRemote) {
             Chunk chunk = this.worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord);
             Packet6SetInventorySlotContents packet = new Packet6SetInventorySlotContents(this, index, newStack);
-            PacketHandler.sendPacketToPlayersWatching(PacketHandler.instance.createPacket(packet), this.worldObj.getWorldInfo().getDimension(), chunk.xPosition, chunk.zPosition);
+            me.heldplayer.util.HeldCore.packet.PacketHandler.sendPacketToPlayersWatching(PacketHandler.instance.createPacket(packet), this.worldObj.getWorldInfo().getDimension(), chunk.xPosition, chunk.zPosition);
         }
 
         this.onInventoryChanged();
@@ -215,7 +215,7 @@ public class TileEntityCraftingChest extends TileEntityRotatable implements ISpe
                 if (slot >= Const.CRAFTINGCHEST_INV_SIZE && slot < Const.CRAFTINGCHEST_TOTAL_INV_SIZE && !this.worldObj.isRemote) {
                     Chunk chunk = this.worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord);
                     Packet6SetInventorySlotContents packet = new Packet6SetInventorySlotContents(this, slot, stack);
-                    PacketHandler.sendPacketToPlayersWatching(PacketHandler.instance.createPacket(packet), this.worldObj.getWorldInfo().getDimension(), chunk.xPosition, chunk.zPosition);
+                    me.heldplayer.util.HeldCore.packet.PacketHandler.sendPacketToPlayersWatching(PacketHandler.instance.createPacket(packet), this.worldObj.getWorldInfo().getDimension(), chunk.xPosition, chunk.zPosition);
                 }
 
                 return stack;
@@ -232,7 +232,7 @@ public class TileEntityCraftingChest extends TileEntityRotatable implements ISpe
                 if (slot >= Const.CRAFTINGCHEST_INV_SIZE && slot < Const.CRAFTINGCHEST_TOTAL_INV_SIZE && !this.worldObj.isRemote) {
                     Chunk chunk = this.worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord);
                     Packet6SetInventorySlotContents packet = new Packet6SetInventorySlotContents(this, slot, stack);
-                    PacketHandler.sendPacketToPlayersWatching(PacketHandler.instance.createPacket(packet), this.worldObj.getWorldInfo().getDimension(), chunk.xPosition, chunk.zPosition);
+                    me.heldplayer.util.HeldCore.packet.PacketHandler.sendPacketToPlayersWatching(PacketHandler.instance.createPacket(packet), this.worldObj.getWorldInfo().getDimension(), chunk.xPosition, chunk.zPosition);
                 }
 
                 return stack;

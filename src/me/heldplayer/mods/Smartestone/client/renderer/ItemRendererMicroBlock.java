@@ -9,6 +9,7 @@ import me.heldplayer.mods.Smartestone.item.ItemMicroBlock;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Icon;
@@ -96,10 +97,10 @@ public class ItemRendererMicroBlock implements IItemRenderer {
         }
 
         if (item.getSpriteNumber() == 0) {
-            Minecraft.getMinecraft().renderEngine.bindTexture("/terrain.png");
+            Minecraft.getMinecraft().renderEngine.func_110577_a(TextureMap.field_110575_b);
         }
         else {
-            Minecraft.getMinecraft().renderEngine.bindTexture("/gui/items.png");
+            Minecraft.getMinecraft().renderEngine.func_110577_a(TextureMap.field_110576_c);
         }
 
         tes.startDrawingQuads();

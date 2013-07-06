@@ -71,26 +71,26 @@ public class Packet3AddMicroblock extends HeldCorePacket {
         out.writeInt(this.blockY);
         out.writeInt(this.blockZ);
 
-        byte[] typeBytes = info.getType().getTypeName().getBytes();
-        byte[] materialBytes = info.getMaterial().getIdentifier().getBytes();
+        byte[] typeBytes = this.info.getType().getTypeName().getBytes();
+        byte[] materialBytes = this.info.getMaterial().getIdentifier().getBytes();
 
-        out.writeInt(info.index);
+        out.writeInt(this.info.index);
         out.writeInt(typeBytes.length);
         out.write(typeBytes);
         out.writeInt(materialBytes.length);
         out.write(materialBytes);
-        out.writeInt(info.getData());
+        out.writeInt(this.info.getData());
     }
 
     @Override
     public void onData(INetworkManager manager, EntityPlayer player) {
         World world = player.worldObj;
-        TileEntityMicro tile = (TileEntityMicro) world.getBlockTileEntity(blockX, blockY, blockZ);
+        TileEntityMicro tile = (TileEntityMicro) world.getBlockTileEntity(this.blockX, this.blockY, this.blockZ);
         if (tile != null) {
             tile.getSubBlocks().add(this.info);
         }
 
-        world.markBlockForUpdate(blockX, blockY, blockZ);
+        world.markBlockForUpdate(this.blockX, this.blockY, this.blockZ);
     }
 
 }

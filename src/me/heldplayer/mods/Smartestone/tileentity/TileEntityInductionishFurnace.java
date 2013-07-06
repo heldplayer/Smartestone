@@ -124,10 +124,10 @@ public class TileEntityInductionishFurnace extends TileEntityRotatable implement
 
                     Chunk chunk = this.worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord);
                     Packet6SetInventorySlotContents packet = new Packet6SetInventorySlotContents(this, Const.INDUCTIONISHFURNACE_INPUT_SLOT, this.getStackInSlot(Const.INDUCTIONISHFURNACE_INPUT_SLOT));
-                    PacketHandler.sendPacketToPlayersWatching(PacketHandler.instance.createPacket(packet), this.worldObj.getWorldInfo().getDimension(), chunk.xPosition, chunk.zPosition);
+                    me.heldplayer.util.HeldCore.packet.PacketHandler.sendPacketToPlayersWatching(PacketHandler.instance.createPacket(packet), this.worldObj.getWorldInfo().getDimension(), chunk.xPosition, chunk.zPosition);
 
                     packet = new Packet6SetInventorySlotContents(this, Const.INDUCTIONISHFURNACE_OUTPUT_SLOT, this.getStackInSlot(Const.INDUCTIONISHFURNACE_OUTPUT_SLOT));
-                    PacketHandler.sendPacketToPlayersWatching(PacketHandler.instance.createPacket(packet), this.worldObj.getWorldInfo().getDimension(), chunk.xPosition, chunk.zPosition);
+                    me.heldplayer.util.HeldCore.packet.PacketHandler.sendPacketToPlayersWatching(PacketHandler.instance.createPacket(packet), this.worldObj.getWorldInfo().getDimension(), chunk.xPosition, chunk.zPosition);
                 }
             }
             else {
@@ -330,7 +330,7 @@ public class TileEntityInductionishFurnace extends TileEntityRotatable implement
         if ((index == Const.INDUCTIONISHFURNACE_INPUT_SLOT || index == Const.INDUCTIONISHFURNACE_OUTPUT_SLOT) && !this.worldObj.isRemote) {
             Chunk chunk = this.worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord);
             Packet6SetInventorySlotContents packet = new Packet6SetInventorySlotContents(this, index, newStack);
-            PacketHandler.sendPacketToPlayersWatching(PacketHandler.instance.createPacket(packet), this.worldObj.getWorldInfo().getDimension(), chunk.xPosition, chunk.zPosition);
+            me.heldplayer.util.HeldCore.packet.PacketHandler.sendPacketToPlayersWatching(PacketHandler.instance.createPacket(packet), this.worldObj.getWorldInfo().getDimension(), chunk.xPosition, chunk.zPosition);
         }
 
         this.onInventoryChanged();
@@ -350,7 +350,7 @@ public class TileEntityInductionishFurnace extends TileEntityRotatable implement
                 if ((slot == Const.INDUCTIONISHFURNACE_INPUT_SLOT || slot == Const.INDUCTIONISHFURNACE_OUTPUT_SLOT) && !this.worldObj.isRemote) {
                     Chunk chunk = this.worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord);
                     Packet6SetInventorySlotContents packet = new Packet6SetInventorySlotContents(this, slot, stack);
-                    PacketHandler.sendPacketToPlayersWatching(PacketHandler.instance.createPacket(packet), this.worldObj.getWorldInfo().getDimension(), chunk.xPosition, chunk.zPosition);
+                    me.heldplayer.util.HeldCore.packet.PacketHandler.sendPacketToPlayersWatching(PacketHandler.instance.createPacket(packet), this.worldObj.getWorldInfo().getDimension(), chunk.xPosition, chunk.zPosition);
                 }
 
                 return stack;
@@ -367,7 +367,7 @@ public class TileEntityInductionishFurnace extends TileEntityRotatable implement
                 if ((slot == Const.INDUCTIONISHFURNACE_INPUT_SLOT || slot == Const.INDUCTIONISHFURNACE_OUTPUT_SLOT) && !this.worldObj.isRemote) {
                     Chunk chunk = this.worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord);
                     Packet6SetInventorySlotContents packet = new Packet6SetInventorySlotContents(this, slot, stack);
-                    PacketHandler.sendPacketToPlayersWatching(PacketHandler.instance.createPacket(packet), this.worldObj.getWorldInfo().getDimension(), chunk.xPosition, chunk.zPosition);
+                    me.heldplayer.util.HeldCore.packet.PacketHandler.sendPacketToPlayersWatching(PacketHandler.instance.createPacket(packet), this.worldObj.getWorldInfo().getDimension(), chunk.xPosition, chunk.zPosition);
                 }
 
                 return stack;
