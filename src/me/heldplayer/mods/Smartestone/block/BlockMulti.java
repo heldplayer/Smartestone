@@ -177,7 +177,10 @@ public abstract class BlockMulti extends Block {
 
     @Override
     public void onBlockAdded(World world, int x, int y, int z) {
-        world.setBlockTileEntity(x, y, z, this.createTileEntity(world, world.getBlockMetadata(x, y, z)));
+        int meta = world.getBlockMetadata(x, y, z);
+        if (this.hasTileEntity(meta)) {
+            world.setBlockTileEntity(x, y, z, this.createTileEntity(world, meta));
+        }
         super.onBlockAdded(world, x, y, z);
     }
 
