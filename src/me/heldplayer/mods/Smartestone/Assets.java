@@ -1,7 +1,7 @@
 
 package me.heldplayer.mods.Smartestone;
 
-import net.minecraft.client.resources.ResourceLocation;
+import net.minecraft.util.ResourceLocation;
 
 public final class Assets {
 

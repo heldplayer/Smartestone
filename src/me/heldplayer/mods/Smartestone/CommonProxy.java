@@ -51,7 +51,6 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class CommonProxy implements IGuiHandler {
 
@@ -104,8 +103,6 @@ public class CommonProxy implements IGuiHandler {
         itemRotator.setCreativeTab(creativeTab);
         itemMicroBlock.setCreativeTab(creativeTabMicroblocks);
         itemWaterCore.setCreativeTab(creativeTab);
-
-        this.registerLanguage();
 
         NetworkRegistry.instance().registerGuiHandler(ModSmartestone.instance, this);
         GameRegistry.registerTileEntity(TileEntityCraftingChest.class, "SSCraftingChest");
@@ -240,48 +237,6 @@ public class CommonProxy implements IGuiHandler {
         }
 
         return null;
-    }
-
-    public void registerLanguage() {
-        LanguageRegistry.instance().addStringLocalization("tile.SSMulti1.0.name", "Crafting Chest");
-        LanguageRegistry.instance().addStringLocalization("tile.SSMulti1.1.name", "Inductionish Furnace");
-        LanguageRegistry.instance().addStringLocalization("tile.SSMulti1.2.name", "Unknown Block");
-        LanguageRegistry.instance().addStringLocalization("tile.SSMulti1.3.name", "Unknown Block");
-        LanguageRegistry.instance().addStringLocalization("tile.SSMulti1.4.name", "Unknown Block");
-        LanguageRegistry.instance().addStringLocalization("tile.SSMulti1.5.name", "Unknown Block");
-        LanguageRegistry.instance().addStringLocalization("tile.SSMulti1.6.name", "Unknown Block");
-        LanguageRegistry.instance().addStringLocalization("tile.SSMulti1.7.name", "Unknown Block");
-        LanguageRegistry.instance().addStringLocalization("tile.SSMulti1.8.name", "Unknown Block");
-        LanguageRegistry.instance().addStringLocalization("tile.SSMulti1.9.name", "Unknown Block");
-        LanguageRegistry.instance().addStringLocalization("tile.SSMulti1.10.name", "Unknown Block");
-        LanguageRegistry.instance().addStringLocalization("tile.SSMulti1.11.name", "Unknown Block");
-        LanguageRegistry.instance().addStringLocalization("tile.SSMulti1.12.name", "Unknown Block");
-        LanguageRegistry.instance().addStringLocalization("tile.SSMulti1.13.name", "Unknown Block");
-        LanguageRegistry.instance().addStringLocalization("tile.SSMulti1.14.name", "Unknown Block");
-        LanguageRegistry.instance().addStringLocalization("tile.SSMulti1.15.name", "Unknown Block");
-        LanguageRegistry.instance().addStringLocalization("tile.SSMulti2.0.name", "Item Stand");
-        LanguageRegistry.instance().addStringLocalization("tile.SSMulti2.1.name", "Unknown Block");
-        LanguageRegistry.instance().addStringLocalization("tile.SSMulti2.2.name", "Unknown Block");
-        LanguageRegistry.instance().addStringLocalization("tile.SSMulti2.3.name", "Unknown Block");
-        LanguageRegistry.instance().addStringLocalization("tile.SSMulti2.4.name", "Unknown Block");
-        LanguageRegistry.instance().addStringLocalization("tile.SSMulti2.5.name", "Unknown Block");
-        LanguageRegistry.instance().addStringLocalization("tile.SSMulti2.6.name", "Unknown Block");
-        LanguageRegistry.instance().addStringLocalization("tile.SSMulti2.7.name", "Unknown Block");
-        LanguageRegistry.instance().addStringLocalization("tile.SSMulti2.8.name", "Unknown Block");
-        LanguageRegistry.instance().addStringLocalization("tile.SSMulti2.9.name", "Unknown Block");
-        LanguageRegistry.instance().addStringLocalization("tile.SSMulti2.10.name", "Unknown Block");
-        LanguageRegistry.instance().addStringLocalization("tile.SSMulti2.11.name", "Unknown Block");
-        LanguageRegistry.instance().addStringLocalization("tile.SSMulti2.12.name", "Unknown Block");
-        LanguageRegistry.instance().addStringLocalization("tile.SSMulti2.13.name", "Unknown Block");
-        LanguageRegistry.instance().addStringLocalization("tile.SSMulti2.14.name", "Unknown Block");
-        LanguageRegistry.instance().addStringLocalization("tile.SSMulti2.15.name", "Unknown Block");
-        LanguageRegistry.instance().addStringLocalization("item.SSRotator.name", "Block Rotator");
-        LanguageRegistry.instance().addStringLocalization("item.SSWaterCore.name", "Water Core");
-        LanguageRegistry.instance().addStringLocalization("container.SSCraftingChest", "Crafting Chest");
-        LanguageRegistry.instance().addStringLocalization("container.SSInductionishFurnace", "Inductionish Furnace");
-        LanguageRegistry.instance().addStringLocalization("container.SSItemStand", "Item Stand");
-        LanguageRegistry.instance().addStringLocalization("itemGroup.Smartestone", "Smartestone");
-        LanguageRegistry.instance().addStringLocalization("itemGroup.SmartestoneMicroblocks", "Microblocks");
     }
 
 }

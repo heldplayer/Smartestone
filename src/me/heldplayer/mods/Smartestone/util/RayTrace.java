@@ -5,7 +5,7 @@ import java.util.Set;
 
 import me.heldplayer.api.Smartestone.micro.MicroBlockInfo;
 import me.heldplayer.mods.Smartestone.tileentity.TileEntityMicro;
-import net.minecraft.client.Minecraft;
+import me.heldplayer.util.HeldCore.client.MineHelp;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.AxisAlignedBB;
@@ -152,7 +152,7 @@ public class RayTrace {
 
     @SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
     public static double getBlockReach() {
-        return Minecraft.getMinecraft().playerController.getBlockReachDistance();
+        return MineHelp.getMinecraft().playerController.getBlockReachDistance();
     }
 
     public static double getBlockReach(EntityPlayer player) {

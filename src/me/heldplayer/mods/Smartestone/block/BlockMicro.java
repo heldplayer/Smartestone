@@ -416,7 +416,7 @@ public class BlockMicro extends Block {
             }
 
             EntityDiggingFX fx = (new EntityDiggingFX(world, pX, pY, pZ, 0.0D, 0.0D, 0.0D, this, target.sideHit, world.getBlockMetadata(x, y, z)));
-            fx.func_70596_a(x, y, z).multiplyVelocity(0.2F).multipleParticleScaleBy(0.6F);
+            fx.multiplyVelocity(0.2F).multipleParticleScaleBy(0.6F);
             if (targetted.getMaterial() != null) {
                 fx.func_110125_a(targetted.getMaterial().getIcon(target.sideHit));
             }

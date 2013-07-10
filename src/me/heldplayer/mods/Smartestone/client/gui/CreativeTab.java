@@ -19,7 +19,6 @@ public class CreativeTab extends CreativeTabs {
         return this.displayStack;
     }
 
-    @Override
     public boolean getCanSearch() {
         return true;
     }

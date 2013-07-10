@@ -9,8 +9,8 @@ import me.heldplayer.api.Smartestone.micro.MicroBlockInfo;
 import me.heldplayer.mods.Smartestone.block.BlockMicro;
 import me.heldplayer.mods.Smartestone.tileentity.TileEntityMicro;
 import me.heldplayer.mods.Smartestone.util.Objects;
+import me.heldplayer.util.HeldCore.client.MineHelp;
 import me.heldplayer.util.HeldCore.packet.HeldCorePacket;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.particle.EntityDiggingFX;
 import net.minecraft.entity.player.EntityPlayer;
@@ -86,7 +86,7 @@ public class Packet4RemoveMicroblock extends HeldCorePacket {
                 infos.remove(removed);
             }
 
-            EffectRenderer effectRenderer = Minecraft.getMinecraft().effectRenderer;
+            EffectRenderer effectRenderer = MineHelp.getEffectRenderer();
 
             byte pps = 4;
 
@@ -99,7 +99,6 @@ public class Packet4RemoveMicroblock extends HeldCorePacket {
                         int side = BlockMicro.rnd.nextInt(6);
 
                         EntityDiggingFX fx = (new EntityDiggingFX(world, pX, pY, pZ, pX - (double) this.blockX - 0.5D, pY - (double) this.blockY - 0.5D, pZ - (double) this.blockZ - 0.5D, Objects.blockMicro, side, 0));
-                        fx.func_70596_a(this.blockX, this.blockY, this.blockZ);
                         if (removed.getMaterial() != null) {
                             fx.func_110125_a(removed.getMaterial().getIcon(0));
                         }

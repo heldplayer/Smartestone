@@ -6,7 +6,7 @@ import me.heldplayer.api.Smartestone.micro.IMicroBlockSubBlock;
 import me.heldplayer.api.Smartestone.micro.MicroBlockAPI;
 import me.heldplayer.mods.Smartestone.client.ClientProxy;
 import me.heldplayer.mods.Smartestone.item.ItemMicroBlock;
-import net.minecraft.client.Minecraft;
+import me.heldplayer.util.HeldCore.client.MineHelp;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -97,10 +97,10 @@ public class ItemRendererMicroBlock implements IItemRenderer {
         }
 
         if (item.getSpriteNumber() == 0) {
-            Minecraft.getMinecraft().renderEngine.func_110577_a(TextureMap.field_110575_b);
+            MineHelp.getRenderEngine().func_110577_a(TextureMap.field_110575_b);
         }
         else {
-            Minecraft.getMinecraft().renderEngine.func_110577_a(TextureMap.field_110576_c);
+            MineHelp.getRenderEngine().func_110577_a(TextureMap.field_110576_c);
         }
 
         tes.startDrawingQuads();

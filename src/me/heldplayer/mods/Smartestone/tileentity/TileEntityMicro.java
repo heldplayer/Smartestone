@@ -190,7 +190,7 @@ public class TileEntityMicro extends TileEntity implements IMicroBlock, ISeriali
             this.infos.add(info);
             Chunk chunk = this.worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord);
             Packet3AddMicroblock packet = new Packet3AddMicroblock(this, info);
-            me.heldplayer.util.HeldCore.packet.PacketHandler.sendPacketToPlayersWatching(PacketHandler.instance.createPacket(packet), this.worldObj.getWorldInfo().getDimension(), chunk.xPosition, chunk.zPosition);
+            me.heldplayer.util.HeldCore.packet.PacketHandler.sendPacketToPlayersWatching(PacketHandler.instance.createPacket(packet), this.worldObj.getWorldInfo().getVanillaDimension(), chunk.xPosition, chunk.zPosition);
         }
     }
 
@@ -204,7 +204,7 @@ public class TileEntityMicro extends TileEntity implements IMicroBlock, ISeriali
 
         Chunk chunk = this.worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord);
         Packet5ModifyMicroblock packet = new Packet5ModifyMicroblock(this, info);
-        me.heldplayer.util.HeldCore.packet.PacketHandler.sendPacketToPlayersWatching(PacketHandler.instance.createPacket(packet), this.worldObj.getWorldInfo().getDimension(), chunk.xPosition, chunk.zPosition);
+        me.heldplayer.util.HeldCore.packet.PacketHandler.sendPacketToPlayersWatching(PacketHandler.instance.createPacket(packet), this.worldObj.getWorldInfo().getVanillaDimension(), chunk.xPosition, chunk.zPosition);
     }
 
     @Override
@@ -220,7 +220,7 @@ public class TileEntityMicro extends TileEntity implements IMicroBlock, ISeriali
 
         Chunk chunk = this.worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord);
         Packet4RemoveMicroblock packet = new Packet4RemoveMicroblock(this, info);
-        me.heldplayer.util.HeldCore.packet.PacketHandler.sendPacketToPlayersWatching(PacketHandler.instance.createPacket(packet), this.worldObj.getWorldInfo().getDimension(), chunk.xPosition, chunk.zPosition);
+        me.heldplayer.util.HeldCore.packet.PacketHandler.sendPacketToPlayersWatching(PacketHandler.instance.createPacket(packet), this.worldObj.getWorldInfo().getVanillaDimension(), chunk.xPosition, chunk.zPosition);
     }
 
 }
