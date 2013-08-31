@@ -40,8 +40,6 @@ public class ModSmartestone extends HeldCoreMod {
     @Override
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        super.preInit(event);
-
         Objects.log = event.getModLog();
 
         // Config
@@ -61,6 +59,8 @@ public class ModSmartestone extends HeldCoreMod {
         this.config.addConfigKey(itemMicroBlockId);
         this.config.addConfigKey(itemWaterCoreId);
         this.config.addConfigKey(HDTextures);
+
+        super.preInit(event);
     }
 
     @Override
