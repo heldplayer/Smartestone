@@ -56,7 +56,7 @@ public class ClientProxy extends CommonProxy {
         super.preInit(event);
 
         if (ModSmartestone.HDTextures.getValue()) {
-            Objects.TEXTURE_PREFIX += "/HD";
+            Objects.TEXTURE_PREFIX += "hd";
         }
     }
 
