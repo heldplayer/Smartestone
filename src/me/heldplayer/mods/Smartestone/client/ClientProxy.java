@@ -22,7 +22,7 @@ import me.heldplayer.mods.Smartestone.tileentity.TileEntityInductionishFurnace;
 import me.heldplayer.mods.Smartestone.tileentity.TileEntityItemStand;
 import me.heldplayer.mods.Smartestone.util.Objects;
 import me.heldplayer.mods.Smartestone.util.RayTrace;
-import me.heldplayer.util.HeldCore.client.MineHelp;
+import me.heldplayer.util.HeldCore.client.MC;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -126,7 +126,7 @@ public class ClientProxy extends CommonProxy {
                     info.setData(data);
 
                     if (RenderManager.instance.renderEngine != null) {
-                        MineHelp.getRenderEngine().func_110577_a(TextureMap.field_110575_b);
+                        MC.getRenderEngine().func_110577_a(TextureMap.field_110575_b);
                     }
 
                     subBlock.drawHitbox(event, info);

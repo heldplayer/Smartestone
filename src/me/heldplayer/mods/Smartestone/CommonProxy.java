@@ -35,6 +35,7 @@ import me.heldplayer.mods.Smartestone.tileentity.TileEntityCraftingChest;
 import me.heldplayer.mods.Smartestone.tileentity.TileEntityInductionishFurnace;
 import me.heldplayer.mods.Smartestone.tileentity.TileEntityItemStand;
 import me.heldplayer.mods.Smartestone.tileentity.TileEntityMicro;
+import me.heldplayer.util.HeldCore.HeldCoreProxy;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.enchantment.Enchantment;
@@ -52,10 +53,11 @@ import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-public class CommonProxy implements IGuiHandler {
+public class CommonProxy extends HeldCoreProxy implements IGuiHandler {
 
     public static Random rand;
 
+    @Override
     public void preInit(FMLPreInitializationEvent event) {
         MinecraftForge.EVENT_BUS.register(this);
 
@@ -69,6 +71,7 @@ public class CommonProxy implements IGuiHandler {
         yellowstoneIcon = new IconProvider();
     }
 
+    @Override
     public void init(FMLInitializationEvent event) {
         blockMulti1 = new BlockMulti1(ModSmartestone.blockMulti1Id.getValue(), Material.rock);
         blockMulti1.setUnlocalizedName("SSMulti1");
@@ -111,6 +114,7 @@ public class CommonProxy implements IGuiHandler {
         GameRegistry.registerTileEntity(TileEntityMicro.class, "SSMicroBlock");
     }
 
+    @Override
     public void postInit(FMLPostInitializationEvent event) {
         MicroBlockAPI.registerSubBlock(new MicroBlockPane("Cover", 0.125D));
         MicroBlockAPI.registerSubBlock(new MicroBlockPane("Panel", 0.25D));

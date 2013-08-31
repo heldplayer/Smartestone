@@ -10,6 +10,7 @@ import me.heldplayer.mods.Smartestone.block.BlockMulti2;
 import me.heldplayer.mods.Smartestone.item.ItemMicroBlock;
 import me.heldplayer.mods.Smartestone.item.ItemRotator;
 import me.heldplayer.mods.Smartestone.item.ItemWaterCore;
+import me.heldplayer.util.HeldCore.ModInfo;
 import net.minecraft.creativetab.CreativeTabs;
 
 /**
@@ -25,6 +26,8 @@ public final class Objects {
     public static final String CLIENT_PROXY = "me.heldplayer.mods.Smartestone.client.ClientProxy";
     public static final String SERVER_PROXY = "me.heldplayer.mods.Smartestone.CommonProxy";
     public static String TEXTURE_PREFIX = "smartestone";
+
+    public static final ModInfo MOD_INFO = new ModInfo(MOD_ID, MOD_NAME, MOD_VERSION);
 
     public static boolean disableRedstoneFlag = true;
 
