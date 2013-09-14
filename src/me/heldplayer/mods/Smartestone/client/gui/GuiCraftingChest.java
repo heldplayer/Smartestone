@@ -29,7 +29,7 @@ public class GuiCraftingChest extends GuiBase {
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-        this.mc.renderEngine.func_110577_a(Assets.BACKGROUND_CRAFTING_CHEST);
+        this.mc.renderEngine.bindTexture(Assets.BACKGROUND_CRAFTING_CHEST);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         int var5 = (this.width - this.xSize) / 2;
         int var6 = (this.height - this.ySize) / 2;
@@ -38,6 +38,7 @@ public class GuiCraftingChest extends GuiBase {
 
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
+        super.drawGuiContainerForegroundLayer(mouseX, mouseY);
         this.fontRenderer.drawString(this.tile.isInvNameLocalized() ? "\u00A7o" + this.tile.getInvName() : StatCollector.translateToLocal(this.tile.getInvName()), 8, 6, 4210752);
         this.fontRenderer.drawString(this.playerInv.isInvNameLocalized() ? "\u00A7o" + this.playerInv.getInvName() : StatCollector.translateToLocal(this.playerInv.getInvName()), 28, this.ySize - 96 + 2, 4210752);
     }

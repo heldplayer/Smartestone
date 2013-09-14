@@ -100,7 +100,7 @@ public class Packet4RemoveMicroblock extends HeldCorePacket {
 
                         EntityDiggingFX fx = (new EntityDiggingFX(world, pX, pY, pZ, pX - (double) this.blockX - 0.5D, pY - (double) this.blockY - 0.5D, pZ - (double) this.blockZ - 0.5D, Objects.blockMicro, side, 0));
                         if (removed.getMaterial() != null) {
-                            fx.func_110125_a(removed.getMaterial().getIcon(0));
+                            fx.setParticleIcon(removed.getMaterial().getIcon(0));
                         }
                         effectRenderer.addEffect(fx);
                     }

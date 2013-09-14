@@ -126,7 +126,7 @@ public class ClientProxy extends CommonProxy {
                     info.setData(data);
 
                     if (RenderManager.instance.renderEngine != null) {
-                        MC.getRenderEngine().func_110577_a(TextureMap.field_110575_b);
+                        MC.getRenderEngine().bindTexture(TextureMap.locationBlocksTexture);
                     }
 
                     subBlock.drawHitbox(event, info);

@@ -68,8 +68,8 @@ public class BlockRendererSmartestones implements ISimpleBlockRenderingHandler {
         Rotation rotation = Rotation.DEFAULT;
 
         if (tile != null) {
-            direction = tile.direction;
-            rotation = tile.rotation;
+            direction = tile.direction.getValue();
+            rotation = tile.rotation.getValue();
         }
 
         Side[] sides = new Side[6];

@@ -90,18 +90,18 @@ public class BlockMulti2 extends BlockMulti {
         int meta = itemStack.getItemDamage();
 
         if (meta == 0) {
-            tile.direction = Direction.getDirection(this.side);
-            tile.rotation = Rotation.DEFAULT;
+            tile.direction.setValue(Direction.getDirection(this.side));
+            tile.rotation.setValue(Rotation.DEFAULT);
         }
         else {
             int rotation = BlockPistonBase.determineOrientation(world, x, y, z, entity);
 
-            tile.direction = Direction.getDirection(rotation);
-            tile.rotation = Rotation.DEFAULT;
+            tile.direction.setValue(Direction.getDirection(rotation));
+            tile.rotation.setValue(Rotation.DEFAULT);
         }
 
         if (itemStack.hasDisplayName()) {
-            tile.customName = itemStack.getDisplayName();
+            tile.customName.setValue(itemStack.getDisplayName());
         }
     }
 
@@ -244,7 +244,7 @@ public class BlockMulti2 extends BlockMulti {
                 break;
             }
 
-            Direction direction = tile.direction;
+            Direction direction = tile.direction.getValue();
 
             switch (direction.ordinal()) {
             case 0:

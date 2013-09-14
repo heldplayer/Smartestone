@@ -1,13 +1,15 @@
 
 package me.heldplayer.mods.Smartestone.tileentity;
 
+import java.util.Arrays;
+
 import me.heldplayer.mods.Smartestone.CommonProxy;
 import me.heldplayer.mods.Smartestone.inventory.craftingchest.ContainerCraftingChest;
 import me.heldplayer.mods.Smartestone.inventory.craftingchest.InventoryCraftingMatrix;
 import me.heldplayer.mods.Smartestone.inventory.craftingchest.InventoryCraftingResult;
-import me.heldplayer.mods.Smartestone.packet.Packet6SetInventorySlotContents;
-import me.heldplayer.mods.Smartestone.packet.PacketHandler;
 import me.heldplayer.mods.Smartestone.util.Const;
+import me.heldplayer.util.HeldCore.sync.ISyncable;
+import me.heldplayer.util.HeldCore.sync.SInventoryStack;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -16,7 +18,6 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.ForgeDirection;
 import buildcraft.api.inventory.ISpecialInventory;
 import cpw.mods.fml.relauncher.Side;
@@ -33,11 +34,26 @@ public class TileEntityCraftingChest extends TileEntityRotatable implements ISpe
     public InventoryCraftingResult craftResult;
     public ContainerCraftingChest container;
 
+    public SInventoryStack[] input;
+    public SInventoryStack output;
+
     public TileEntityCraftingChest() {
         super("SSCraftingChest");
         this.hover = this.prevHover = CommonProxy.rand.nextFloat() * 1000.0F;
         this.craftMatrix = new InventoryCraftingMatrix(this);
         this.craftResult = new InventoryCraftingResult(this);
+
+        ISyncable[] syncables = new ISyncable[13];
+        this.input = new SInventoryStack[9];
+        for (int i = 0; i < this.input.length; i++) {
+            syncables[3 + i] = this.input[i] = new SInventoryStack(this, this, Const.CRAFTINGCHEST_INV_SIZE + i);
+        }
+        this.output = new SInventoryStack(this, this, Const.CRAFTINGCHEST_CRAFTRESULT_SLOT);
+        syncables[0] = this.direction;
+        syncables[1] = this.rotation;
+        syncables[2] = this.customName;
+        syncables[12] = this.output;
+        this.syncables = Arrays.asList(syncables);
     }
 
     @Override
@@ -99,42 +115,6 @@ public class TileEntityCraftingChest extends TileEntityRotatable implements ISpe
         }
     }
 
-    @Override
-    public void writeToTag(NBTTagCompound compound) {
-        super.writeToTag(compound);
-        NBTTagList items = new NBTTagList();
-
-        for (int slot = Const.CRAFTINGCHEST_INV_SIZE; slot < this.inventory.length; ++slot) {
-            if (this.inventory[slot] != null) {
-                NBTTagCompound itemCompound = new NBTTagCompound();
-                itemCompound.setByte("Slot", (byte) slot);
-                this.inventory[slot].writeToNBT(itemCompound);
-                items.appendTag(itemCompound);
-            }
-        }
-
-        compound.setTag("Items", items);
-    }
-
-    @Override
-    public void readFromTag(NBTTagCompound compound) {
-        super.readFromTag(compound);
-        NBTTagList items = compound.getTagList("Items");
-
-        for (int slot = Const.CRAFTINGCHEST_INV_SIZE; slot < this.inventory.length; ++slot) {
-            this.inventory[slot] = null;
-        }
-
-        for (int i = 0; i < items.tagCount(); ++i) {
-            NBTTagCompound itemCompound = (NBTTagCompound) items.tagAt(i);
-            byte slot = itemCompound.getByte("Slot");
-
-            if (slot >= 0 && slot < this.inventory.length) {
-                this.inventory[slot] = ItemStack.loadItemStackFromNBT(itemCompound);
-            }
-        }
-    }
-
     // IInventory
     @Override
     public int getInventoryStackLimit() {
@@ -163,11 +143,6 @@ public class TileEntityCraftingChest extends TileEntityRotatable implements ISpe
     }
 
     @Override
-    public String getInvName() {
-        return super.getInvName();
-    }
-
-    @Override
     public ItemStack getStackInSlotOnClosing(int index) {
         if (this.inventory[index] != null) {
             ItemStack stack = this.inventory[index];
@@ -192,12 +167,6 @@ public class TileEntityCraftingChest extends TileEntityRotatable implements ISpe
             newStack.stackSize = this.getInventoryStackLimit();
         }
 
-        if (index >= Const.CRAFTINGCHEST_INV_SIZE && index < Const.CRAFTINGCHEST_TOTAL_INV_SIZE && !this.worldObj.isRemote) {
-            Chunk chunk = this.worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord);
-            Packet6SetInventorySlotContents packet = new Packet6SetInventorySlotContents(this, index, newStack);
-            me.heldplayer.util.HeldCore.packet.PacketHandler.sendPacketToPlayersWatching(PacketHandler.instance.createPacket(packet), this.worldObj.getWorldInfo().getVanillaDimension(), chunk.xPosition, chunk.zPosition);
-        }
-
         this.onInventoryChanged();
     }
 
@@ -212,12 +181,6 @@ public class TileEntityCraftingChest extends TileEntityRotatable implements ISpe
 
                 this.onInventoryChanged();
 
-                if (slot >= Const.CRAFTINGCHEST_INV_SIZE && slot < Const.CRAFTINGCHEST_TOTAL_INV_SIZE && !this.worldObj.isRemote) {
-                    Chunk chunk = this.worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord);
-                    Packet6SetInventorySlotContents packet = new Packet6SetInventorySlotContents(this, slot, stack);
-                    me.heldplayer.util.HeldCore.packet.PacketHandler.sendPacketToPlayersWatching(PacketHandler.instance.createPacket(packet), this.worldObj.getWorldInfo().getVanillaDimension(), chunk.xPosition, chunk.zPosition);
-                }
-
                 return stack;
             }
             else {
@@ -228,12 +191,6 @@ public class TileEntityCraftingChest extends TileEntityRotatable implements ISpe
                 }
 
                 this.onInventoryChanged();
-
-                if (slot >= Const.CRAFTINGCHEST_INV_SIZE && slot < Const.CRAFTINGCHEST_TOTAL_INV_SIZE && !this.worldObj.isRemote) {
-                    Chunk chunk = this.worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord);
-                    Packet6SetInventorySlotContents packet = new Packet6SetInventorySlotContents(this, slot, stack);
-                    me.heldplayer.util.HeldCore.packet.PacketHandler.sendPacketToPlayersWatching(PacketHandler.instance.createPacket(packet), this.worldObj.getWorldInfo().getVanillaDimension(), chunk.xPosition, chunk.zPosition);
-                }
 
                 return stack;
             }

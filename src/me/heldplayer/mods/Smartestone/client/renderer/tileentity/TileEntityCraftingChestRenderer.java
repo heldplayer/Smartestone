@@ -30,8 +30,8 @@ public class TileEntityCraftingChestRenderer extends TileEntitySpecialRenderer {
         }
 
         TileEntityCraftingChest tile = (TileEntityCraftingChest) tileentity;
-        Direction direction = tile.direction;
-        Rotation rotation = tile.rotation;
+        Direction direction = tile.direction.getValue();
+        Rotation rotation = tile.rotation.getValue();
         Side top = direction.getRelativeSide(Side.TOP, rotation);
 
         GL11.glEnable(GL11.GL_BLEND);

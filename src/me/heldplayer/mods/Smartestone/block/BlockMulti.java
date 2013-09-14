@@ -4,8 +4,6 @@ package me.heldplayer.mods.Smartestone.block;
 import java.util.Random;
 
 import me.heldplayer.mods.Smartestone.item.ItemRotator;
-import me.heldplayer.mods.Smartestone.packet.Packet2SerializeableTile;
-import me.heldplayer.mods.Smartestone.packet.PacketHandler;
 import me.heldplayer.mods.Smartestone.tileentity.TileEntityRotatable;
 import me.heldplayer.mods.Smartestone.util.Direction;
 import me.heldplayer.mods.Smartestone.util.Rotation;
@@ -18,7 +16,6 @@ import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -153,8 +150,8 @@ public abstract class BlockMulti extends Block {
             return this.missing;
         }
 
-        Direction direction = tile.direction;
-        Rotation rotation = tile.rotation;
+        Direction direction = tile.direction.getValue();
+        Rotation rotation = tile.rotation.getValue();
         Side theSide = Side.getSide(side);
         Side relSide = direction.getRelativeSide(theSide);
 
@@ -207,11 +204,11 @@ public abstract class BlockMulti extends Block {
 
         int rotation = BlockPistonBase.determineOrientation(world, x, y, z, entity);
 
-        tile.direction = Direction.getDirection(rotation);
-        tile.rotation = Rotation.DEFAULT;
+        tile.direction.setValue(Direction.getDirection(rotation));
+        tile.rotation.setValue(Rotation.DEFAULT);
 
         if (itemStack.hasDisplayName()) {
-            tile.customName = itemStack.getDisplayName();
+            tile.customName.setValue(itemStack.getDisplayName());
         }
     }
 
@@ -266,17 +263,11 @@ public abstract class BlockMulti extends Block {
             int meta = world.getBlockMetadata(x, y, z);
 
             if (player.isSneaking() && this.canBeRedirected(meta)) {
-                tile.direction = tile.direction.next();
+                tile.direction.setValue(tile.direction.getValue().next());
             }
             else if (this.canBeRotated(meta)) {
-                tile.rotation = tile.rotation.next();
+                tile.rotation.setValue(tile.rotation.getValue().next());
             }
-
-            try {
-                Packet2SerializeableTile packet = new Packet2SerializeableTile(tile);
-                ((EntityPlayerMP) player).playerNetServerHandler.netManager.addToSendQueue(PacketHandler.instance.createPacket(packet));
-            }
-            catch (ClassCastException e) {}
 
             return true;
         }

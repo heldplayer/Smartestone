@@ -33,8 +33,8 @@ public class TileEntityItemStandRenderer extends TileEntitySpecialRenderer {
         }
 
         TileEntityItemStand tile = (TileEntityItemStand) tileentity;
-        Direction direction = tile.direction;
-        Rotation rotation = tile.rotation;
+        Direction direction = tile.direction.getValue();
+        Rotation rotation = tile.rotation.getValue();
 
         GL11.glPushMatrix();
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
@@ -46,7 +46,7 @@ public class TileEntityItemStandRenderer extends TileEntitySpecialRenderer {
         this.entityitem.worldObj = tile.worldObj;
         this.entityitem.hoverStart = tile.prevHover + (tile.hover - tile.prevHover) * partialTicks;
 
-        ItemStack stack = tile.getStackInSlot(0);
+        ItemStack stack = tile.stack.getValue();
         if (stack != null) {
             this.entityitem.setEntityItemStack(stack.copy());
             this.entityitem.getEntityItem().stackSize = 1;
@@ -85,7 +85,7 @@ public class TileEntityItemStandRenderer extends TileEntitySpecialRenderer {
                 GL11.glScalef(0.004F, 0.004F, 0.004F);
 
                 RenderManager manager = RenderManager.instance;
-                manager.renderEngine.func_110577_a(Assets.MAP_BACKGROUND);
+                manager.renderEngine.bindTexture(Assets.MAP_BACKGROUND);
                 Tessellator tessellator = Tessellator.instance;
                 GL11.glRotatef(90.0F, 0.0F, 0.0F, 1.0F);
                 GL11.glTranslatef(-64.0F, -64.0F, 80.0F);

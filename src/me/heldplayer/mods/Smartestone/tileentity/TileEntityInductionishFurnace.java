@@ -1,10 +1,14 @@
 
 package me.heldplayer.mods.Smartestone.tileentity;
 
+import java.util.Arrays;
+
 import me.heldplayer.mods.Smartestone.CommonProxy;
 import me.heldplayer.mods.Smartestone.packet.Packet6SetInventorySlotContents;
 import me.heldplayer.mods.Smartestone.packet.PacketHandler;
 import me.heldplayer.mods.Smartestone.util.Const;
+import me.heldplayer.util.HeldCore.sync.ISyncable;
+import me.heldplayer.util.HeldCore.sync.SInventoryStack;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -32,10 +36,17 @@ public class TileEntityInductionishFurnace extends TileEntityRotatable implement
     public int progress;
     public boolean requiresUpdate = true;
 
+    public SInventoryStack input;
+    public SInventoryStack output;
+
     public TileEntityInductionishFurnace() {
         super("SSInductionishFurnace");
         this.hover = this.prevHover = CommonProxy.rand.nextFloat() * 1000.0F;
         this.burnTime = this.maxBurnTime = this.progress = 0;
+
+        this.input = new SInventoryStack(this, this, Const.INDUCTIONISHFURNACE_INPUT_SLOT);
+        this.output = new SInventoryStack(this, this, Const.INDUCTIONISHFURNACE_OUTPUT_SLOT);
+        this.syncables = Arrays.asList((ISyncable) this.direction, this.rotation, this.customName, this.input, this.output);
     }
 
     @Override
@@ -232,42 +243,6 @@ public class TileEntityInductionishFurnace extends TileEntityRotatable implement
         this.burnTime = compound.getInteger("BurnTime");
         this.maxBurnTime = compound.getInteger("MaxBurnTime");
         this.progress = compound.getInteger("Progress");
-    }
-
-    @Override
-    public void writeToTag(NBTTagCompound compound) {
-        super.writeToTag(compound);
-        NBTTagList items = new NBTTagList();
-
-        for (int slot = Const.INDUCTIONISHFURNACE_INPUT_SLOT; slot < this.inventory.length; ++slot) {
-            if (this.inventory[slot] != null) {
-                NBTTagCompound itemCompound = new NBTTagCompound();
-                itemCompound.setByte("Slot", (byte) slot);
-                this.inventory[slot].writeToNBT(itemCompound);
-                items.appendTag(itemCompound);
-            }
-        }
-
-        compound.setTag("Items", items);
-    }
-
-    @Override
-    public void readFromTag(NBTTagCompound compound) {
-        super.readFromTag(compound);
-        NBTTagList items = compound.getTagList("Items");
-
-        for (int slot = Const.INDUCTIONISHFURNACE_INPUT_SLOT; slot < this.inventory.length; ++slot) {
-            this.inventory[slot] = null;
-        }
-
-        for (int i = 0; i < items.tagCount(); ++i) {
-            NBTTagCompound itemCompound = (NBTTagCompound) items.tagAt(i);
-            byte slot = itemCompound.getByte("Slot");
-
-            if (slot >= 0 && slot < this.inventory.length) {
-                this.inventory[slot] = ItemStack.loadItemStackFromNBT(itemCompound);
-            }
-        }
     }
 
     // IInventory

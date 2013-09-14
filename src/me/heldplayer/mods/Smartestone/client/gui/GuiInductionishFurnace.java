@@ -27,7 +27,7 @@ public class GuiInductionishFurnace extends GuiBase {
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-        this.mc.renderEngine.func_110577_a(Assets.BACKGROUND_INDUCTIONISH_FURNACE);
+        this.mc.renderEngine.bindTexture(Assets.BACKGROUND_INDUCTIONISH_FURNACE);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         int posX = (this.width - this.xSize) / 2;
         int posY = (this.height - this.ySize) / 2;
@@ -45,6 +45,7 @@ public class GuiInductionishFurnace extends GuiBase {
 
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
+        super.drawGuiContainerForegroundLayer(mouseX, mouseY);
         this.fontRenderer.drawString(this.tile.isInvNameLocalized() ? "\u00A7o" + this.tile.getInvName() : StatCollector.translateToLocal(this.tile.getInvName()), 8, 6, 4210752);
         this.fontRenderer.drawString(this.playerInv.isInvNameLocalized() ? "\u00A7o" + this.playerInv.getInvName() : StatCollector.translateToLocal(this.playerInv.getInvName()), 8, this.ySize - 96 + 2, 4210752);
     }

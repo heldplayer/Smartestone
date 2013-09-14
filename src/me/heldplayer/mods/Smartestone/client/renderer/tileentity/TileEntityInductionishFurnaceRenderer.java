@@ -30,8 +30,8 @@ public class TileEntityInductionishFurnaceRenderer extends TileEntitySpecialRend
         }
 
         TileEntityInductionishFurnace tile = (TileEntityInductionishFurnace) tileentity;
-        Direction direction = tile.direction;
-        Rotation rotation = tile.rotation;
+        Direction direction = tile.direction.getValue();
+        Rotation rotation = tile.rotation.getValue();
         Side front = direction.getRelativeSide(Side.FRONT, rotation);
         Side top = direction.getRelativeSide(Side.TOP, rotation);
 

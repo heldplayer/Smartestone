@@ -97,10 +97,10 @@ public class ItemRendererMicroBlock implements IItemRenderer {
         }
 
         if (item.getSpriteNumber() == 0) {
-            MC.getRenderEngine().func_110577_a(TextureMap.field_110575_b);
+            MC.getRenderEngine().bindTexture(TextureMap.locationBlocksTexture);
         }
         else {
-            MC.getRenderEngine().func_110577_a(TextureMap.field_110576_c);
+            MC.getRenderEngine().bindTexture(TextureMap.locationItemsTexture);
         }
 
         tes.startDrawingQuads();

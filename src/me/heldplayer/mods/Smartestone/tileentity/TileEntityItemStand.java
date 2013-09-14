@@ -1,11 +1,14 @@
 
 package me.heldplayer.mods.Smartestone.tileentity;
 
+import java.util.Arrays;
 import java.util.Iterator;
 
 import me.heldplayer.mods.Smartestone.CommonProxy;
 import me.heldplayer.mods.Smartestone.packet.Packet6SetInventorySlotContents;
 import me.heldplayer.mods.Smartestone.packet.PacketHandler;
+import me.heldplayer.util.HeldCore.sync.ISyncable;
+import me.heldplayer.util.HeldCore.sync.SInventoryStack;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
@@ -26,9 +29,14 @@ public class TileEntityItemStand extends TileEntityRotatable implements IInvento
     public float hover = 0.0F;
     public float prevHover = 0.0F;
 
+    public SInventoryStack stack;
+
     public TileEntityItemStand() {
         super("SSItemStand");
         this.hover = this.prevHover = CommonProxy.rand.nextFloat() * 1000.0F;
+
+        this.stack = new SInventoryStack(this, this, 0);
+        this.syncables = Arrays.asList((ISyncable) this.direction, this.rotation, this.customName, this.stack);
     }
 
     @Override
@@ -95,40 +103,6 @@ public class TileEntityItemStand extends TileEntityRotatable implements IInvento
         super.readFromNBT(compound);
         NBTTagList items = compound.getTagList("Items");
         this.inventory = new ItemStack[1];
-
-        for (int i = 0; i < items.tagCount(); ++i) {
-            NBTTagCompound itemCompound = (NBTTagCompound) items.tagAt(i);
-            byte slot = itemCompound.getByte("Slot");
-
-            if (slot >= 0 && slot < this.inventory.length) {
-                this.inventory[slot] = ItemStack.loadItemStackFromNBT(itemCompound);
-            }
-        }
-    }
-
-    @Override
-    public void writeToTag(NBTTagCompound compound) {
-        super.writeToTag(compound);
-        NBTTagList items = new NBTTagList();
-
-        for (int slot = 0; slot < this.inventory.length; ++slot) {
-            if (this.inventory[slot] != null) {
-                NBTTagCompound itemCompound = new NBTTagCompound();
-                itemCompound.setByte("Slot", (byte) slot);
-                this.inventory[slot].writeToNBT(itemCompound);
-                items.appendTag(itemCompound);
-            }
-        }
-
-        compound.setTag("Items", items);
-    }
-
-    @Override
-    public void readFromTag(NBTTagCompound compound) {
-        super.readFromTag(compound);
-        NBTTagList items = compound.getTagList("Items");
-
-        this.inventory[0] = null;
 
         for (int i = 0; i < items.tagCount(); ++i) {
             NBTTagCompound itemCompound = (NBTTagCompound) items.tagAt(i);
