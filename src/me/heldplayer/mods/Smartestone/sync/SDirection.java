@@ -74,7 +74,7 @@ public class SDirection implements ISyncable {
 
     @Override
     public String toString() {
-        return "Direction:" + this.value;
+        return "Direction: " + this.value;
     }
 
 }

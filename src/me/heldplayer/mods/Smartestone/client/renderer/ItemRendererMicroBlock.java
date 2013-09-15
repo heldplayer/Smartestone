@@ -106,6 +106,11 @@ public class ItemRendererMicroBlock implements IItemRenderer {
             MC.getRenderEngine().bindTexture(TextureMap.locationItemsTexture);
         }
 
+        if (renderType != ItemRenderType.INVENTORY && material != null && material.getRenderPass() > 0) {
+            GL11.glEnable(GL11.GL_BLEND);
+            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        }
+
         tes.startDrawingQuads();
 
         tes.setNormal(0.0F, -1.0F, 0.0F);
@@ -127,6 +132,10 @@ public class ItemRendererMicroBlock implements IItemRenderer {
         render.renderFaceXPos(null, 0, 0, 0, icons[5]);
 
         tes.draw();
+
+        if (renderType != ItemRenderType.INVENTORY && material != null && material.getRenderPass() > 0) {
+            GL11.glDisable(GL11.GL_BLEND);
+        }
 
         GL11.glPopMatrix();
     }

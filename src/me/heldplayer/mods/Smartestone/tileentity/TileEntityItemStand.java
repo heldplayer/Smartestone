@@ -117,7 +117,7 @@ public class TileEntityItemStand extends TileEntityRotatable implements IInvento
     // IInventory
     @Override
     public int getInventoryStackLimit() {
-        return 1;
+        return 64;
     }
 
     @Override
@@ -147,10 +147,10 @@ public class TileEntityItemStand extends TileEntityRotatable implements IInvento
     }
 
     @Override
-    public ItemStack getStackInSlotOnClosing(int index) {
-        if (this.inventory[index] != null) {
-            ItemStack stack = this.inventory[index];
-            this.inventory[index] = null;
+    public ItemStack getStackInSlotOnClosing(int slot) {
+        if (this.inventory[slot] != null) {
+            ItemStack stack = this.inventory[slot];
+            this.inventory[slot] = null;
             return stack;
         }
         else {
@@ -164,16 +164,19 @@ public class TileEntityItemStand extends TileEntityRotatable implements IInvento
     }
 
     @Override
-    public void setInventorySlotContents(int index, ItemStack newStack) {
-        this.inventory[index] = newStack;
+    public void setInventorySlotContents(int slot, ItemStack newStack) {
+        this.inventory[slot] = newStack;
+        if (slot == 0) {
+            this.stack.setChanged(true);
+        }
 
         if (newStack != null && newStack.stackSize > this.getInventoryStackLimit()) {
             newStack.stackSize = this.getInventoryStackLimit();
         }
 
-        if (index == 0 && !this.worldObj.isRemote) {
+        if (slot == 0 && !this.worldObj.isRemote) {
             Chunk chunk = this.worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord);
-            Packet6SetInventorySlotContents packet = new Packet6SetInventorySlotContents(this, index, newStack);
+            Packet6SetInventorySlotContents packet = new Packet6SetInventorySlotContents(this, slot, newStack);
             me.heldplayer.util.HeldCore.packet.PacketHandler.sendPacketToPlayersWatching(PacketHandler.instance.createPacket(packet), this.worldObj.getWorldInfo().getVanillaDimension(), chunk.xPosition, chunk.zPosition);
         }
 
@@ -189,6 +192,10 @@ public class TileEntityItemStand extends TileEntityRotatable implements IInvento
                 stack = this.inventory[slot];
                 this.inventory[slot] = null;
 
+                if (slot == 0) {
+                    this.stack.setChanged(true);
+                }
+
                 this.onInventoryChanged();
 
                 return stack;
@@ -198,6 +205,10 @@ public class TileEntityItemStand extends TileEntityRotatable implements IInvento
 
                 if (this.inventory[slot].stackSize == 0) {
                     this.inventory[slot] = null;
+
+                    if (slot == 0) {
+                        this.stack.setChanged(true);
+                    }
                 }
 
                 this.onInventoryChanged();

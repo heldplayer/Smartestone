@@ -74,7 +74,7 @@ public class SRotation implements ISyncable {
 
     @Override
     public String toString() {
-        return "Rotation:" + this.value;
+        return "Rotation: " + this.value;
     }
 
 }
