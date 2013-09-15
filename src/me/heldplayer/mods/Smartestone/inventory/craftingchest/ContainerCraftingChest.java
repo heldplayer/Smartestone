@@ -1,7 +1,6 @@
 
 package me.heldplayer.mods.Smartestone.inventory.craftingchest;
 
-import me.heldplayer.mods.Smartestone.inventory.SlotGhost;
 import me.heldplayer.mods.Smartestone.tileentity.TileEntityCraftingChest;
 import me.heldplayer.mods.Smartestone.util.Const;
 import net.minecraft.entity.player.EntityPlayer;
@@ -62,17 +61,6 @@ public class ContainerCraftingChest extends net.minecraft.inventory.ContainerWor
     }
 
     @Override
-    public ItemStack slotClick(int slot, int mouse, int shift, EntityPlayer player) {
-        if (slot > 0 && (this.getSlot(slot) instanceof SlotGhost)) {
-            ((SlotGhost) this.getSlot(slot)).clickSlot(player.inventory.getItemStack(), mouse, shift == 1);
-            return null;
-        }
-        else {
-            return super.slotClick(slot, mouse, shift, player);
-        }
-    }
-
-    @Override
     public boolean canInteractWith(EntityPlayer player) {
         return this.tile.isUseableByPlayer(player);
     }
@@ -80,9 +68,6 @@ public class ContainerCraftingChest extends net.minecraft.inventory.ContainerWor
     @Override
     public boolean func_94530_a(ItemStack stack, Slot slot) {
         if (slot.inventory instanceof SlotCraftingResult) {
-            return false;
-        }
-        if (slot.inventory instanceof SlotGhost) {
             return false;
         }
         return super.func_94530_a(stack, slot);
