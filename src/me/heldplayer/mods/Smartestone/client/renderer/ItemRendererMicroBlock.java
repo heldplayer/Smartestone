@@ -35,6 +35,9 @@ public class ItemRendererMicroBlock implements IItemRenderer {
 
     @Override
     public void renderItem(ItemRenderType renderType, ItemStack stack, Object... data) {
+        if (!(data[0] instanceof RenderBlocks)) {
+            return;
+        }
         RenderBlocks render = (RenderBlocks) data[0];
 
         if (!(stack.getItem() instanceof ItemMicroBlock)) {
