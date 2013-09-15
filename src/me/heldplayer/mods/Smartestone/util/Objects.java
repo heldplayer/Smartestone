@@ -9,6 +9,7 @@ import me.heldplayer.mods.Smartestone.block.BlockMulti1;
 import me.heldplayer.mods.Smartestone.block.BlockMulti2;
 import me.heldplayer.mods.Smartestone.item.ItemMicroBlock;
 import me.heldplayer.mods.Smartestone.item.ItemRotator;
+import me.heldplayer.mods.Smartestone.item.ItemTemplate;
 import me.heldplayer.mods.Smartestone.item.ItemWaterCore;
 import me.heldplayer.util.HeldCore.ModInfo;
 import net.minecraft.creativetab.CreativeTabs;
@@ -39,6 +40,7 @@ public final class Objects {
     public static ItemRotator itemRotator;
     public static ItemMicroBlock itemMicroBlock;
     public static ItemWaterCore itemWaterCore;
+    public static ItemTemplate itemTemplate;
     public static CreativeTabs creativeTab;
     public static CreativeTabs creativeTabMicroblocks;
 

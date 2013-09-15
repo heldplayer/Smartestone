@@ -130,7 +130,9 @@ public class BlockMulti2 extends BlockMulti {
                         ItemStack tileItem = tileEntity.getStackInSlot(0);
 
                         if (tileItem == null || tileItem.itemID == 0 || tileItem.stackSize == 0) {
-                            tileEntity.setInventorySlotContents(0, clickedStack.copy());
+                            ItemStack copy = clickedStack.copy();
+                            copy.stackSize = 1;
+                            tileEntity.setInventorySlotContents(0, copy);
                             clickedStack.stackSize--;
 
                             if (clickedStack.stackSize <= 0) {
@@ -143,7 +145,13 @@ public class BlockMulti2 extends BlockMulti {
                             if (tileItem.isItemEqual(clickedStack) && ItemStack.areItemStackTagsEqual(tileItem, clickedStack)) {
                                 if (clickedStack.stackSize < clickedStack.getMaxStackSize()) {
                                     clickedStack.stackSize++;
-                                    tileEntity.setInventorySlotContents(0, null);
+                                    tileItem.stackSize--;
+                                    if (tileItem.stackSize <= 0) {
+                                        tileEntity.setInventorySlotContents(0, null);
+                                    }
+                                    else {
+                                        tileEntity.setInventorySlotContents(0, tileItem);
+                                    }
                                     tileEntity.onInventoryChanged();
                                     return true;
                                 }

@@ -31,7 +31,7 @@ public abstract class GuiBase extends GuiContainer {
             GL11.glTranslatef(0.0F, 0.0F, 200.0F);
             for (int i = 0; i < size; i++) {
                 Slot slot = (Slot) this.inventorySlots.inventorySlots.get(i);
-                this.fontRenderer.drawStringWithShadow("" + slot.slotNumber, slot.xDisplayPosition, slot.yDisplayPosition, 0xCCCCCC);
+                this.fontRenderer.drawStringWithShadow("" + slot.slotNumber, slot.xDisplayPosition, slot.yDisplayPosition, 0x5555FF);
             }
             GL11.glPopMatrix();
         }

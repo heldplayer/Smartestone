@@ -143,10 +143,10 @@ public class TileEntityCraftingChest extends TileEntityRotatable implements ISpe
     }
 
     @Override
-    public ItemStack getStackInSlotOnClosing(int index) {
-        if (this.inventory[index] != null) {
-            ItemStack stack = this.inventory[index];
-            this.inventory[index] = null;
+    public ItemStack getStackInSlotOnClosing(int slot) {
+        if (this.inventory[slot] != null) {
+            ItemStack stack = this.inventory[slot];
+            this.inventory[slot] = null;
             return stack;
         }
         else {
@@ -160,8 +160,14 @@ public class TileEntityCraftingChest extends TileEntityRotatable implements ISpe
     }
 
     @Override
-    public void setInventorySlotContents(int index, ItemStack newStack) {
-        this.inventory[index] = newStack;
+    public void setInventorySlotContents(int slot, ItemStack newStack) {
+        this.inventory[slot] = newStack;
+        if (slot == Const.CRAFTINGCHEST_CRAFTRESULT_SLOT) {
+            this.output.setChanged(true);
+        }
+        else if (slot >= Const.CRAFTINGCHEST_INV_SIZE && slot < Const.CRAFTINGCHEST_CRAFTRESULT_SLOT) {
+            this.input[slot - Const.CRAFTINGCHEST_INV_SIZE].setChanged(true);
+        }
 
         if (newStack != null && newStack.stackSize > this.getInventoryStackLimit()) {
             newStack.stackSize = this.getInventoryStackLimit();
@@ -179,6 +185,13 @@ public class TileEntityCraftingChest extends TileEntityRotatable implements ISpe
                 stack = this.inventory[slot];
                 this.inventory[slot] = null;
 
+                if (slot == Const.CRAFTINGCHEST_CRAFTRESULT_SLOT) {
+                    this.output.setChanged(true);
+                }
+                else if (slot >= Const.CRAFTINGCHEST_INV_SIZE && slot < Const.CRAFTINGCHEST_CRAFTRESULT_SLOT) {
+                    this.input[slot - Const.CRAFTINGCHEST_INV_SIZE].setChanged(true);
+                }
+
                 this.onInventoryChanged();
 
                 return stack;
@@ -188,6 +201,13 @@ public class TileEntityCraftingChest extends TileEntityRotatable implements ISpe
 
                 if (this.inventory[slot].stackSize == 0) {
                     this.inventory[slot] = null;
+                }
+
+                if (slot == Const.CRAFTINGCHEST_CRAFTRESULT_SLOT) {
+                    this.output.setChanged(true);
+                }
+                else if (slot >= Const.CRAFTINGCHEST_INV_SIZE && slot < Const.CRAFTINGCHEST_CRAFTRESULT_SLOT) {
+                    this.input[slot - Const.CRAFTINGCHEST_INV_SIZE].setChanged(true);
                 }
 
                 this.onInventoryChanged();

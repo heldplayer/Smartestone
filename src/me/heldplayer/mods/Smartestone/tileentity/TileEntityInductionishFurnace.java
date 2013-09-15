@@ -4,8 +4,6 @@ package me.heldplayer.mods.Smartestone.tileentity;
 import java.util.Arrays;
 
 import me.heldplayer.mods.Smartestone.CommonProxy;
-import me.heldplayer.mods.Smartestone.packet.Packet6SetInventorySlotContents;
-import me.heldplayer.mods.Smartestone.packet.PacketHandler;
 import me.heldplayer.mods.Smartestone.util.Const;
 import me.heldplayer.util.HeldCore.sync.ISyncable;
 import me.heldplayer.util.HeldCore.sync.SInventoryStack;
@@ -18,7 +16,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.world.chunk.Chunk;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -132,13 +129,6 @@ public class TileEntityInductionishFurnace extends TileEntityRotatable implement
                     this.progress = 0;
                     this.smeltItem();
                     changed = true;
-
-                    Chunk chunk = this.worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord);
-                    Packet6SetInventorySlotContents packet = new Packet6SetInventorySlotContents(this, Const.INDUCTIONISHFURNACE_INPUT_SLOT, this.getStackInSlot(Const.INDUCTIONISHFURNACE_INPUT_SLOT));
-                    me.heldplayer.util.HeldCore.packet.PacketHandler.sendPacketToPlayersWatching(PacketHandler.instance.createPacket(packet), this.worldObj.getWorldInfo().getVanillaDimension(), chunk.xPosition, chunk.zPosition);
-
-                    packet = new Packet6SetInventorySlotContents(this, Const.INDUCTIONISHFURNACE_OUTPUT_SLOT, this.getStackInSlot(Const.INDUCTIONISHFURNACE_OUTPUT_SLOT));
-                    me.heldplayer.util.HeldCore.packet.PacketHandler.sendPacketToPlayersWatching(PacketHandler.instance.createPacket(packet), this.worldObj.getWorldInfo().getVanillaDimension(), chunk.xPosition, chunk.zPosition);
                 }
             }
             else {
@@ -278,10 +268,10 @@ public class TileEntityInductionishFurnace extends TileEntityRotatable implement
     }
 
     @Override
-    public ItemStack getStackInSlotOnClosing(int index) {
-        if (this.inventory[index] != null) {
-            ItemStack stack = this.inventory[index];
-            this.inventory[index] = null;
+    public ItemStack getStackInSlotOnClosing(int slot) {
+        if (this.inventory[slot] != null) {
+            ItemStack stack = this.inventory[slot];
+            this.inventory[slot] = null;
             return stack;
         }
         else {
@@ -295,17 +285,17 @@ public class TileEntityInductionishFurnace extends TileEntityRotatable implement
     }
 
     @Override
-    public void setInventorySlotContents(int index, ItemStack newStack) {
-        this.inventory[index] = newStack;
+    public void setInventorySlotContents(int slot, ItemStack newStack) {
+        this.inventory[slot] = newStack;
+        if (slot == Const.INDUCTIONISHFURNACE_INPUT_SLOT) {
+            this.input.setChanged(true);
+        }
+        else if (slot == Const.INDUCTIONISHFURNACE_OUTPUT_SLOT) {
+            this.output.setChanged(true);
+        }
 
         if (newStack != null && newStack.stackSize > this.getInventoryStackLimit()) {
             newStack.stackSize = this.getInventoryStackLimit();
-        }
-
-        if ((index == Const.INDUCTIONISHFURNACE_INPUT_SLOT || index == Const.INDUCTIONISHFURNACE_OUTPUT_SLOT) && !this.worldObj.isRemote) {
-            Chunk chunk = this.worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord);
-            Packet6SetInventorySlotContents packet = new Packet6SetInventorySlotContents(this, index, newStack);
-            me.heldplayer.util.HeldCore.packet.PacketHandler.sendPacketToPlayersWatching(PacketHandler.instance.createPacket(packet), this.worldObj.getWorldInfo().getVanillaDimension(), chunk.xPosition, chunk.zPosition);
         }
 
         this.onInventoryChanged();
@@ -322,10 +312,11 @@ public class TileEntityInductionishFurnace extends TileEntityRotatable implement
 
                 this.onInventoryChanged();
 
-                if ((slot == Const.INDUCTIONISHFURNACE_INPUT_SLOT || slot == Const.INDUCTIONISHFURNACE_OUTPUT_SLOT) && !this.worldObj.isRemote) {
-                    Chunk chunk = this.worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord);
-                    Packet6SetInventorySlotContents packet = new Packet6SetInventorySlotContents(this, slot, stack);
-                    me.heldplayer.util.HeldCore.packet.PacketHandler.sendPacketToPlayersWatching(PacketHandler.instance.createPacket(packet), this.worldObj.getWorldInfo().getVanillaDimension(), chunk.xPosition, chunk.zPosition);
+                if (slot == Const.INDUCTIONISHFURNACE_INPUT_SLOT) {
+                    this.input.setChanged(true);
+                }
+                else if (slot == Const.INDUCTIONISHFURNACE_OUTPUT_SLOT) {
+                    this.output.setChanged(true);
                 }
 
                 return stack;
@@ -339,10 +330,11 @@ public class TileEntityInductionishFurnace extends TileEntityRotatable implement
 
                 this.onInventoryChanged();
 
-                if ((slot == Const.INDUCTIONISHFURNACE_INPUT_SLOT || slot == Const.INDUCTIONISHFURNACE_OUTPUT_SLOT) && !this.worldObj.isRemote) {
-                    Chunk chunk = this.worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord);
-                    Packet6SetInventorySlotContents packet = new Packet6SetInventorySlotContents(this, slot, stack);
-                    me.heldplayer.util.HeldCore.packet.PacketHandler.sendPacketToPlayersWatching(PacketHandler.instance.createPacket(packet), this.worldObj.getWorldInfo().getVanillaDimension(), chunk.xPosition, chunk.zPosition);
+                if (slot == Const.INDUCTIONISHFURNACE_INPUT_SLOT) {
+                    this.input.setChanged(true);
+                }
+                else if (slot == Const.INDUCTIONISHFURNACE_OUTPUT_SLOT) {
+                    this.output.setChanged(true);
                 }
 
                 return stack;

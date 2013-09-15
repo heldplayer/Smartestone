@@ -18,7 +18,8 @@ public class NEISmartestonesConfig implements IConfigureNEI {
 
     @Override
     public void loadConfig() {
-        API.registerGuiOverlay(GuiCraftingChest.class, "crafting", 19, 11);
+        //API.registerGuiOverlay(GuiCraftingChest.class, "crafting", 19, 11);
+        API.registerGuiOverlay(GuiCraftingChest.class, "crafting", 46, 11);
         API.registerGuiOverlayHandler(GuiCraftingChest.class, new DefaultOverlayHandler(), "crafting");
 
         MultiItemRange blocks = new MultiItemRange();

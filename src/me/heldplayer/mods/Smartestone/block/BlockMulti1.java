@@ -52,7 +52,10 @@ public class BlockMulti1 extends BlockMulti {
 
         if (tile instanceof TileEntityCraftingChest) {
             IInventory inventory = (IInventory) tile;
-            for (int i = 0; i < Const.CRAFTINGCHEST_CRAFTRESULT_SLOT; i++) {
+            for (int i = 0; i < Const.CRAFTINGCHEST_TOTAL_INV_SIZE; i++) {
+                if (i == Const.CRAFTINGCHEST_CRAFTRESULT_SLOT) {
+                    continue;
+                }
                 ItemStack stack = inventory.getStackInSlot(i);
 
                 if (stack != null) {
@@ -71,7 +74,7 @@ public class BlockMulti1 extends BlockMulti {
                         EntityItem item = new EntityItem(world, (x + xMotion), (y + yMotion), (z + zMotion), new ItemStack(stack.itemID, size, stack.getItemDamage()));
 
                         if (stack.hasTagCompound()) {
-                            item.setEntityItemStack(stack);
+                            item.getEntityItem().setTagCompound(stack.getTagCompound());
                         }
 
                         item.motionX = ((float) rnd.nextGaussian() * 0.05F);

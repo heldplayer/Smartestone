@@ -35,6 +35,7 @@ public class ModSmartestone extends HeldCoreMod {
     public static ConfigValue<Integer> itemRotatorId;
     public static ConfigValue<Integer> itemMicroBlockId;
     public static ConfigValue<Integer> itemWaterCoreId;
+    public static ConfigValue<Integer> itemTemplateId;
     public static ConfigValue<Boolean> HDTextures;
 
     @Override
@@ -49,6 +50,7 @@ public class ModSmartestone extends HeldCoreMod {
         itemRotatorId = new ConfigValue<Integer>("Rotator", Configuration.CATEGORY_ITEM, null, 5240, "");
         itemMicroBlockId = new ConfigValue<Integer>("MicroBlockItem", Configuration.CATEGORY_ITEM, null, 5241, "");
         itemWaterCoreId = new ConfigValue<Integer>("WaterCore", Configuration.CATEGORY_ITEM, null, 5242, "");
+        itemTemplateId = new ConfigValue<Integer>("Template", Configuration.CATEGORY_ITEM, null, 5243, "");
         HDTextures = new ConfigValue<Boolean>("HD-Textures", Configuration.CATEGORY_GENERAL, Side.CLIENT, Boolean.FALSE, "");
 
         this.config = new Config(event.getSuggestedConfigurationFile());
@@ -58,6 +60,7 @@ public class ModSmartestone extends HeldCoreMod {
         this.config.addConfigKey(itemRotatorId);
         this.config.addConfigKey(itemMicroBlockId);
         this.config.addConfigKey(itemWaterCoreId);
+        this.config.addConfigKey(itemTemplateId);
         this.config.addConfigKey(HDTextures);
 
         super.preInit(event);

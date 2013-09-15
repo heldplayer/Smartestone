@@ -5,8 +5,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 import me.heldplayer.mods.Smartestone.CommonProxy;
-import me.heldplayer.mods.Smartestone.packet.Packet6SetInventorySlotContents;
-import me.heldplayer.mods.Smartestone.packet.PacketHandler;
 import me.heldplayer.util.HeldCore.sync.ISyncable;
 import me.heldplayer.util.HeldCore.sync.SInventoryStack;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,7 +16,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.storage.MapData;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -174,12 +171,6 @@ public class TileEntityItemStand extends TileEntityRotatable implements IInvento
             newStack.stackSize = this.getInventoryStackLimit();
         }
 
-        if (slot == 0 && !this.worldObj.isRemote) {
-            Chunk chunk = this.worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord);
-            Packet6SetInventorySlotContents packet = new Packet6SetInventorySlotContents(this, slot, newStack);
-            me.heldplayer.util.HeldCore.packet.PacketHandler.sendPacketToPlayersWatching(PacketHandler.instance.createPacket(packet), this.worldObj.getWorldInfo().getVanillaDimension(), chunk.xPosition, chunk.zPosition);
-        }
-
         this.onInventoryChanged();
     }
 
@@ -205,10 +196,10 @@ public class TileEntityItemStand extends TileEntityRotatable implements IInvento
 
                 if (this.inventory[slot].stackSize == 0) {
                     this.inventory[slot] = null;
+                }
 
-                    if (slot == 0) {
-                        this.stack.setChanged(true);
-                    }
+                if (slot == 0) {
+                    this.stack.setChanged(true);
                 }
 
                 this.onInventoryChanged();

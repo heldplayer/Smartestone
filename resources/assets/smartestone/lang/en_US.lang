@@ -7,6 +7,9 @@ itemGroup.SmartestoneMicroblocks=Microblocks
 
 item.SSRotator.name=Block Rotator
 item.SSWaterCore.name=Water Core
+item.SSTemplate.name=Crafting Template
+item.SSTemplate.written.name=%s
+item.SSTemplate.empty.name=Empty Crafting Template
 
 tile.SSMulti1.0.name=Crafting Chest
 tile.SSMulti1.1.name=Inductionish Furnace

@@ -30,11 +30,13 @@ import me.heldplayer.mods.Smartestone.inventory.craftingchest.ContainerCraftingC
 import me.heldplayer.mods.Smartestone.item.ItemBlockMulti;
 import me.heldplayer.mods.Smartestone.item.ItemMicroBlock;
 import me.heldplayer.mods.Smartestone.item.ItemRotator;
+import me.heldplayer.mods.Smartestone.item.ItemTemplate;
 import me.heldplayer.mods.Smartestone.item.ItemWaterCore;
 import me.heldplayer.mods.Smartestone.tileentity.TileEntityCraftingChest;
 import me.heldplayer.mods.Smartestone.tileentity.TileEntityInductionishFurnace;
 import me.heldplayer.mods.Smartestone.tileentity.TileEntityItemStand;
 import me.heldplayer.mods.Smartestone.tileentity.TileEntityMicro;
+import me.heldplayer.mods.Smartestone.util.Objects;
 import me.heldplayer.util.HeldCore.HeldCoreProxy;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -89,6 +91,7 @@ public class CommonProxy extends HeldCoreProxy implements IGuiHandler {
 
         itemRotator = new ItemRotator(ModSmartestone.itemRotatorId.getValue());
         itemRotator.setUnlocalizedName("SSRotator");
+        itemRotator.setTextureName(Objects.TEXTURE_PREFIX + ":rotator");
         GameRegistry.registerItem(itemRotator, "SSRotator");
 
         itemMicroBlock = new ItemMicroBlock(ModSmartestone.itemMicroBlockId.getValue());
@@ -96,8 +99,14 @@ public class CommonProxy extends HeldCoreProxy implements IGuiHandler {
 
         itemWaterCore = new ItemWaterCore(ModSmartestone.itemWaterCoreId.getValue());
         itemWaterCore.setUnlocalizedName("SSWaterCore");
+        itemWaterCore.setTextureName(Objects.TEXTURE_PREFIX + ":water_core");
         GameRegistry.registerItem(itemWaterCore, "SSWaterCore");
         GameRegistry.addRecipe(new ItemStack(itemWaterCore, 1, 0), "iIi", "IbI", "iIi", 'i', Item.ingotIron, 'I', Block.ice, 'b', Item.bucketWater);
+
+        itemTemplate = new ItemTemplate(ModSmartestone.itemTemplateId.getValue());
+        itemTemplate.setUnlocalizedName("SSTemplate");
+        itemTemplate.setTextureName(Objects.TEXTURE_PREFIX + ":template");
+        GameRegistry.registerItem(itemTemplate, "SSTemplate");
 
         creativeTab = new CreativeTab("Smartestone", new ItemStack(blockMulti1, 1, 0));
         creativeTabMicroblocks = new CreativeTab("SmartestoneMicroblocks", new ItemStack(itemRotator, 1, 0));
@@ -106,6 +115,7 @@ public class CommonProxy extends HeldCoreProxy implements IGuiHandler {
         itemRotator.setCreativeTab(creativeTab);
         itemMicroBlock.setCreativeTab(creativeTabMicroblocks);
         itemWaterCore.setCreativeTab(creativeTab);
+        itemTemplate.setCreativeTab(creativeTab);
 
         NetworkRegistry.instance().registerGuiHandler(ModSmartestone.instance, this);
         GameRegistry.registerTileEntity(TileEntityCraftingChest.class, "SSCraftingChest");

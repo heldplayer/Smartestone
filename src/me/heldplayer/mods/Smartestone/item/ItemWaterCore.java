@@ -1,28 +1,20 @@
 
 package me.heldplayer.mods.Smartestone.item;
 
-import me.heldplayer.mods.Smartestone.util.Objects;
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumMovingObjectType;
-import net.minecraft.util.Icon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemWaterCore extends Item implements IFluidContainerItem {
-
-    @SideOnly(Side.CLIENT)
-    private Icon icon;
 
     public ItemWaterCore(int itemId) {
         super(itemId);
@@ -99,18 +91,6 @@ public class ItemWaterCore extends Item implements IFluidContainerItem {
         }
 
         return stack;
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IconRegister register) {
-        this.icon = register.registerIcon(Objects.TEXTURE_PREFIX + ":water_core");
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public Icon getIconFromDamage(int damage) {
-        return this.icon;
     }
 
     @Override
