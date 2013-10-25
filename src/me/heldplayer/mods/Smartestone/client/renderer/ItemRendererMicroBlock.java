@@ -25,7 +25,7 @@ public class ItemRendererMicroBlock implements IItemRenderer {
 
     @Override
     public boolean handleRenderType(ItemStack item, ItemRenderType type) {
-        return type != ItemRenderType.FIRST_PERSON_MAP && type != ItemRenderType.FIRST_PERSON_HOLDING;
+        return type != ItemRenderType.FIRST_PERSON_MAP; // && type != ItemRenderType.FIRST_PERSON_HOLDING;
     }
 
     @Override
