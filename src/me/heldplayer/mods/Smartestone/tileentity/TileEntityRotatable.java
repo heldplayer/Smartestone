@@ -74,6 +74,11 @@ public abstract class TileEntityRotatable extends TileEntity implements ISyncabl
     // ISyncableObjectOwner
 
     @Override
+    public boolean isNotValid() {
+        return super.isInvalid();
+    }
+
+    @Override
     public List<ISyncable> getSyncables() {
         return this.syncables;
     }
