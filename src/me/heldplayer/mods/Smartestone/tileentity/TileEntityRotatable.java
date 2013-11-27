@@ -17,6 +17,7 @@ import me.heldplayer.util.HeldCore.sync.packet.PacketHandler;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 
 import com.google.common.io.ByteArrayDataInput;
 
@@ -60,7 +61,7 @@ public abstract class TileEntityRotatable extends TileEntity implements ISyncabl
 
     @Override
     public Packet getDescriptionPacket() {
-        return PacketHandler.instance.createPacket(new Packet4InitiateClientTracking(xCoord, yCoord, zCoord));
+        return PacketHandler.instance.createPacket(new Packet4InitiateClientTracking(this));
     }
 
     public boolean isInvNameLocalized() {
@@ -101,6 +102,21 @@ public abstract class TileEntityRotatable extends TileEntity implements ISyncabl
             out.writeInt(syncable.getId());
             syncable.write(out);
         }
+    }
+
+    @Override
+    public String getIdentifier() {
+        return "TileEntityRotatable_" + this.xCoord + ";" + this.yCoord + ";" + this.zCoord;
+    }
+
+    @Override
+    public boolean isWorldBound() {
+        return true;
+    }
+
+    @Override
+    public World getWorld() {
+        return this.getWorldObj();
     }
 
     @Override
